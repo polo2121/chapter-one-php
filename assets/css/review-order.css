@@ -1,0 +1,185 @@
+.review-order {
+    width: 70%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.review-order .heading  {
+   gap: 1rem;
+}
+.review-order .heading > span {
+    font-size: 1.2rem;
+}
+.manage {
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+.manage a > button {
+    width: fit-content;
+    padding: 0;
+}
+.manage > span:nth-child(2), .manage > a > button {
+    padding: 0rem 1rem;
+}
+.manage > span:nth-child(1) {
+    font-weight: 500;
+    font-family: 'Erode', serif;
+    font-size: 1.6rem;
+
+}
+.review-order .heading h3 {
+    margin-block-start: 0em !important;
+    margin-block-end: 0em !important;
+    border-bottom: 1px solid #0F2F60;
+    padding-bottom: 1rem;
+  
+}
+.review-order .book {
+    display: flex;
+    gap: 2rem;
+}
+.review-order .book .cover > img {
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.review-order .book .details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.review-order .book .details > div {
+    display: flex;
+    gap: 1rem;
+}
+.review-order .book .details > div > span {
+    display: block;
+    /* text-align: center; */
+}
+.review-order .book .details > div > span:nth-child(1) {
+    text-align: left;
+    width: 70%;
+}
+.review-order .book .details > div > span:nth-child(2) {
+    width: 10%;
+}
+.review-order .book .details > div > span:nth-child(2) > label {
+    background-color: #F3F3F3;
+    padding: 0.2rem 1.2rem;
+    border-radius: 8px;
+}
+.review-order .book .details > div > span:nth-child(3) {
+    width: 20%;
+    text-align: right !important;
+
+}
+.total-calculation {
+    border-top: 1px solid #0F2F60;
+    padding-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+}
+.total-calculation > div {
+    display: flex;
+    justify-content: space-between;
+
+}
+.total-calculation > div > * {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.paynow {
+    width: 60%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.paynow > button {
+    background-color: #1976D2;
+    width: 100%;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 1.2rem 0rem;
+    border-radius: 100px;
+    transition: transform 0.4s ease-in-out;
+}
+.paynow > button > a{
+    color: #1976D2;
+}
+.paynow > button:hover {
+    transform: scale(0.8);
+}
+.paynow > button:last-child {
+    background-color: transparent;
+    color: #1976D2;
+    border: 2px solid #1976D2;
+}
+
+/* small screens like laptop */
+@media screen and (max-width: 1024px)  {
+    .review-order {
+        width: 90%;
+    }
+    .paynow {
+        width: 60%;
+    }
+    .review-order .heading h3 {
+        font-size: 2rem;
+    }
+    .manage > span:nth-child(1) {
+        font-size: 1.4rem;
+    }
+}
+
+/*  ipad, tablets */
+@media screen and (max-width: 768px)  {
+    .review-order {
+        width: 100%;
+    }
+    .paynow {
+        width: 80%;
+    }
+    .review-order .book .details > div > span:nth-child(1) {
+        font-size: 1rem;
+    }
+}
+
+/* Mobile devices */
+@media screen and (max-width: 480px) {
+    .rating {
+        margin: auto;
+    }
+    .manage {
+        gap: 2rem;
+    }
+    .manage,.review-order .book .details > div > span:nth-child(2) > label{
+        padding: 0rem;
+    }
+    .review-order .book .details > div > span:nth-child(2) > label {
+        background-color: transparent;
+    }
+    .review-order .book {
+        flex-direction: column;
+    }
+    .cover {
+        display: flex;
+        justify-content: center;
+    }
+    .paynow {
+        width: 100%;
+        gap: 1rem;
+    }
+    .review-order .heading > span {
+        font-size: 1rem;
+    }
+    .manage > span:nth-child(1) {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+}

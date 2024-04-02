@@ -1,0 +1,743 @@
+* {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  /* box-sizing: border-box; */
+}
+header ul {
+  padding: 1rem;
+}
+
+/* Hero-Section */
+.hero-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  box-sizing: border-box;
+
+}
+.hero-section div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+  .hero-section div .book-images img {
+    position: absolute;
+    z-index: 1;
+  }
+    .hero-section div #fantasy {
+      top: 10%;
+      left: 10%;
+      width: clamp(140px, 14vw - 1rem, 200px);
+    }
+    .hero-section div #romance {
+      bottom: 10%;
+      left: 10%;
+      width: clamp(180px, 18vw - 1rem, 250px);
+
+    }
+    .hero-section div #fairy {
+      top: 10%;
+      /* top: clamp(110px, 9vw - 1rem, 130px); */
+      right: 10%;
+      z-index: 3 !important;
+      width: clamp(180px, 17vw - 1rem, 237px);
+
+    }
+    .hero-section div #true {
+      bottom: 8%;
+      right:10%;
+      width: clamp(240px, 10vw - 1rem, 342px);
+
+    }
+    .hero-section div #coffee {
+      bottom: 8%;
+      width: clamp(90px, 10vw - 1rem, 130px);
+
+    }
+    .hero-section div #pen {
+      bottom: -24px;
+      width: clamp(90px, 9vw - 1rem, 124px);
+      position: absolute;
+      
+    }
+  .hero-section div h1 {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    font-size: clamp(3rem, 5vw - 1rem, 3.25rem); /* 52px */
+
+  }
+  .hero-section div a button  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 1rem 2.6rem;
+    position: relative;
+    z-index: 2;
+
+  }
+
+/* Unique Services */
+.unique-services{
+  display: flex;
+  gap: 2rem;
+}
+  .unique-services > div{
+    width: 50%;
+  }
+    .unique-services .services {
+      display: flex;
+      flex-direction: column;
+      gap: 3em;
+    }
+      .unique-services .services > div {
+        display: flex;
+        gap: 4rem;
+      }
+        .unique-services .services .text{
+          line-height: 32px;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+
+        }
+          .unique-services .services .text .title {
+            font-weight: bold;
+            font-size: 1.4rem;
+          }
+          .unique-services .services .text p{
+            font-size: 1.1rem;
+          }
+
+/* Trending Section */
+/* Trending Book Card */
+.trending-books-list {
+  width: 100%;
+  margin: 4rem 0rem;
+  display: flex;
+  gap: 4rem;
+  position: relative;
+}
+.tb-cards {
+  width: 60%;
+  background-color: #E3F2FD;
+  padding: 2.8rem 2.8rem;
+  border-radius: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+  /* Trending book card header and its components */
+  .tb-cards .header {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+  }
+
+    .tb-cards .header .titles_prices {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+
+      .tb-cards .header .titles_prices > a {
+          width: 100%;
+          position: absolute;
+          background-color: #E3F2FD;
+          top: 0;
+          bottom: 0px;
+          transition: 4s linear;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          transform: translateY(0px);
+          color: #0F2F60;
+        }
+
+      .tb-cards .header .titles_prices > a > h4 {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+          .tb-cards .header .titles_prices > a > span {
+            font-size: 1.625rem;
+            /* 26px */
+            font-weight: 400;
+            font-family: 'Erode', serif;
+          }
+
+  /* Trending book body and its components */
+  .tb-cards .body {
+    position: relative;
+    overflow: hidden;
+  }
+
+    .tb-cards .body > p {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      background-color: #E3F2FD;
+    }
+      .tb-cards .body > p > a {
+        display: none;
+      }
+
+    .tb-cards .body > p,
+    .tb-cards .body > div {
+      font-size: 1.125rem; /* 18px */
+      line-height: 1.6rem;
+      font-weight: 400;
+    }
+
+
+/* Trending book footer and its CTA buttons */
+.tb-cards .footer {
+  position: relative;
+  height: 46px;
+  overflow: hidden;
+}
+  .tb-cards .footer .cta-btns{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    bottom: 0px;
+  }
+    .tb-cards .footer .cta-btns > a {
+      display: block;
+    }
+
+.tb-cards .control {
+  display: flex;
+  gap: 0.6rem;
+}
+.tb-cards .control button {
+  border: none;
+}
+.trending-books-slider {
+  width: 40%;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  scroll-behavior: smooth;
+}
+
+  .trending-books-slide {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+/* Best Selection Selection */
+.best-selection {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+.best-selection > div {
+  width: 50%;
+}
+
+  .best-selection > .bf-slider {
+    display: flex;
+    gap: 2rem;
+    overflow: hidden;
+  }
+  .best-selection > .bf-slider > .slide {
+    display: flex;
+    flex-direction: column;
+    /* background-color: red; */
+
+  }
+    .best-selection > .bf-slider .slide .book-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 0.6rem;
+    }
+        .best-selection .bf-slider .slide .book-info p{
+          font-weight: 600;
+          font-size: 1.2rem;
+          font-family: 'Erode', serif;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+          max-width: 99%;
+        }
+        .best-selection .slide .book-info span {
+          font-size: 1.2rem;
+          font-weight: 400;
+        }
+        .best-selection .slide .book-info > button{
+            border-radius: 100px;
+            padding: 0.4rem 1.4rem;
+            border: 2px solid #1976D2;
+            color: #1976D2;
+        }
+        .best-selection .slide .book-info > button:hover {
+          background-color: #1976D2;
+          color: #FFFFFF;
+        }
+
+/* favorite genre section  */
+.favorite-genre {
+  display: flex;
+  gap: 3rem;
+
+}
+.favorite-genre > div {
+  width: 50%;
+}
+.favorite-genre > .book-shelf {
+  display: flex;
+  justify-content: center;
+}
+.favorite-genre > .book-shelf > img {
+  width: 400px;
+}
+/* review book section  */
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+}
+.review .heading {
+    display: flex;
+    align-items: baseline;
+    flex-direction: row;
+}
+  .review .heading h2,
+  .review .heading p{
+    width: 50%;
+  }
+  .review .customer-review .review-slider,
+  .review .customer-review .control{
+    width: 50%;
+    margin: auto;
+  }
+    .review .customer-review .review-slider .slide {
+      display: flex;
+      gap: 4rem;
+    } 
+    .review .review-card .review-by  {
+      width: fit-content;
+    }
+        .review .review-card .review-by > * {
+            font-size: 0.8rem;
+            opacity: 0.6;
+          }
+          .review .review-card .review-by >  p {
+            font-weight: 600;
+          }
+          .review .review-card .review-by >  span {
+            font-weight: 400;
+          }
+  .review .customer-review .control{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    
+  }
+
+      .review .review-card {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+        .review .review-card .summarize  {
+            font-size: 1.6rem;
+            font-family: 'Erode', serif;
+          font-weight: 600;
+        }
+        .review .review-card .message  {
+          font-size: 1rem;
+          line-height: 30px;
+          font-weight: 500;
+      }
+
+/* reading journey */
+.reading-journey > div {
+  width: 100%;
+  height: 424px;
+  background-color: #E3F2FD;
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+  /* background-image: url("../images/light.svg");
+  background-position: contain;
+  background-repeat: no-repeat; */
+}
+  .reading-journey .light{
+    position: absolute;
+  }
+  .reading-journey .girl-reading {
+    width: 40%;
+    position: absolute;
+    bottom: -14px;
+    left: 40px;
+  }
+  .reading-journey .text-info {
+    margin-left: auto;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    position: relative;
+    z-index: 4;
+  }
+    .reading-journey .text-info > p {
+      width: 80%;
+      line-height: 32px;
+    }
+    .reading-journey .text-info > p {
+      width: 80%;
+      line-height: 32px;
+    }
+    .review .heading h2, .review .heading p {
+      width: 100%;
+    }
+
+/* Responsive Css */
+
+/* large screens like desktop */
+@media screen and (max-width: 1200px)  {
+  .tb-cards {
+    width: 100%;
+    padding: 2rem 2rem; /* 48px 48px */
+
+  }
+    .tb-cards h4,
+    .tb-cards .header .titles_prices > a > span {
+      font-size: 1.75rem; /* 28px */
+    }
+    .tb-cards .body > p{
+      font-size: 1.125rem; /* 18px */
+    }
+  .trending-books-slider .trending-books-slide {
+    width: 100%;
+  }
+  .reading-journey .text-info > h3 {
+    font-size: 2rem;
+  }
+  .review .customer-review .review-slider, .review .customer-review .control {
+    width: 70%;
+  }
+  .review .customer-review .review-slider .slide {
+    gap: 3rem;
+  }
+  .review .customer-review .control {
+    margin-left: auto;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .review .review-book > img {
+    width: 100px;
+  }  
+
+}
+
+/* small screens like laptop */
+@media screen and (max-width: 1024px)  {
+  .trending-books-list {
+    gap: 3rem;
+  }
+    .tb-cards {
+      width: 60%;
+      padding: 2rem 2rem; /* 48px 48px */
+
+    }
+      .tb-cards h4,.tb-card-titles-and-prices>a>span {
+        font-size: 1.625rem; /* 26px */
+      }
+      .tb-card-body>p{
+        font-size: 1rem; /* 18px */
+      }
+    
+    .trending-books-slider {
+      width: 40%;
+    }  
+    .hero-section div h1 {
+      z-index: 10;
+    }
+    .hero-section div #fantasy {
+      top: 4%;
+    }
+    .hero-section div #fairy {
+      top: 4%;
+    }
+    .hero-section div #romance {
+      left: 4%;
+    }
+    .hero-section div #true {
+      right: -20px;
+    }
+    .best-selection {
+      flex-direction: column;
+    }
+    .best-selection > div {
+      width: 100%;
+    }
+    .best-selection > .bf-slider {
+      gap: 1rem;
+    }
+    .favorite-genre {
+      gap: 3rem;
+      flex-direction: column;
+    }
+    .favorite-genre > .book-shelf  {
+      width: 40%;
+      margin-left: auto;
+    }
+    .favorite-genre > .book-shelf > img {
+      width: 200px;
+      /* padding-left: 4rem; */
+      display: none;
+
+    }
+    .favorite-genre > .popular-genre {
+      width: 100%;
+    }
+    .reading-journey > div {
+      justify-content: center;
+      padding: 0rem 1rem;
+      gap: 2rem;
+    }
+    .reading-journey .girl-reading {
+      width: fit-content;
+      position: relative;
+      bottom: -140px;
+    }
+    .reading-journey .girl-reading > img {
+      width: 240px;
+    }
+    .reading-journey .text-info {
+      width: 100%;
+    }
+}
+/*  ipad, tablets */
+@media screen and (max-width: 768px)  {
+  .trending-books-list{
+    flex-direction: column;
+  }
+  .tb-cards{
+    width: 100%;
+  }
+  .trending-books-slider{
+    width: 50%;
+    position: absolute;
+    z-index: 1;
+    bottom: -40%;
+    right: -50px;
+  }
+  .hero-section div #fantasy {
+    top: 0%;
+    left: 0%;
+  }
+  .hero-section div #fairy {
+    top: 0%;
+  }
+  .hero-section div #romance {
+    left: 20px;
+    bottom: 80px;
+  }
+  .hero-section div #true {
+    bottom: 80px;
+    right: -40px;
+  }
+  .review .heading {
+    flex-direction: column !important;
+  }
+  .review .customer-review .review-slider, .review .customer-review .control {
+    width: 100%;
+  }
+  .review .customer-review .review-slider .slide {
+    gap: 2rem;
+  }
+  .review .review-book > img {
+    width: 90px;
+  }
+  .reading-journey > div {
+    flex-direction: column;
+    gap: 0rem;
+    align-items: normal;
+    padding: 0rem 3rem 3rem 3rem;
+    height: fit-content;
+  }
+  .reading-journey .girl-reading {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    padding-top: 2rem;
+  }
+  .reading-journey .girl-reading > img {
+    width: 200px;
+  }
+}
+/* Mobile devices */
+@media screen and (max-width: 548px) { 
+  .hero-section div #true,.hero-section div #romance {
+    display: none;
+  }
+}
+@media screen and (max-width: 480px) {
+  .trending-books-list{
+    flex-direction: column;
+  }
+  .tb-cards {
+    width: 100%;
+    padding: 2rem 2rem; /* 16px 16px */
+
+  }
+    .tb-cards h4,
+    .tb-cards .titles-prices > a > span {
+      font-size: 1.65rem; /* 28px */
+    }
+    .tb-cards .body > p{
+      font-size: 1rem; /* 16px */
+    }
+      /* view detail btn mobile show */
+      .tb-cards .body > p > a {
+        display: block;
+      }
+
+    .tb-cards .footer .cta-btns, 
+    .tb-cards .footer .cta-btns a, 
+    .tb-cards .footer .cta-btns a button{
+      width: 100%;
+    }
+    /* view detail btn desktop hidden */
+    .tb-cards .footer .cta-btns a:nth-child(2) {
+      display: none;
+    }
+    .tb-cards .footer .cta-btns a button {
+      font-size: 1rem; /* 16px */
+      padding: 0.6rem 1.6rem;
+    }
+    
+  .tb-cards,.trending-books-slider {
+    width: 100%;
+  }
+  .trending-books-slider{
+    width: 50%;
+    bottom: -30%;
+    right: 0;
+  }
+  .hero-section div h1 {
+    font-size: 2.6rem;
+  }
+  .hero-section div #fantasy {
+    top: 4%;
+    width: 120px;
+  }
+  .hero-section div #fairy {
+    right: 0;
+    top: 4%;
+    width: 140px;
+  }
+  .hero-section div #pen {
+    width: 60px;
+    right: 30px;
+    bottom: -40px;
+  }
+  .hero-section div #coffee {
+    bottom: 12%;
+  }
+  .favorite-genre > .book-shelf {
+    width: 100%;
+  }
+  .favorite-genre > .book-shelf > img {
+    width: 200px;
+  }
+  .popular-genre > a {
+    margin: auto;
+  }
+  .review .customer-review .review-slider .slide {
+    flex-direction: column; 
+  }
+  .review .review-book {
+    display: flex;
+    justify-content: center;
+  }
+  .review .review-book > img {
+    width: 120px;
+  }
+  .reading-journey .text-info  {
+    justify-content: center;
+    text-align: center;
+   }
+  .reading-journey .text-info > p {
+   width: 100%;
+  }
+  .reading-journey .text-info > a > button {
+    width: 100%;
+   }
+   .reading-journey > div {
+    padding: 1.2rem;
+    border-radius: 20px;
+   }
+  .trending .control {
+    justify-content: flex-start;
+  }
+}
+
+/* Smallest Mobile devices */
+@media screen and (max-width: 319px) {
+  .trending-books-list{
+    flex-direction: column;
+  }
+    .tb-cards {
+      display: none;
+    }
+    .trending-books-slider {
+      position: relative;
+      width: 100dvw;
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+    }
+      .trending-books-slide{
+        width: 100dvw;
+        scroll-snap-align: start;
+      }
+  .hero-section div h1 {
+      font-size: 2.2rem;   
+  }
+  .hero-section div #fantasy {
+    width: 120px;
+    top: 8%;
+  }
+  .hero-section div #fairy {
+    width: 130px;
+    bottom: 0;
+    right: -20px;
+    top: 40px;
+  }
+  .hero-section div #pen {
+    display: none;
+  }
+}
