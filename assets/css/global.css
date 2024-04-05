@@ -860,7 +860,19 @@ form .input-group>input {
 .show {
     display: flex;
 }
-
+.login-error {
+    background-color: #fccbcb;
+    font-weight: 600;
+    padding: 1rem;
+    color: #7f3939;
+    border: 2px solid #fccbcb;
+    border-radius: 8px;
+    font-family: 'Erode', sans-serif;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.4rem;
+}
 /* Responsive Css */
 
 /* large screens like desktop */

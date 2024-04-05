@@ -125,35 +125,55 @@ function previousTrendingSlide() {
   }
 }
 
-function nextSlide() {
-  let sliderScrollLeft = bestSelectionSlider.scrollLeft;
-  let sliderVisibleWidth = bestSelectionSlider.offsetWidth;
-  console.log(sliderVisibleWidth);
+function nextSlide(slider, limit, btn) {
+  let sliderScrollLeft = slider.scrollLeft;
+  let sliderVisibleWidth = slider.offsetWidth;
 
-  bestSelectionSlider.scrollLeft += sliderScrollLeft + sliderVisibleWidth;
+  slider.scrollLeft = sliderScrollLeft + sliderVisibleWidth;
+  if (
+    Math.floor(slider.scrollLeft) ===
+    Math.floor(slider.getBoundingClientRect().width * limit)
+  ) {
+    btn.style.display = "none";
+    console.log("equal");
+  } else {
+    btn.style.display = "flex";
+  }
+  console.log(slider.scrollLeft);
 }
 
-function prevSlide() {
-  let sliderScrollLeft = bestSelectionSlider.scrollLeft;
-  let sliderVisibleWidth = bestSelectionSlider.offsetWidth;
-  bestSelectionSlider.scrollLeft = sliderScrollLeft - sliderVisibleWidth;
+function prevSlide(slider, limit, btn) {
+  let sliderScrollLeft = slider.scrollLeft;
+  let sliderVisibleWidth = slider.offsetWidth;
+  slider.scrollLeft = sliderScrollLeft - sliderVisibleWidth;
+  console.log(slider.scrollLeft);
+  
 }
 
 // Two arrow buttons in Trending Section
 const trendingNext = document.getElementById("trending-next");
 const trendingPrevious = document.getElementById("trending-previous");
 
-// Get all the slides across the web pages
-const bestSelectionSlider = document.getElementById("bestfiction-slider");
-
 // Add Click event to arrow buttons
 trendingNext.addEventListener("click", nextTrendingSlide);
 trendingPrevious.addEventListener("click", previousTrendingSlide);
 
+// Get all the slides across the web pages
+const bestSelectionSlider = document.getElementById("bestfiction-slider");
 const nextBtn = document.getElementById("next");
 const prevBtn = document.getElementById("previous");
 
-nextBtn.addEventListener("click", nextSlide);
-prevBtn.addEventListener("click", prevSlide);
+nextBtn.addEventListener("click", () => nextSlide(bestSelectionSlider));
+prevBtn.addEventListener("click", () => prevSlide(bestSelectionSlider));
 
-console.dir(nextBtn);
+const reviewSlider = document.getElementById("review-slider");
+const reviewNext = document.getElementById("review-next");
+const reviewPrev = document.getElementById("review-prev");
+console.log(reviewNext);
+// Add Click event to arrow buttons
+reviewNext.addEventListener("click", () =>
+  nextSlide(reviewSlider, 4, reviewNext)
+);
+reviewPrev.addEventListener("click", () =>
+  prevSlide(reviewSlider, 4, reviewPrev)
+);

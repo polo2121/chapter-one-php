@@ -32,7 +32,7 @@
         <a href="/index.php">
             <img width="46px" src="../assets/images/Logo.svg" alt="logo image">
         </a>
-        <h4>${currentPage.value}</h4>
+        <!-- <h4>${currentPage.value}</h4> -->
         <button id="mobile-navi-trigger">
             <img src="../assets/images/burger.svg" alt="burger image" id="open-nav-btn">
             <img class="hidden" src="../assets/images/cross.svg" alt="cross image" id="close-nav-btn">

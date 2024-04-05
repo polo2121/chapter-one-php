@@ -1,5 +1,10 @@
+<?php
+$time = time();
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 
 <head>
     <meta charset="UTF-8">
@@ -12,7 +17,7 @@
 
     <link rel="stylesheet" href="../assets/css/global.css">
     <link rel="stylesheet" href="../assets/css/animation.css">
-    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/index.css?<?php echo $time ?>">
 
 </head>
 
@@ -29,6 +34,11 @@
 
     // retrieve book's name and price from controller
     $bookDetails = getBooksList();
+
+    if (isset($_SESSION['login_success'])) {
+        echo "Successful Login";
+        unset($_SESSION['login_success']);
+    }
 
     // require_once('../models/db_connection.php');
 
@@ -52,7 +62,7 @@
                 <a href="./products.html">
                     <button class="btn-style-3">
                         Explore Now
-                        <img src="./images/outlined arrow white.svg" alt="svg">
+                        <img src="../assets/images/outlined arrow white.svg" alt="svg">
                     </button>
                 </a>
                 <div class="book-images">
@@ -222,7 +232,7 @@
                             <div class="bg-circle"></div>
 
                             <div class="book-cover">
-                                <img width="100%" height="100%" src="./images/atomic_habits.jpeg" alt="book cover image">
+                                <img width="100%" height="100%" src="../assets/images/atomic_habits.jpeg" alt="book cover image">
                             </div>
 
                             <div class="book-middle">
@@ -317,7 +327,7 @@
                         <a href="">
                             <button class="btn-style-2">
                                 View Detail
-                                <img src="./images/link-out.svg" alt="">
+                                <img src="../assets/images/link-out.svg" alt="link-out svg">
                             </button>
                         </a>
                     </div>
@@ -345,7 +355,7 @@
                         <a href="">
                             <button class="btn-style-2">
                                 View Detail
-                                <img src="./images/link-out.svg" alt="">
+                                <img src="../assets/images/link-out.svg" alt="link-out svg">
                             </button>
                         </a>
                     </div>
@@ -359,7 +369,7 @@
                         <div class="bg-circle"></div>
 
                         <div class="book-cover">
-                            <img width="100%" height="100%" src="./images/ikigai.jpeg" alt="">
+                            <img width="100%" height="100%" src="./images/ikigai.jpeg" alt="book-cover image">
                         </div>
 
                         <div class="book-middle">
@@ -385,7 +395,7 @@
                         <div class="bg-circle"></div>
 
                         <div class="book-cover">
-                            <img width="100%" height="100%" src="./images/atomic_habits.jpeg" alt="">
+                            <img width="100%" height="100%" src="../assets/images/atomic_habits.jpeg" alt="">
                         </div>
 
                         <div class="book-middle">
@@ -523,7 +533,7 @@
         <!-- Favorite Genre -->
         <section class="favorite-genre">
             <div class="book-shelf">
-                <img width="100%" src="./images/Book Shelf.svg" alt="book shelf svg">
+                <img width="100%" src="../assets/images/Book Shelf.svg" alt="book shelf svg">
             </div>
             <div class="popular-genre heading">
                 <h2>People's Favorite Genres</h2>
@@ -538,7 +548,7 @@
                 <a href="./products.html">
                     <button class="btn-style-3">
                         Explore Now
-                        <img src="./images/outlined arrow white.svg" alt="">
+                        <img src="../assets/images/outlined arrow white.svg" alt="">
                     </button>
                 </a>
             </div>
@@ -558,13 +568,15 @@
                 </p>
             </div>
             <div class="customer-review">
-                <div class="review-slider">
+                <div class="review-slider" id="review-slider">
+
+                    <!-- Review 1 -->
                     <div class="slide">
                         <div class="review-book">
-                            <img src="./images/review book.svg" alt="">
+                            <img src="../assets/images/review book.svg" alt="">
                         </div>
                         <div class="review-card">
-                            <img width="100px" src="./images/4-review.svg" alt="review image">
+                            <img width="100px" src="../assets/images/4-review.svg" alt="review image">
                             <p class="summarize">Excellent Service, Instant Delivery</p>
                             <p class="message">
                                 Books’ quality is too good and delivery is so fast.
@@ -578,19 +590,104 @@
                                 </span>
                             </div>
                         </div>
+                    </div>
 
+                    <!-- Review 2 -->
+                    <div class="slide">
+                        <div class="review-book">
+                            <img src="../assets/images/review book.svg" alt="">
+                        </div>
+                        <div class="review-card">
+                            <img width="100px" src="../assets/images/4-review.svg" alt="review image">
+                            <p class="summarize"> Effortless Convenience</p>
+                            <p class="message">
+                                Shopping for books has never been easier thanks to Chapter One's seamless browsing experience and user-friendly interface, making it a go-to destination for book lovers everywhere.
+                            </p>
+                            <div class="review-by">
+                                <p>Reviewed By Andy Joe</p>
+                                <span>
+                                    04/02/2023
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 3 -->
+                    <div class="slide">
+                        <div class="review-book">
+                            <img src="../assets/images/review book.svg" alt="">
+                        </div>
+                        <div class="review-card">
+                            <img width="100px" src="../assets/images/4-review.svg" alt="review image">
+                            <p class="summarize">Excellent Service, Instant Delivery</p>
+                            <p class="message">
+                                Books’ quality is too good and delivery is so fast.
+                                Easy to browse and navigate. Love this beautiful
+                                website as well.
+                            </p>
+                            <div class="review-by">
+                                <p>Reviewed By John</p>
+                                <span>
+                                    04/02/2023
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 4 -->
+                    <div class="slide">
+                        <div class="review-book">
+                            <img src="../assets/images/review book.svg" alt="">
+                        </div>
+                        <div class="review-card">
+                            <img width="100px" src="../assets/images/4-review.svg" alt="review image">
+                            <p class="summarize">Excellent Service, Instant Delivery</p>
+                            <p class="message">
+                                Books’ quality is too good and delivery is so fast.
+                                Easy to browse and navigate. Love this beautiful
+                                website as well.
+                            </p>
+                            <div class="review-by">
+                                <p>Reviewed By John</p>
+                                <span>
+                                    04/02/2023
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 5 -->
+                    <div class="slide">
+                        <div class="review-book">
+                            <img src="../assets/images/review book.svg" alt="">
+                        </div>
+                        <div class="review-card">
+                            <img width="100px" src="../assets/images/4-review.svg" alt="review image">
+                            <p class="summarize">Excellent Service, Instant Delivery</p>
+                            <p class="message">
+                                Books’ quality is too good and delivery is so fast.
+                                Easy to browse and navigate. Love this beautiful
+                                website as well.
+                            </p>
+                            <div class="review-by">
+                                <p>Reviewed By John</p>
+                                <span>
+                                    04/02/2023
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="control">
-                    <button class="arrow">
+                    <button class="arrow" id="review-prev">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12.3333 8L3.99992 8" stroke="#1976D2" stroke-width="2" stroke-linecap="round" />
                             <path d="M7.6665 3.66699L3.61601 7.71748C3.4598 7.87369 3.4598 8.12696 3.61601 8.28317L7.6665 12.3337" stroke="#1976D2" stroke-width="2" stroke-linecap="round" />
                         </svg>
 
                     </button>
-                    <button class="arrow" id="move-right">
+                    <button class="arrow" id="review-next">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3.66675 8L12.0001 8" stroke="#1976D2" stroke-width="2" stroke-linecap="round" />
                             <path d="M8.3335 3.66699L12.384 7.71748C12.5402 7.87369 12.5402 8.12696 12.384 8.28317L8.3335 12.3337" stroke="#1976D2" stroke-width="2" stroke-linecap="round" />
@@ -606,9 +703,9 @@
         <!-- reading journey section -->
         <section class="reading-journey">
             <div>
-                <img class="light" src="./images/light.svg" alt="light svg">
+                <img class="light" src="../assets/images/light.svg" alt="light svg">
                 <div class="girl-reading">
-                    <img src="./images/girl reading.svg" alt="girl reading svg">
+                    <img src="../assets/images/girl reading.svg" alt="girl reading svg">
                 </div>
                 <div class="text-info">
                     <h3>
@@ -620,7 +717,7 @@
                     <a href="./products.html">
                         <button class="btn-style-3">
                             Explore Now
-                            <img src="./images/outlined arrow white.svg" alt="">
+                            <img src="../assets/images/outlined arrow white.svg" alt="">
                         </button>
                     </a>
                 </div>
@@ -631,7 +728,7 @@
         <!-- shopping cart section -->
         <div class="cart" id="open-cart-btn">
             <button>
-                <img src="./images/book_cart.svg" alt="cart svg">
+                <img src="../assets/images/book_cart.svg" alt="cart svg">
             </button>
             <span class="hidden">
                 <p>1</p>
@@ -651,7 +748,7 @@
 
                     <!-- empty cart -->
                     <div class="empty-cart hidden">
-                        <img src="./images/empty_cart_icon.svg" alt="empty-cart-icon">
+                        <img src="../assets/images/empty_cart_icon.svg" alt="empty-cart-icon">
                         <p>The cart is empty.</p>
                     </div>
                     <!-- cart book -->
@@ -661,7 +758,7 @@
                         </div>
                         <div class="info">
                             <div class="rating">
-                                <img src="./images/4-review.svg" alt="4-review image">
+                                <img src="../assets/images/4-review.svg" alt="4-review image">
                                 <a class="remove">Remove</a>
                             </div>
                             <span class="title">
@@ -708,11 +805,8 @@
 
     </footer>
 
-
-    <script src="../assets/js/slide.js"></script>
+    <script src="../assets/js/slide.js?<?php echo $time ?>"></script>
     <script src="../assets/js/add-to-cart.js"></script>
-    <script src="../assets/js/header.js"></script>
-    <script src="../assets/js/footer.js"></script>
     <script src="../assets/js/nav-toggle.js"></script>
 
 </body>
