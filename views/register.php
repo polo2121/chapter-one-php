@@ -1,8 +1,8 @@
 <?php
 session_start();
+require_once('../sessionConfig.php');
 $token = bin2hex(random_bytes(35));
 $_SESSION['csrf_token'] = $token;
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,11 +26,11 @@ $_SESSION['csrf_token'] = $token;
     <!-- Header -->
     <?php
     var_dump($_SESSION);
-    echo "Hello";
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-    // require_once('./header.php');
+    // echo "Hello";
+    // ini_set('display_errors', 1);
+    // ini_set('display_startup_errors', 1);
+    // error_reporting(E_ALL);
+    require_once('./header.php');
     ?>
 
     <!-- Main -->

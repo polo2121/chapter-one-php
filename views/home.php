@@ -1,6 +1,6 @@
 <?php
 $time = time();
-session_start();
+require_once('../sessionConfig.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -802,7 +802,7 @@ session_start();
 
     <!-- Footer -->
     <footer>
-
+        <?php unset($_SESSION['registration_success']) ?>
     </footer>
 
     <script src="../assets/js/slide.js?<?php echo $time ?>"></script>

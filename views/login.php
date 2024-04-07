@@ -1,6 +1,6 @@
 <?php
 $time = time();
-session_start();
+require_once('../sessionConfig.php');
 ?>
 
 <!DOCTYPE html>
@@ -14,6 +14,8 @@ session_start();
     <!-- Link for two fonts used in the website -->
     <link href="https://api.fontshare.com/v2/css?f[]=erode@700,300,500,600,400&f[]=recia@700,500,600,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/global.css?<?php echo $time ?>">
+    <link rel="stylesheet" href="../assets/css/animation.css?<?php echo $time ?>">
+
 </head>
 
 <body>
@@ -21,8 +23,6 @@ session_start();
 
     <!-- Header -->
     <?php
-    var_dump($_SESSION);
-    echo "Hello";
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);

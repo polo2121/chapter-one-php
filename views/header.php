@@ -7,7 +7,7 @@
         </a>
         <ul>
             <li>
-                <a href="./index.php">Home</a>
+                <a href="./home.php">Home</a>
             </li>
             <li>
                 <a href="./products.php">Books</a>
@@ -21,12 +21,27 @@
         </ul>
     </div>
 
-    <a href="./login.php" class="signup-btn">
-        <button>Sign Up Now</button>
-        <div class="circle">
-            <img src="../assets/images/outlined arrow.svg" alt="outlined arrow icon">
-        </div>
-    </a>
+    <?php if (!isset($_SESSION['user'])) { ?>
+        <a href="./login.php" class="signup-btn">
+            <button>Sign Up Now</button>
+            <div class="circle">
+                <img src="../assets/images/outlined arrow.svg" alt="outlined arrow icon">
+            </div>
+        </a>
+    <?php } else { ?>
+        <a href="./profile.php" class="signup-btn">
+            <button>My Profile</button>
+            <div class="circle">
+                <img src="../assets/images/outlined arrow.svg" alt="outlined arrow icon">
+            </div>
+        </a>
+    <?php } ?>
+
+
+
+
+
+
 
     <div class="mobile-header">
         <a href="/index.php">

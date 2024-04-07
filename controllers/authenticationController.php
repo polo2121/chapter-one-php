@@ -4,11 +4,12 @@
 require_once('../models/dbConnection.php');
 
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
 
         session_start();
+        require_once('../sessionConfig.php');
+
         $errors = [];
 
         if (!isset($_SESSION['csrf_token']) || !isset($_POST['token'])) {
@@ -18,56 +19,56 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $token = htmlspecialchars($_POST['token']);
         $isCsrfTokenValid = validateCsrfToken($token);
 
-        if (isset($_POST['register'])) {
+        if ($isCsrfTokenValid && isset($_POST['register'])) {
 
-            if ($isCsrfTokenValid) {
+            // Gather the name of all inputs provided in register form
+            $inputs = array('firstname', 'lastname', 'email', 'pwd', 'confirm');
 
-                // Gather the name of all inputs provided in register form
-                $inputs = array('firstname', 'lastname', 'email', 'pwd', 'confirm');
+            // Validate those inputs to make sure whether they are null/existed or not
+            $errors['input_error'] = validateInput($inputs);
 
-                // Validate those inputs to make sure whether they are null/existed or not
-                $errors['input_error'] = validateInput($inputs);
+            // only proceed when there is no error in inputs 
+            if (empty($errors['input_error'])) {
+                $errors['email_error'] = validateEmail();
+                $errors['pwd_error'] = validatePassword($pwd, $confirmPwd);
+            }
+            // otherwise show errors to users
+            else {
+                $_SESSION['registration_errors'] = $errors;
+                header('Location: ../views/register.php');
+                exit;
+            }
 
-                // only proceed when there is no error in inputs 
-                if (empty($errors['input_error'])) {
-                    $errors['email_error'] = validateEmail();
-                    $errors['pwd_error'] = validatePassword($pwd, $confirmPwd);
-                }
-                // otherwise show errors to users
-                else {
-                    $_SESSION['registration_errors'] = $errors;
-                    header('Location: ../views/register.php');
-                    exit;
-                }
+            // registration is success when there are no errors in inputs
+            if (
+                empty($errors['input_error']) &&
+                empty($errors['email_error']) &&
+                empty($errors['pwd_error'])
+            ) {
+                $firstname = htmlspecialchars($_POST['firstname']);
+                $lastname = htmlspecialchars($_POST['lastname']);
+                $email = htmlspecialchars($_POST['email']);
 
-                // registration is success when there are no errors in inputs
-                if (
-                    empty($errors['input_error']) &&
-                    empty($errors['email_error']) &&
-                    empty($errors['pwd_error'])
-                ) {
-                    $firstname = htmlspecialchars($_POST['firstname']);
-                    $lastname = htmlspecialchars($_POST['lastname']);
-                    $email = htmlspecialchars($_POST['email']);
 
-                    // hash the password so that nobody can't know the real one
-                    $pwd = password_hash($pwd, PASSWORD_DEFAULT);
+                // hash the password so that nobody can't know the real one
+                $pwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-                    // $conn = openConnection();
-                    // $stmt = $conn->prepare('INSERT INTO users VALUES (?,?,?,?,?)');
-                    // $stmt->bind_param('issss', $id, $firstname, $lastname, $pwd, $email);
+                // $conn = openConnection();
+                // $stmt = $conn->prepare('INSERT INTO users VALUES (?,?,?,?,?)');
+                // $stmt->bind_param('issss', $id, $firstname, $lastname, $pwd, $email);
+                // $stmt->execute();
+                // $stmt->close();
+                // closeConnection($conn);
 
-                    // $stmt->execute();
-                    // $stmt->close();
-                    // closeConnection($conn);
-                    echo "New Records created successfully";
-                    $_SESSION['registration_success'] = "You are successfully become the pateron of Chapter One.";
-                    header('Location: ../views/products.php');
-                } else {
-                    $_SESSION['registration_errors'] = $errors;
-                    $_SESSION['prev_values'] = array($_POST['firstname'], $_POST['lastname'], $_POST['email']);
-                    header('Location: ../views/register.php');
-                }
+
+                unset($_SESSION['general']);
+                createNewSession('user');
+                $_SESSION['registration_success'] = "Registration is successfully completed.";
+                header('Location: ../views/products.php');
+            } else {
+                $_SESSION['registration_errors'] = $errors;
+                $_SESSION['prev_values'] = array($_POST['firstname'], $_POST['lastname'], $_POST['email']);
+                header('Location: ../views/register.php');
             }
         }
         if (isset($_POST['login'])) {
@@ -95,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo $email . " " . $pwd;
     } catch (\Throwable $th) {
         echo $th;
+        exit;
     }
 }
 
@@ -129,7 +131,6 @@ function validateInput($inputs)
         // echo $userInputs . '<br>';
     }
 }
-
 function validateEmail()
 {
     // check email match valid format

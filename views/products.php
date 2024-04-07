@@ -1,3 +1,14 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+$time = time();
+session_start();
+require_once('../sessionConfig.php');
+$token = bin2hex(random_bytes(35));
+$_SESSION['csrf_token'] = $token;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,31 +20,32 @@
     <!-- Link for two fonts used in the website -->
     <link href="https://api.fontshare.com/v2/css?f[]=erode@700,300,500,600,400&f[]=recia@700,500,600,400&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="./css/global.css">
-    <link rel="stylesheet" href="./css/products.css">
-    <link rel="stylesheet" href="./css/animation.css">
+    <link rel="stylesheet" href="../assets/css/global.css?<?php echo $time ?>">
+    <link rel="stylesheet" href="../assets/css/products.css?<?php echo $time ?>">
+    <link rel="stylesheet" href="../assets/css/animation.css?<?php echo $time ?>">
 </head>
 
 <body>
 
     <!-- Header -->
-    <header class="header-section">
-        <input type="hidden" value="Books" id="current-page">
-    </header>
-
+    <?php
+    require_once('./header.php');
+    // decryptId();
+    ?>
 
     <!-- Main -->
     <main>
+        <?php var_dump($_SESSION); ?>
         <!-- Introduction Section -->
         <section class="intro-card">
-            <img class="plant" src="./images/plants.svg" alt="plant svg">
+            <img class="plant" src="../assets/images/plants.svg" alt="plant svg">
             <div class="intro-text">
                 <span>Explore limitless books and start your journey.</span>
                 <p> With our vast collection of millions of books, delve into a world of
                     imagination and find your next captivating read!
                 </p>
             </div>
-            <img class="girl-on-book" src="./images/girl on book.svg" alt="girls on book svg">
+            <img class="girl-on-book" src="../assets/images/girl on book.svg" alt="girls on book svg">
 
         </section>
 
@@ -47,7 +59,7 @@
             <!-- Products -->
             <div class="products-wrapper">
                 <div class="product">
-                    <a class="view-detail-btn" href="./product-details.html">
+                    <a class="view-detail-btn" href="./product-details.php">
                         <button class="btn-style-2">
                             View Detail
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,18 +72,18 @@
                         <!-- 3d Book -->
                         <div class="book-style-2 book">
                             <div class="book-cover">
-                                <img width="100%" height="100%" src="./images/atomic_habits.jpeg" alt="">
+                                <img width="100%" height="100%" src="../assets/images/atomic_habits.jpeg" alt="">
                             </div>
 
                             <div class="book-middle">
                                 <div class="white-pages"></div>
                             </div>
-                            <img class="shadow" src="./images/book shadow.svg" alt="book shadow">
+                            <img class="shadow" src="../assets/images/book shadow.svg" alt="book shadow">
                         </div>
                     </div>
                     <div class="details dpr">
                         <span class="price">£18.99</span>
-                        <img width="100px" class="rating" src="./images/4-review.svg" alt="">
+                        <img width="100px" class="rating" src="../assets/images/4-review.svg" alt="">
                     </div>
 
                     <div class="details dna">
@@ -80,15 +92,19 @@
                                 Atomic Habits
                             </span>
                         </a>
-                        <div class="action">
-                            <button>Add</button>
+                        <div class="action add-item">
+                            <form action="../controllers/addToCartController.php" method="post">
+                                <input type="hidden" name="book-id" value=<?php echo 1; ?>>
+                                <input type="hidden" name="token" value="<?php echo $token ?>">
+                                <button type="submit">Add</button>
+                            </form>
                         </div>
                     </div>
 
                 </div>
 
                 <div class="product">
-                    <a class="view-detail-btn" href="./product-details.html">
+                    <a class="view-detail-btn" href="./product-details.php">
                         <button class="btn-style-2">
                             View Detail
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -101,18 +117,18 @@
                         <!-- 3d Book -->
                         <div class="book-style-2 book">
                             <div class="book-cover">
-                                <img width="100%" height="100%" src="./images/ikigai.jpg" alt="">
+                                <img width="100%" height="100%" src="./assets/images/ikigai.jpg" alt="">
                             </div>
 
                             <div class="book-middle">
                                 <div class="white-pages"></div>
                             </div>
-                            <img class="shadow" src="./images/book shadow.svg" alt="book shadow">
+                            <img class="shadow" src="./assets/images/book shadow.svg" alt="book shadow">
                         </div>
                     </div>
                     <div class="details dpr">
                         <span class="price">£10.59</span>
-                        <img width="100px" class="rating" src="./images/4-review.svg" alt="">
+                        <img width="100px" class="rating" src="./assets/images/4-review.svg" alt="review">
                     </div>
 
                     <div class="details dna">
@@ -123,90 +139,27 @@
                             </span>
                         </a>
                         <div class="action">
-                            <button>Add</button>
+                            <form action="../controllers/addToCartController.php" method="post">
+                                <input type="hidden" name="book-id" value=<?php echo 2 ?>>
+                                <input type="hidden" name="token" value="<?php echo $token ?>">
+                                <button type="submit">Add</button>
+                            </form>
                         </div>
                     </div>
 
                 </div>
-
-
             </div>
 
         </section>
 
-        <!-- shopping cart section -->
-        <div class="cart" id="open-cart-btn">
-            <button>
-                <img src="./images/book_cart.svg" alt="cart svg">
-            </button>
-            <span class="hidden">
-                <p>1</p>
-            </span>
-        </div>
+        <?php require_once('../views/add-to-cart.php'); ?>
 
-        <!-- shopping cart panel section -->
-        <div class="cart-section" id="cart">
-            <div class="cart-panel-wrapper">
-                <div class="heading">
-                    <h4>My Cart</h4>
-                    <svg id="close-cart-btn" width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11.625 1.375L1.375 11.6243M11.625 11.625L1.375 1.37567" stroke="#0F2F60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <div class="cart-books-wrapper">
-
-                    <!-- empty cart -->
-                    <div class="empty-cart hidden">
-                        <img src="./images/empty_cart_icon.svg" alt="empty-cart-icon">
-                        <p>The cart is empty.</p>
-                    </div>
-                    <!-- cart book -->
-                    <div class="cart-book">
-                        <div class="image">
-                            <img width="80px" src="./images/ikigai.jpg" alt="">
-                        </div>
-                        <div class="info">
-                            <div class="rating">
-                                <img src="./images/4-review.svg" alt="4-review image">
-                                <a class="remove">Remove</a>
-                            </div>
-                            <span class="title">
-                                Ikigai: The Japanese secret to
-                                a long and happy life
-                            </span>
-                            <div class="price_amount">
-                                <span class="price">$21.99</span>
-                                <div class="amount">
-                                    <button class="minus">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20 12H4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </button>
-                                    <span>1</span>
-                                    <button class="plus">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 4V20M20 12H4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-                <div class="subtotal">
-                    <span>Subtotal</span>
-                    <span>$29.91</span>
-                </div>
-                <a class="checkout" href="./review-order.html">
-                    <button class="btn-style-1">
-                        Checkout Now
-                    </button>
-                </a>
-
-            </div>
-        </div>
+        <?php if (isset($_SESSION['registration_success'])) { ?>
+            <p class="alert-box success fade-away">
+                <img width="20px" src="../assets/images/alert-success.svg" alt="thumbs up svg">
+                <?php echo $_SESSION['registration_success'] ?>
+            </p>
+        <?php } ?>
 
     </main>
 
@@ -216,10 +169,6 @@
     <?php
     unset($_SESSION['registration_success']);
     ?>
-
-    <script src="./js/add-to-cart.js"></script>
-    <script src="./js/header.js"></script>
-    <script src="./js/footer.js"></script>
     <script src="./js/nav-toggle.js"></script>
 
 </body>

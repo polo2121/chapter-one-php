@@ -50,14 +50,16 @@
 }
 
 .sw-scale {
-    animation: sw-scale 0.4s ease-out forwards;
+    animation: sw-scale 0.2s ease-out forwards;
 }
 @keyframes sw-scale {
     0%{
         width: 0%;
+        opacity: 0;
     }
     100%{
         width: var(--cartWidth);
+        opacity: 1;
     }
 }
 .sw-origin {
@@ -71,4 +73,13 @@
         width: 0%;
     }
 }
-
+.fade-away {
+    animation: fade-away 0.6s ease-in forwards; 
+    animation-delay: 3s;
+    
+}
+@keyframes fade-away {
+    100% {
+        opacity: 0;
+    }
+}

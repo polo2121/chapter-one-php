@@ -527,7 +527,7 @@ form {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* gap: 4rem; */
+    gap: 2rem;
     padding: 4rem;
 }
 
@@ -860,7 +860,7 @@ form .input-group>input {
 .show {
     display: flex;
 }
-.login-error {
+.login-error, .alert-box, .error{
     background-color: #fccbcb;
     font-weight: 600;
     padding: 1rem;
@@ -872,6 +872,19 @@ form .input-group>input {
     justify-content: flex-start;
     align-items: center;
     gap: 0.4rem;
+}
+.alert-box{
+    width: fit-content;
+    position: fixed;
+    bottom: 20px;
+    right: 0;
+    left: 0;
+    margin: auto;
+}
+.alert-box.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #ffffff;
 }
 /* Responsive Css */
 
