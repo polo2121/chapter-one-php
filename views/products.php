@@ -7,6 +7,8 @@ session_start();
 require_once('../sessionConfig.php');
 $token = bin2hex(random_bytes(35));
 $_SESSION['csrf_token'] = $token;
+unset($_SESSION['cart']);
+
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +32,6 @@ $_SESSION['csrf_token'] = $token;
     <!-- Header -->
     <?php
     require_once('./header.php');
-    // decryptId();
     ?>
 
     <!-- Main -->
@@ -58,98 +59,68 @@ $_SESSION['csrf_token'] = $token;
 
             <!-- Products -->
             <div class="products-wrapper">
-                <div class="product">
-                    <a class="view-detail-btn" href="./product-details.php">
-                        <button class="btn-style-2">
-                            View Detail
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 12H8M16 12C16 11.2998 14.0057 9.99153 13.5 9.5M16 12C16 12.7002 14.0057 14.0085 13.5 14.5" stroke="#0F2F60" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M21.5 12C21.5 7.52166 21.5 5.28249 20.1088 3.89124C18.7175 2.5 16.4783 2.5 12 2.5C7.5217 2.5 5.2825 2.5 3.8912 3.89124C2.5 5.28249 2.5 7.52166 2.5 12C2.5 16.4783 2.5 18.7175 3.8912 20.1088C5.2825 21.5 7.5217 21.5 12 21.5C16.4783 21.5 18.7175 21.5 20.1088 20.1088C21.5 18.7175 21.5 16.4783 21.5 12Z" stroke="#0F2F60" stroke-width="1.5" />
-                            </svg>
-                        </button>
-                    </a>
-                    <div class="background">
-                        <!-- 3d Book -->
-                        <div class="book-style-2 book">
-                            <div class="book-cover">
-                                <img width="100%" height="100%" src="../assets/images/atomic_habits.jpeg" alt="">
+                <?php
+                require_once('../controllers/homeController.php');
+                // retrieve book lists from database
+                $bookDetails = getBooksList();
+                if (count($bookDetails) > 0) {
+                    foreach ($bookDetails as $row) {
+                ?>
+                        <div class="product">
+                            <a class="view-detail-btn" href="./product-details.php?id=<?php echo $row['book_id'] ?>">
+                                <button class="btn-style-2">
+                                    View Detail
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M16 12H8M16 12C16 11.2998 14.0057 9.99153 13.5 9.5M16 12C16 12.7002 14.0057 14.0085 13.5 14.5" stroke="#0F2F60" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M21.5 12C21.5 7.52166 21.5 5.28249 20.1088 3.89124C18.7175 2.5 16.4783 2.5 12 2.5C7.5217 2.5 5.2825 2.5 3.8912 3.89124C2.5 5.28249 2.5 7.52166 2.5 12C2.5 16.4783 2.5 18.7175 3.8912 20.1088C5.2825 21.5 7.5217 21.5 12 21.5C16.4783 21.5 18.7175 21.5 20.1088 20.1088C21.5 18.7175 21.5 16.4783 21.5 12Z" stroke="#0F2F60" stroke-width="1.5" />
+                                    </svg>
+                                </button>
+                            </a>
+                            <div class="background">
+                                <!-- 3d Book -->
+                                <div class="book-style-2 book">
+                                    <div class="book-cover">
+                                        <img width="100%" height="100%" src="../assets/images/<?php echo $row['book_cover'] ?>" alt="book image">
+                                    </div>
+
+                                    <div class="book-middle">
+                                        <div class="white-pages"></div>
+                                    </div>
+                                    <img class="shadow" src="../assets/images/book shadow.svg" alt="book shadow">
+                                </div>
+                            </div>
+                            <div class="details dpr">
+                                <span class="price">£<?php echo $row['book_price'] ?></span>
+                                <img width="100px" class="rating" src="../assets/images/4-review.svg" alt="">
                             </div>
 
-                            <div class="book-middle">
-                                <div class="white-pages"></div>
+                            <div class="details dna">
+                                <a class="name" href="./product-details.php?id=<?php echo $row['book_id'] ?>">
+                                    <span>
+                                        Atomic Habits
+                                    </span>
+                                </a>
+                                <div class="action">
+                                    <input type="hidden" value=<?php echo $row['book_id'] ?>>
+                                    <?php if (isset($_SESSION['cart'][$row['book_id']])) { ?>
+                                        <span>
+                                            <p class="added-state">Added</p>
+                                        </span>
+                                    <?php } else { ?>
+                                        <button class="add-item" type="submit">Add</button>
+                                        <span></span>
+                                    <?php } ?>
+                                </div>
                             </div>
-                            <img class="shadow" src="../assets/images/book shadow.svg" alt="book shadow">
                         </div>
-                    </div>
-                    <div class="details dpr">
-                        <span class="price">£18.99</span>
-                        <img width="100px" class="rating" src="../assets/images/4-review.svg" alt="">
-                    </div>
-
-                    <div class="details dna">
-                        <a class="name" href="">
-                            <span>
-                                Atomic Habits
-                            </span>
-                        </a>
-                        <div class="action add-item">
-                            <form action="../controllers/addToCartController.php" method="post">
-                                <input type="hidden" name="book-id" value=<?php echo 1; ?>>
-                                <input type="hidden" name="token" value="<?php echo $token ?>">
-                                <button type="submit">Add</button>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="product">
-                    <a class="view-detail-btn" href="./product-details.php">
-                        <button class="btn-style-2">
-                            View Detail
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 12H8M16 12C16 11.2998 14.0057 9.99153 13.5 9.5M16 12C16 12.7002 14.0057 14.0085 13.5 14.5" stroke="#0F2F60" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M21.5 12C21.5 7.52166 21.5 5.28249 20.1088 3.89124C18.7175 2.5 16.4783 2.5 12 2.5C7.5217 2.5 5.2825 2.5 3.8912 3.89124C2.5 5.28249 2.5 7.52166 2.5 12C2.5 16.4783 2.5 18.7175 3.8912 20.1088C5.2825 21.5 7.5217 21.5 12 21.5C16.4783 21.5 18.7175 21.5 20.1088 20.1088C21.5 18.7175 21.5 16.4783 21.5 12Z" stroke="#0F2F60" stroke-width="1.5" />
-                            </svg>
-                        </button>
-                    </a>
-                    <div class="background">
-                        <!-- 3d Book -->
-                        <div class="book-style-2 book">
-                            <div class="book-cover">
-                                <img width="100%" height="100%" src="./assets/images/ikigai.jpg" alt="">
-                            </div>
-
-                            <div class="book-middle">
-                                <div class="white-pages"></div>
-                            </div>
-                            <img class="shadow" src="./assets/images/book shadow.svg" alt="book shadow">
-                        </div>
-                    </div>
-                    <div class="details dpr">
-                        <span class="price">£10.59</span>
-                        <img width="100px" class="rating" src="./assets/images/4-review.svg" alt="review">
-                    </div>
-
-                    <div class="details dna">
-                        <a class="name" href="./product-details.html">
-                            <span>
-                                Ikigai: The Japanese Scret
-                                to Long and Happy life
-                            </span>
-                        </a>
-                        <div class="action">
-                            <form action="../controllers/addToCartController.php" method="post">
-                                <input type="hidden" name="book-id" value=<?php echo 2 ?>>
-                                <input type="hidden" name="token" value="<?php echo $token ?>">
-                                <button type="submit">Add</button>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
+                <?php
+                    }
+                } else {
+                    echo '<h2>Something went wrong</h2>';
+                }
+                ?>
             </div>
-
+            <input type="hidden" name="token" id="csrf-token" value="<?php echo $token ?>">
         </section>
 
         <?php require_once('../views/add-to-cart.php'); ?>
@@ -161,6 +132,7 @@ $_SESSION['csrf_token'] = $token;
             </p>
         <?php } ?>
 
+        <div id="item-success"></div>
     </main>
 
     <!-- Footer -->

@@ -13,7 +13,7 @@ function openConnection()
     if ($conn->connect_error) {
         die("Connection Failed: " . $conn->connect_error);
     }
-    echo "Succcess </br>";
+    // echo "Succcess </br>";
     return $conn;
 }
 
@@ -21,5 +21,5 @@ function openConnection()
 function closeConnection($conn)
 {
     $conn->close();
-    echo "Connection is closed </br>";
+    // echo "Connection is closed </br>";
 }

@@ -70,4 +70,5 @@
 
     </div>
 </div>
+
 <script src="../assets/js/add-to-cart.js?<?php echo $time ?>"></script>

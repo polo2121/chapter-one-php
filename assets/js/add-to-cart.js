@@ -32,7 +32,65 @@ function checkMediaQuery() {
   }
 }
 
+async function sendRequest(bookId) {
+  let data;
+  try {
+    let res = await fetch(
+      "http://localhost/chapter-one/controllers/addToCartController.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+        body: JSON.stringify({ bookId }),
+      }
+    );
+
+    data = await res.json();
+    console.log(data);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    return data;
+  }
+}
+
+async function addItem(e) {
+  const bookId = e.currentTarget.previousElementSibling.value;
+  const addBtn = e.currentTarget;
+  const addedSuccessText = e.currentTarget.nextElementSibling;
+
+  let response = await sendRequest(bookId);
+
+  let isReuqestSuccess = response.error;
+  if (!isReuqestSuccess) {
+    addBtn.remove();
+    addedSuccessText.innerHTML = `<p class="added-state">Added</p>`;
+  } else {
+    console.log(response.message);
+    addBtn.disabled = true;
+  }
+}
+
+window.addEventListener("resize", checkMediaQuery);
+
+let clickedCount = 0;
+const stackSequence = [
+  { transform: "scale(1)", bottom: "0px" },
+  { transform: "scale(0.9)", bottom: "30px" },
+  { transform: "scale(0.8)", bottom: "60px" },
+];
 checkMediaQuery();
+
+const addItemBtns = document.querySelectorAll(".add-item");
+
+addItemBtns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    addItem(e);
+  });
+});
+
+console.log(addItemBtns);
 
 openCartBtn.addEventListener("click", () => {
   console.log("hello");
@@ -42,5 +100,3 @@ openCartBtn.addEventListener("click", () => {
 closeBtn.addEventListener("click", () => {
   cart.classList.remove("sw-scale");
 });
-
-window.addEventListener("resize", checkMediaQuery);

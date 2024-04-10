@@ -111,7 +111,7 @@ require_once('../sessionConfig.php');
 
                             <!-- Title and Price List -->
                             <?php
-                            if ($bookDetails->num_rows > 0) {
+                            if (count($bookDetails) > 0) {
                                 foreach ($bookDetails as $row) {
                                     $className = (int)$row['book_id'] === 1 ? 'slide-up' : 'slide-down';
                                     echo  '<a class="' . $className . '" href="#" id="tb-title-' . $row['book_id'] . '" style="--slideYValue: 60px">';
