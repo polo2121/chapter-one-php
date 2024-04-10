@@ -8,7 +8,6 @@ require_once('../sessionConfig.php');
 $token = bin2hex(random_bytes(35));
 $_SESSION['csrf_token'] = $token;
 unset($_SESSION['cart']);
-
 ?>
 
 <!DOCTYPE html>
@@ -97,7 +96,7 @@ unset($_SESSION['cart']);
                             <div class="details dna">
                                 <a class="name" href="./product-details.php?id=<?php echo $row['book_id'] ?>">
                                     <span>
-                                        Atomic Habits
+                                        <?php echo $row['book_title'] ?>
                                     </span>
                                 </a>
                                 <div class="action">

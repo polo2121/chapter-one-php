@@ -757,6 +757,7 @@ form .input-group>input {
 }
 
 .cart-books-wrapper .cart-book .info {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
