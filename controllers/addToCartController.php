@@ -23,8 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($data['type'] === "add") {
             addItemToCart($data);
         }
-        if ($data['type'] === "cart") {
+        if ($data['type'] === "get") {
             getCartItems();
+        }
+        if ($data['type'] === "increase") {
+            increaseQuantity($data);
         }
     } catch (\Throwable $th) {
         $errorData = array(
@@ -40,6 +43,8 @@ function addItemToCart($data)
 {
     // prevent inserting malicious code
     $validatedId = htmlspecialchars($data['bookId']);
+    $quantity = htmlspecialchars($data['quantity']);
+
 
     // since the provided Id is encrypted, it need to be decrypted to get actual Id
     $decryptedId = decryptId($validatedId);
@@ -54,21 +59,21 @@ function addItemToCart($data)
             foreach ($result as $row) {
                 $_SESSION['cart'][$validatedId] = $row;
                 $_SESSION['cart'][$validatedId]['book_id'] = $validatedId;
-                $_SESSION['cart'][$validatedId]['quantity'] = 1;
+                $_SESSION['cart'][$validatedId]['book_title'] = ucwords($row['book_title']);
+
+                $_SESSION['cart'][$validatedId]['quantity'] = $quantity;
             }
-            $response['data'] = $_SESSION['cart'];
+            $response['data']['items'] = $_SESSION['cart'];
             $response['error'] = false;
-            echo json_encode($response);
         } else {
             $response['error'] = true;
             $response['message'] = 'There is no record founded in the database.';
-            echo json_encode($response);
         }
     } else {
         $response['error'] = false;
         $response['message'] = 'Something went wrong.';
-        echo json_encode($response);
     }
+    echo json_encode($response);
 }
 function getCartItems()
 {
@@ -77,12 +82,28 @@ function getCartItems()
         $_SESSION['cart'] = [];
     }
     if (count($_SESSION['cart']) === 0) {
-        $response['items']  = 0;
+        $response['data']['items']  = 0;
         echo json_encode($response);
     } else {
-        $response['items']  = $_SESSION['cart'];
+        $response['data']['items']  = $_SESSION['cart'];
         echo json_encode($response);
     }
+}
+function increaseQuantity($data)
+{
+    // prevent inserting malicious code
+    $validatedId = htmlspecialchars($data['bookId']);
+    $quantity = htmlspecialchars($data['quantity']);
+
+    if (isset($_SESSION['cart'][$validatedId])) {
+        $_SESSION['cart'][$validatedId]['quantity'] = $quantity;
+        $response['data']['items'] = $_SESSION['cart'];
+        $response['error'] = false;
+    } else {
+        $response['error'] = true;
+        $response['message'] = 'Item not found in the cart.';
+    }
+    echo json_encode($response);
 }
 // to get json data (book id) from front-end.
 // make sure the data is filtered.

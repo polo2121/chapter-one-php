@@ -7,7 +7,7 @@ session_start();
 require_once('../sessionConfig.php');
 $token = bin2hex(random_bytes(35));
 $_SESSION['csrf_token'] = $token;
-unset($_SESSION['cart']);
+// unset($_SESSION['cart']);
 ?>
 
 <!DOCTYPE html>
@@ -124,12 +124,7 @@ unset($_SESSION['cart']);
 
         <?php require_once('../views/add-to-cart.php'); ?>
 
-        <?php if (isset($_SESSION['registration_success'])) { ?>
-            <p class="alert-box success fade-away">
-                <img width="20px" src="../assets/images/alert-success.svg" alt="thumbs up svg">
-                <?php echo $_SESSION['registration_success'] ?>
-            </p>
-        <?php } ?>
+
 
         <div id="item-success"></div>
     </main>

@@ -632,6 +632,7 @@ form .input-group>input {
     margin-left: auto;
     width: 0%;
     overflow: hidden;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .cart {
@@ -648,6 +649,8 @@ form .input-group>input {
     align-items: center;
     z-index: 11;
     cursor: pointer;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
 }
 
 .cart>button {
@@ -682,7 +685,6 @@ form .input-group>input {
     align-items: center;
     text-align: center;
     color: #FFFFFF;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .cart-panel-wrapper {
@@ -691,11 +693,11 @@ form .input-group>input {
     top: 0;
     right: 0;
     background-color: #FFFFFF;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     padding: 1rem 2rem;
     z-index: 14;
     overflow: scroll;
     transition: all 0.4s ease-in-out;
+
 }
 
 .sw {
@@ -710,7 +712,6 @@ form .input-group>input {
     align-items: center;
     border-bottom: 1px solid #0F2F60;
     padding: 1.4rem 0rem;
-
 }
 
 .cart-panel-wrapper .heading h4 {
@@ -731,7 +732,7 @@ form .input-group>input {
 
 .cart-books-wrapper {
     padding: 2rem 0rem;
-    /* height: 420px; */
+    height: 56%;
     overflow: scroll;
     scroll-behavior: smooth;
     /* background-color: red; */
@@ -793,7 +794,6 @@ form .input-group>input {
 .cart-books-wrapper .cart-book .info .price_amount {
     display: flex;
     justify-content: space-between;
-    /* align-items: center; */
 }
 
 .cart-books-wrapper .cart-book .info .amount {
@@ -812,7 +812,7 @@ form .input-group>input {
     align-items: center;
     width: 30px;
     height: 30px;
-    border-radius: 50%;
+    border-radius: 70%;
 }
 
 .cart-books-wrapper .cart-book .info .amount>button:hover {

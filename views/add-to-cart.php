@@ -17,19 +17,12 @@
                 <path d="M11.625 1.375L1.375 11.6243M11.625 11.625L1.375 1.37567" stroke="#0F2F60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
         </div>
-        <div class="cart-books-wrapper" id="cart-books-container">
-                
 
+        <!-- Cart Items will be inserted via JavaScript -->
+        <div class="cart-books-wrapper" id="cart-books-container">
         </div>
-        <div class="subtotal">
-            <span>Subtotal</span>
-            <span>$29.91</span>
+        <div id="check-out">
         </div>
-        <a class="checkout" href="./review-order.html">
-            <button class="btn-style-1">
-                Checkout Now
-            </button>
-        </a>
     </div>
 </div>
 

@@ -40,3 +40,11 @@
                     </div>
                 </div>
             <?php } ?>
+
+
+            <?php if (isset($_SESSION['registration_success'])) { ?>
+                <p class="alert-box success fade-away">
+                    <img width="20px" src="../assets/images/alert-success.svg" alt="thumbs up svg">
+                    <?php echo $_SESSION['registration_success'] ?>
+                </p>
+            <?php } ?>
