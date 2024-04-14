@@ -647,7 +647,6 @@ form .input-group>input {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 11;
     cursor: pointer;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
@@ -675,9 +674,9 @@ form .input-group>input {
 .cart>span {
     position: absolute;
     top: -20px;
-    right: -14px;
-    width: 36px;
-    height: 36px;
+    right: 0px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background-color: #1976D2;
     display: flex;

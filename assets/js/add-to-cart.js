@@ -3,14 +3,13 @@ const cart = document.getElementById("the-cart");
 const cartItemContainer = document.getElementById("cart-books-container");
 const closeBtn = document.getElementById("close-cart-btn");
 const addItemBtns = document.querySelectorAll(".add-item");
+const totalCartItem = document.getElementById("total-cart-item");
 
 const desktopWidth = window.matchMedia("(min-width: 1200px)");
 const laptopWidth = window.matchMedia("(min-width: 1024px)");
 const tabletWidth = window.matchMedia("(min-width: 768px)");
 const phoneWidth = window.matchMedia("(min-width: 480px)");
 const smallPhoneWidth = window.matchMedia("(min-width: 200px)");
-
-let itemsInCart = {};
 
 function checkMediaQuery() {
   console.log(desktopWidth, laptopWidth);
@@ -51,19 +50,19 @@ async function sendRequest(type, bookId = null, quantity = null) {
       }
     );
 
-    res = await res.json();
+    return (res = await res.json());
   } catch (err) {
     console.log(err);
-  } finally {
-    return res.data;
   }
 }
 async function createCart() {
   let data = await sendRequest("get");
+  if (data.error) return console.log(data.error.message);
   updateCart(data);
 }
-function updateCart(data) {
-  storeOnLocalStorage(data);
+function updateCart({ cart }) {
+  console.log(cart);
+  storeOnLocalStorage(cart);
   const cartItems = getFromLocalStorage("cart");
   renderCartItems(cartItems);
 }
@@ -73,13 +72,15 @@ function storeOnLocalStorage(data) {
 function getFromLocalStorage(name) {
   return JSON.parse(localStorage.getItem(name));
 }
-function renderCartItems(cart) {
+function renderCartItems(items) {
+  let totalQuantity = 0,
+    totalSubPrice = 0;
+  showCheckout();
   // if there is item in the cart, remove the empty illustration and shows checkout button
   cartItemContainer.innerHTML = "";
-  console.log(cart);
-  if (cart.items !== 0) {
-    showCheckout();
-    let itemKey = Object.keys(cart.items);
+
+  if (items !== 0) {
+    let itemKey = Object.keys(items);
     itemKey.forEach((key) => {
       let {
         book_cover: bookCover,
@@ -87,7 +88,16 @@ function renderCartItems(cart) {
         book_price: bookPrice,
         book_id: bookId,
         quantity,
-      } = cart.items[key];
+      } = items[key];
+
+      console.log(totalQuantity);
+
+      totalQuantity = showTotalQuantity(totalQuantity, quantity);
+      totalSubPrice = calculateTotalSubPrice(
+        totalSubPrice,
+        quantity,
+        bookPrice
+      );
 
       cartItemContainer.innerHTML += `
       <div class="cart-book">
@@ -105,7 +115,7 @@ function renderCartItems(cart) {
           <div class="price_amount">
               <span class="price">£${bookPrice}</span>
               <div class="amount">
-                  <button class="minus">
+                  <button class="minus" onclick="decreaseQuantity('${bookId}')">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M20 12H4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                       </svg>
@@ -122,6 +132,7 @@ function renderCartItems(cart) {
       </div>`;
     });
   } else {
+    console.log("cart 0");
     cartItemContainer.innerHTML = showCartIsEmpty();
   }
 }
@@ -144,36 +155,45 @@ async function addItem(e) {
     addBtn.disabled = true;
   }
 }
-function increaseQuantity(id) {
-  const cart = getFromLocalStorage("cart");
-  // renderCartItems(cartItems);
-  if (cart.items.hasOwnProperty(id)) {
-    cart.items[id].quantity = ++cart.items[id].quantity;
-    sendRequest("increase", id, cart.items[id].quantity);
-    console.log(cart);
-    updateCart(cart);
-    console.log(cart.items[id]);
+
+async function increaseQuantity(id) {
+  const items = getFromLocalStorage("cart");
+
+  if (items.hasOwnProperty(id)) {
+    console.log("shi");
+    const res = await sendRequest("increase", id);
+    if (res.error)
+      return console.log("Cannot increase the amount. Please try again.");
+    updateCart(res);
   }
 }
-function showCheckout() {
-  const emptyCartMessage = document.getElementById("empty-cart-message");
-  const totalSubPrice = document.getElementById("sub-total-price");
+
+async function decreaseQuantity(id) {
+  const items = getFromLocalStorage("cart");
+  if (items.hasOwnProperty(id)) {
+    console.log(--items[id].quantity);
+    const res = await sendRequest("decrease", id);
+    if (res.error)
+      return console.log("Cannot decrease the amount. Please try again.");
+    updateCart(res);
+  }
+}
+
+function showCheckout(items) {
   const checkOut = document.getElementById("check-out");
 
-  if (emptyCartMessage) {
-    emptyCartMessage.remove();
-  }
-  checkOut.innerHTML = `
+  return (checkOut.innerHTML = `
   <div class="subtotal">
     <span>Subtotal</span>
-    <span>0</span>
+    <span id="total-sub-price">0</span>
   </div>
    <a class="checkout" href="./review-order.html">
     <button class="btn-style-1">
       Checkout Now
     </button>
-  </a>`;
+  </a>`);
 }
+
 function showCartIsEmpty() {
   return `
     <div class="empty-cart">
@@ -181,6 +201,23 @@ function showCartIsEmpty() {
       <p>The cart is empty.</p>
     </div>`;
 }
+
+function showTotalQuantity(totalQuantity, quantity) {
+  if (totalCartItem.classList.contains("hidden")) {
+    totalCartItem.classList.remove("hidden");
+  }
+  totalQuantity += parseInt(quantity);
+  totalCartItem.innerText = totalQuantity;
+  return totalQuantity;
+}
+
+function calculateTotalSubPrice(totalSub, quantity, price) {
+  const totalSubPrice = document.getElementById("total-sub-price");
+  totalSub += parseInt(quantity) * price;
+  totalSubPrice.innerText = `£${totalSub.toFixed(2)}`;
+  return totalSub;
+}
+
 window.addEventListener("resize", checkMediaQuery);
 openCartBtn.addEventListener("click", () => {
   console.log("hello");

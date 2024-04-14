@@ -3,8 +3,8 @@
     <button>
         <img src="../assets/images/book_cart.svg" alt="cart svg">
     </button>
-    <span class="hidden">
-        <p>1</p>
+    <span class="hidden" id="total-cart-item">
+
     </span>
 </div>
 

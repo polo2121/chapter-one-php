@@ -26,16 +26,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($data['type'] === "get") {
             getCartItems();
         }
-        if ($data['type'] === "increase") {
+        if ($data['type'] === 'increase') {
             increaseQuantity($data);
+        }
+        if ($data['type'] === "decrease") {
+            decreaseQuantity($data);
         }
     } catch (\Throwable $th) {
         $errorData = array(
             'error' => true,
-            'user-message' => 'An error occurred. Please try again later.',
-            'real-message' =>  $th->getMessage(),
+            'message' => 'An error occurred. Please try again later.' . $th->getMessage(),
         );
         echo json_encode($errorData);
+    }
+}
+function getCartItems()
+{
+    try {
+        // check if there is cart in session 
+        if (!isset($_SESSION['cart'])) {
+            $response['cart']  = 0;
+        } else {
+            $response['cart']  = $_SESSION['cart'];
+        }
+        $response['error'] = false;
+        echo json_encode($response);
+    } catch (\Throwable $th) {
+        $response['error'] = true;
+        $response['message'] = 'Something went wrong.';
     }
 }
 
@@ -63,7 +81,7 @@ function addItemToCart($data)
 
                 $_SESSION['cart'][$validatedId]['quantity'] = $quantity;
             }
-            $response['data']['items'] = $_SESSION['cart'];
+            $response['cart'] = $_SESSION['cart'];
             $response['error'] = false;
         } else {
             $response['error'] = true;
@@ -75,36 +93,54 @@ function addItemToCart($data)
     }
     echo json_encode($response);
 }
-function getCartItems()
-{
-    // check if there is cart in session 
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
-    }
-    if (count($_SESSION['cart']) === 0) {
-        $response['data']['items']  = 0;
-        echo json_encode($response);
-    } else {
-        $response['data']['items']  = $_SESSION['cart'];
-        echo json_encode($response);
-    }
-}
+
 function increaseQuantity($data)
 {
     // prevent inserting malicious code
     $validatedId = htmlspecialchars($data['bookId']);
-    $quantity = htmlspecialchars($data['quantity']);
 
+    // $quantity = htmlspecialchars($data['quantity']);
     if (isset($_SESSION['cart'][$validatedId])) {
-        $_SESSION['cart'][$validatedId]['quantity'] = $quantity;
-        $response['data']['items'] = $_SESSION['cart'];
+
+        $quantity = $_SESSION['cart'][$validatedId]['quantity'] + 1;
+        if ($quantity < 11) {
+            $_SESSION['cart'][$validatedId]['quantity'] = $quantity;
+        }
         $response['error'] = false;
+        $response['cart'] = $_SESSION['cart'];
     } else {
         $response['error'] = true;
         $response['message'] = 'Item not found in the cart.';
     }
     echo json_encode($response);
 }
+
+function decreaseQuantity($data)
+{
+    // prevent inserting malicious code
+    $validatedId = htmlspecialchars($data['bookId']);
+
+    // $quantity = htmlspecialchars($data['quantity']);
+    if (isset($_SESSION['cart'][$validatedId])) {
+
+        $quantity = $_SESSION['cart'][$validatedId]['quantity'] - 1;
+        if ($quantity === 0) {
+            unset($_SESSION['cart'][$validatedId]);
+            if (empty($_SESSION['cart'])) {
+                $_SESSION['cart'] = 0;
+            }
+        } else {
+            $_SESSION['cart'][$validatedId]['quantity'] = $quantity;
+            $response['error'] = false;
+        }
+        $response['cart'] = $_SESSION['cart'];
+    } else {
+        $response['error'] = true;
+        $response['message'] = 'Item not found in the cart.';
+    }
+    echo json_encode($response);
+}
+
 // to get json data (book id) from front-end.
 // make sure the data is filtered.
 // check the book is in the cart

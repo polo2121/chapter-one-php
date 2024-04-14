@@ -7,7 +7,7 @@ session_start();
 require_once('../sessionConfig.php');
 $token = bin2hex(random_bytes(35));
 $_SESSION['csrf_token'] = $token;
-// unset($_SESSION['cart']);
+unset($_SESSION['cart']);
 ?>
 
 <!DOCTYPE html>
