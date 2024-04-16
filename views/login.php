@@ -1,6 +1,10 @@
 <?php
 $time = time();
+session_start();
+$_SESSION['current_path'] = 'login';
 require_once('../sessionConfig.php');
+$token = bin2hex(random_bytes(35));
+$_SESSION['csrf_token'] = $token;
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +41,19 @@ require_once('../sessionConfig.php');
                 <img width="100%" src="../assets/images/login_illustration.svg" alt="login illustration svg">
             </div>
             <form class="login-form" action="../controllers/authenticationController.php" method="post">
+                <input name="token" type="hidden" value="<?php echo $_SESSION['csrf_token'] ?>">
+
                 <h2>Welcome Back</h2>
+                <!-- Show message telling user to login before go to checkout -->
+                <?php if (isset($_SESSION['login'])) { ?>
+                    <p class="login-error">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#7f3939" fill="none">
+                            <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <?php echo $_SESSION['login'] ?>
+                    </p>
+                <?php } ?>
+
                 <div class="input-wrapper">
                     <!-- Email -->
                     <div class="input-group">
@@ -45,16 +61,16 @@ require_once('../sessionConfig.php');
                             <img src="../assets/images/email.svg" alt="email icon">
                             <label for="email">Email</label>
                         </div>
-                        <input name="email" id="email" type="text" placeholder="e.g. example@gmail.com" required>
+                        <input name="email" id="email" type="email" placeholder="e.g. example@gmail.com" required>
                     </div>
 
                     <!-- Password -->
                     <div class="input-group">
                         <div>
-                            <img src="../assets/images/password.svg" alt="password icon">
+                            <img src="../assets/images/password.svg" alt="password-icon">
                             <label for="pwd">Password</label>
                         </div>
-                        <input name="pwd" id="pwd" type="password" placeholder="***************">
+                        <input name="pwd" id="pwd" type="password" placeholder="***************" required>
                         <a href="" class="link">
                             Forget Password?
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -63,7 +79,7 @@ require_once('../sessionConfig.php');
 
                         </a>
                     </div>
-                    <button type="submit">
+                    <button type="submit" name="login">
                         Login Now
                     </button>
                     <?php if (isset($_SESSION['login_error'])) { ?>
@@ -73,9 +89,7 @@ require_once('../sessionConfig.php');
                             </svg>
                             <?php echo $_SESSION['login_error'] ?>
                         </p>
-                    <?php
-                        unset($_SESSION['login_error']);
-                    } ?>
+                    <?php } ?>
                     <a class="link" href="./register.php">
                         New here? Create an Account?
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" required>
@@ -88,13 +102,11 @@ require_once('../sessionConfig.php');
         </section>
 
     </main>
+    <?php
+    unset($_SESSION['login']);
+    unset($_SESSION['login_error']);
+    ?>
 
-    <!-- Footer -->
-    <footer>
-    </footer>
-
-    <script src="./assets/js/header.js"></script>
-    <script src="./assets/js/footer.js"></script>
     <script src="./assets/js/nav-toggle.js"></script>
 
 </body>

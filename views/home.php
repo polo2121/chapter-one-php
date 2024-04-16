@@ -1,7 +1,19 @@
 <?php
 $time = time();
+session_start();
+$_SESSION['current_path'] = 'home';
 require_once('../sessionConfig.php');
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once('../controllers/homeController.php');
+
+// retrieve book's name and price from controller
+$bookDetails = getBooksList();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,28 +36,7 @@ require_once('../sessionConfig.php');
 <body>
 
     <!-- Header -->
-    <?php
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-
-    require_once('./header.php');
-    require_once('../controllers/homeController.php');
-
-    // retrieve book's name and price from controller
-    $bookDetails = getBooksList();
-
-    if (isset($_SESSION['login_success'])) {
-        echo "Successful Login";
-        unset($_SESSION['login_success']);
-    }
-
-    // require_once('../models/db_connection.php');
-
-    // $conn = openConnection();
-    // echo "Connected Successfully";
-    // closeConnection($conn);
-    ?>
+    <?php require_once('./header.php'); ?>
 
     <!-- Main -->
     <main>
@@ -113,8 +104,9 @@ require_once('../sessionConfig.php');
                             <?php
                             if (count($bookDetails) > 0) {
                                 foreach ($bookDetails as $row) {
-                                    $className = (int)$row['book_id'] === 1 ? 'slide-up' : 'slide-down';
-                                    echo  '<a class="' . $className . '" href="#" id="tb-title-' . $row['book_id'] . '" style="--slideYValue: 60px">';
+                                    $bookId = decryptId($row['book_id']);
+                                    $className = (int)$bookId === 1 ? 'slide-up' : 'slide-down';
+                                    echo  '<a class="' . $className . '" href="#" id="tb-title-' . $bookId . '" style="--slideYValue: 60px">';
                                     echo '<h4>' . ucwords($row['book_title']) . '</h4>';
                                     echo '<span>£' . $row['book_price'] . '</span>';
                                     echo '</a>';
@@ -136,12 +128,12 @@ require_once('../sessionConfig.php');
                         </div>
                         <!-- Book Brief Description List  -->
                         <?php
-                        if ($bookDetails->num_rows > 0) {
-
+                        if (count($bookDetails) > 0) {
                             foreach ($bookDetails as $row) {
-                                $className = (int)$row['book_id'] === 1 ? 'slide-up' : 'slide-down';
-                                echo '<p class="three-line-truncate ' . $className . '" id="tb-body-' . $row['book_id'] . '" style="--slideYValue: 100px">';
-                                echo '<a href="./product-details.php/id=' . $row['book_id'] . '" id="trending-view-detail-' . $row['book_id'] . '">';
+                                $bookId = decryptId($row['book_id']);
+                                $className = (int)$bookId === 1 ? 'slide-up' : 'slide-down';
+                                echo '<p class="three-line-truncate ' . $className . '" id="tb-body-' . $bookId . '" style="--slideYValue: 100px">';
+                                echo '<a href="./product-details.php/id=' . $bookId . '" id="trending-view-detail-' . $bookId . '">';
                                 echo '<button class="btn-style-2">';
                                 echo 'View Detail';
                                 echo '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -178,14 +170,15 @@ require_once('../sessionConfig.php');
 
                         <!-- CTA Buttons -->
                         <?php
-                        if ($bookDetails->num_rows > 0) {
+                        if (count($bookDetails) > 0) {
                             foreach ($bookDetails as $row) {
-                                $className = (int)$row['book_id'] === 1 ? 'slide-up' : 'slide-down';
-                                echo '<div class="cta-btns ' . $className . '" id="tb-cta-btn-' . $row['book_id'] . '" style="--slideYValue: 60px">';
-                                echo '<a href="./product-details.php/id=' . $row['book_id'] . '" id="trending-add-btn-' . $row['book_id'] . '">';
+                                $bookId = decryptId($row['book_id']);
+                                $className = (int)$bookId === 1 ? 'slide-up' : 'slide-down';
+                                echo '<div class="cta-btns ' . $className . '" id="tb-cta-btn-' . $bookId . '" style="--slideYValue: 60px">';
+                                echo '<a href="./product-details.php/id=' . $bookId . '" id="trending-add-btn-' . $bookId . '">';
                                 echo '<button class="btn-style-1">Add To Cart</button>';
                                 echo '</a>';
-                                echo '<a href="./product-details.php/id=' . $row['book_id'] . '" id="trending-view-detail-' . $row['book_id'] . '">';
+                                echo '<a href="./product-details.php/id=' . $bookId . '" id="trending-view-detail-' . $row['book_id'] . '">';
                                 echo '<button class="btn-style-2">';
                                 echo 'View Detail';
                                 echo '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -197,7 +190,6 @@ require_once('../sessionConfig.php');
                                 echo '</div>';
                             }
                         }
-                        $bookDetails->free();
                         ?>
 
                     </div>
@@ -225,49 +217,29 @@ require_once('../sessionConfig.php');
                 <!-- Trending Books Slider -->
                 <div class="trending-books-slider" id="trending-books-slider">
 
-                    <!-- Trending Books Slides -->
-                    <div class="trending-books-slide" id="trending-book-1">
-                        <!-- Book -->
-                        <div class="book-style-1 book-rotate">
-                            <div class="bg-circle"></div>
+                    <?php
+                    if (count($bookDetails) > 0) {
+                        foreach ($bookDetails as $row) {
+                            $bookId = decryptId($row['book_id']);
 
-                            <div class="book-cover">
-                                <img width="100%" height="100%" src="../assets/images/atomic_habits.jpeg" alt="book cover image">
-                            </div>
+                    ?>
+                            <!-- Trending Books Slides -->
+                            <div class="trending-books-slide" id="trending-book-<?php echo $bookId ?>">
+                                <!-- Book -->
+                                <div class="book-style-1 book-rotate">
+                                    <div class="bg-circle"></div>
 
-                            <div class="book-middle">
-                                <div class="white-pages"></div>
-                            </div>
-                        </div>
-                    </div>
+                                    <div class="book-cover">
+                                        <img width="100%" height="100%" src="../assets/images/<?php echo $row['book_cover'] ?>" alt="book-cover-image">
+                                    </div>
 
-                    <div class="trending-books-slide" id="trending-book-2">
-                        <!-- Book -->
-                        <div class="book-style-1">
-                            <div class="bg-circle"></div>
-
-                            <div class="book-cover">
-                                <img width="100%" height="100%" src="./images/psychology.jpg" alt="">
+                                    <div class="book-middle">
+                                        <div class="white-pages"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="book-middle">
-                                <div class="white-pages"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="trending-books-slide" id="trending-book-3">
-                        <!-- Book -->
-                        <div class="book-style-1">
-                            <div class="bg-circle"></div>
-
-                            <div class="book-cover">
-                                <img width="100%" height="100%" src="./images/ikigai.jpeg" alt="">
-                            </div>
-                            <div class="book-middle">
-                                <div class="white-pages"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php  }
+                    } ?>
                 </div>
 
             </div>
@@ -725,84 +697,22 @@ require_once('../sessionConfig.php');
 
         </section>
 
-        <!-- shopping cart section -->
-        <div class="cart" id="open-cart-btn">
-            <button>
-                <img src="../assets/images/book_cart.svg" alt="cart svg">
-            </button>
-            <span class="hidden">
-                <p>1</p>
-            </span>
-        </div>
 
-        <!-- shopping cart panel section -->
-        <div class="cart-section" id="cart" style="--cartWidth: 30%">
-            <div class="cart-panel-wrapper">
-                <div class="heading">
-                    <h4>My Cart</h4>
-                    <svg id="close-cart-btn" width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11.625 1.375L1.375 11.6243M11.625 11.625L1.375 1.37567" stroke="#0F2F60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <div class="cart-books-wrapper">
+        <?php if (isset($_SESSION['login_success'])) { ?>
+            <p class="alert-box success fade-away">
+                <?php echo $_SESSION['login_success'] ?>
+            </p>
+        <?php } ?>
 
-                    <!-- empty cart -->
-                    <div class="empty-cart hidden">
-                        <img src="../assets/images/empty_cart_icon.svg" alt="empty-cart-icon">
-                        <p>The cart is empty.</p>
-                    </div>
-                    <!-- cart book -->
-                    <div class="cart-book">
-                        <div class="image">
-                            <img width="80px" src="./images/ikigai.jpg" alt="">
-                        </div>
-                        <div class="info">
-                            <div class="rating">
-                                <img src="../assets/images/4-review.svg" alt="4-review image">
-                                <a class="remove">Remove</a>
-                            </div>
-                            <span class="title">
-                                Ikigai: The Japanese secret to
-                                a long and happy life
-                            </span>
-                            <div class="price_amount">
-                                <span class="price">$21.99</span>
-                                <div class="amount">
-                                    <button class="minus">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20 12H4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </button>
-                                    <span>1</span>
-                                    <button class="plus">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M12 4V20M20 12H4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-                <div class="subtotal">
-                    <span>Subtotal</span>
-                    <span>$29.91</span>
-                </div>
-                <a class="checkout" href="">
-                    <button class="btn-style-1">
-                        Checkout Now
-                    </button>
-                </a>
-
-            </div>
-        </div>
     </main>
 
     <!-- Footer -->
     <footer>
-        <?php unset($_SESSION['registration_success']) ?>
+        <?php
+        unset($_SESSION['registration_success']);
+        unset($_SESSION['login_success']);
+        ?>
+
     </footer>
 
     <script src="../assets/js/slide.js?<?php echo $time ?>"></script>

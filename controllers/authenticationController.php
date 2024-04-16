@@ -1,6 +1,6 @@
 <?php
 
-// require_once('../models/bookModel.php');
+require_once('../models/loginModel.php');
 require_once('../models/dbConnection.php');
 
 
@@ -13,26 +13,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors = [];
 
         if (!isset($_SESSION['csrf_token']) || !isset($_POST['token'])) {
-            echo "<h1>Something went wrong</h1>";
+            echo "<h1>Something went wrong. CSRF Toke Not Found.</h1>";
             exit;
         }
+
         $token = htmlspecialchars($_POST['token']);
         $isCsrfTokenValid = validateCsrfToken($token);
 
         if ($isCsrfTokenValid && isset($_POST['register'])) {
 
+
             // Gather the name of all inputs provided in register form
             $inputs = array('firstname', 'lastname', 'email', 'pwd', 'confirm');
 
             // Validate those inputs to make sure whether they are null/existed or not
-            $errors['input_error'] = validateInput($inputs);
+            $isPassed = validateInput($inputs);
+            if (!$isPassed)
+                $errors['input_error'] = "Please fill all the information to proceed.";
+
+            $firstname = htmlspecialchars($_POST['firstname']);
+            $lastname = htmlspecialchars($_POST['lastname']);
+            $email = htmlspecialchars($_POST['email']);
+            $pwd = htmlspecialchars($_POST['pwd']);
+            $confirm = htmlspecialchars($_POST['confirm']);
+
 
             // only proceed when there is no error in inputs 
             if (empty($errors['input_error'])) {
                 $errors['email_error'] = validateEmail();
-                $errors['pwd_error'] = validatePassword($pwd, $confirmPwd);
+                $errors['pwd_error'] = validatePassword($pwd, $confirm);
             }
-            // otherwise show errors to users
+            // otherwise show input error to users
             else {
                 $_SESSION['registration_errors'] = $errors;
                 header('Location: ../views/register.php');
@@ -45,21 +56,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 empty($errors['email_error']) &&
                 empty($errors['pwd_error'])
             ) {
-                $firstname = htmlspecialchars($_POST['firstname']);
-                $lastname = htmlspecialchars($_POST['lastname']);
-                $email = htmlspecialchars($_POST['email']);
 
 
+                echo $pwd;
                 // hash the password so that nobody can't know the real one
                 $pwd = password_hash($pwd, PASSWORD_DEFAULT);
+                echo $pwd;
 
-                // $conn = openConnection();
-                // $stmt = $conn->prepare('INSERT INTO users VALUES (?,?,?,?,?)');
-                // $stmt->bind_param('issss', $id, $firstname, $lastname, $pwd, $email);
-                // $stmt->execute();
-                // $stmt->close();
-                // closeConnection($conn);
 
+                $conn = openConnection();
+                $stmt = $conn->prepare('INSERT INTO users VALUES (?,?,?,?,?)');
+                $stmt->bind_param('issss', $id, $firstname, $lastname, $pwd, $email);
+                $stmt->execute();
+                $stmt->close();
+                closeConnection($conn);
 
                 unset($_SESSION['general']);
                 createNewSession('user');
@@ -71,9 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Location: ../views/register.php');
             }
         }
-        if (isset($_POST['login'])) {
+        if ($isCsrfTokenValid && isset($_POST['login'])) {
             echo "login win nay ti";
-            // $isPassed = validateInput();
+            $inputs = array('email', 'pwd');
+            $isPassed = validateInput($inputs);
             if (!$isPassed) {
                 $errors =  "Please fill all the information to proceed.";
                 return loginHasError($errors);
@@ -82,18 +93,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = htmlspecialchars($_POST['email']);
             $pwd = htmlspecialchars($_POST['pwd']);
 
-            if (!password_verify($pwd, '$2y$10$2FTPq7O2dFDa0W7fN5nJTuUHBoM94SPjnIARLHxnq5nQo1c67H5cm')) {
-                $errors =  "Email or password is incorrect.";
-                return loginHasError($errors);
+            $userInfo = getUserByEmail($email);
+            if ($userInfo->num_rows > 0) {
+                foreach ($userInfo as $row) {
+                    if ($email !== $row['email'] || !password_verify($pwd, $row['password'])) {
+                        $errors =  "Email or password is incorrect.";
+                        return loginHasError($errors);
+                        exit;
+                    }
+                }
             }
 
-            $_SESSION['login_success'] = "You have successfully loginned.";
+            unset($_SESSION['general']);
+            createNewSession('user');
+
+            $_SESSION['login_success'] = "You have successfully login.";
             return header('Location: ../views/home.php');
         }
-
-
-        // $realPWD = password_hash(123, PASSWORD_DEFAULT);
-        // echo $email . " " . $pwd;
     } catch (\Throwable $th) {
         echo $th;
         exit;
@@ -121,14 +137,14 @@ function validateCsrfToken($token)
 function validateInput($inputs)
 {
     $isPassed = null;
-
     //check input is empty
     foreach ($inputs as $input) {
         // Deny if input is existed and the value is empty
         if (isset($_POST[$input]) && empty($_POST[$input])) {
-            return "Please enter all information to proceed.";
+            return $isPassed = false;
         }
         // echo $userInputs . '<br>';
+        return $isPassed = true;
     }
 }
 function validateEmail()
@@ -139,10 +155,12 @@ function validateEmail()
         return "Please enter valid email format.";
     }
 }
-function validatePassword()
+function validatePassword($pwd, $confirm)
 {
-    $pwd = $_POST['pwd'];
-    $confirm = $_POST['confirm'];
+    echo $pwd;
+    echo '<br>';
+    echo $confirm;
+
     if ($pwd !== $confirm) {
         echo "Does not match";
         return "Password and confirm password does not match.";

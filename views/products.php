@@ -5,9 +5,11 @@ error_reporting(E_ALL);
 $time = time();
 session_start();
 require_once('../sessionConfig.php');
+require_once('../controllers/cipherController.php');
+
 $token = bin2hex(random_bytes(35));
 $_SESSION['csrf_token'] = $token;
-unset($_SESSION['cart']);
+
 ?>
 
 <!DOCTYPE html>
@@ -124,9 +126,16 @@ unset($_SESSION['cart']);
 
         <?php require_once('../views/add-to-cart.php'); ?>
 
-
-
+        <!-- Alert Section -->
         <div id="item-success"></div>
+        <?php if (isset($_SESSION['checkout_error'])) { ?>
+            <p class="alert-box fade-away">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#7f3939" fill="none">
+                    <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <?php echo $_SESSION['checkout_error'] ?>
+            </p>
+        <?php } ?>
     </main>
 
     <!-- Footer -->
@@ -134,6 +143,8 @@ unset($_SESSION['cart']);
     </footer>
     <?php
     unset($_SESSION['registration_success']);
+    unset($_SESSION['checkout_error']);
+
     ?>
     <script src="./js/nav-toggle.js"></script>
 

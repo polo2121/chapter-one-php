@@ -85,7 +85,7 @@ function addItemToCart($data)
             $response['error'] = false;
         } else {
             $response['error'] = true;
-            $response['message'] = 'There is no record founded in the database.';
+            $response['message'] = 'The item have already added in the cart.';
         }
     } else {
         $response['error'] = false;

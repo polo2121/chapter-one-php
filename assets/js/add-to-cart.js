@@ -37,8 +37,6 @@ function checkMediaQuery() {
 async function sendRequest(type, bookId = null, quantity = null) {
   let res;
   try {
-    console.log(type);
-
     res = await fetch(
       "http://localhost/chapter-one/controllers/addToCartController.php",
       {
@@ -49,7 +47,6 @@ async function sendRequest(type, bookId = null, quantity = null) {
         body: JSON.stringify({ bookId, quantity, type }),
       }
     );
-
     return (res = await res.json());
   } catch (err) {
     console.log(err);
@@ -155,7 +152,6 @@ async function addItem(e) {
     addBtn.disabled = true;
   }
 }
-
 async function increaseQuantity(id) {
   const items = getFromLocalStorage("cart");
 
@@ -167,7 +163,6 @@ async function increaseQuantity(id) {
     updateCart(res);
   }
 }
-
 async function decreaseQuantity(id) {
   const items = getFromLocalStorage("cart");
   if (items.hasOwnProperty(id)) {
@@ -178,8 +173,7 @@ async function decreaseQuantity(id) {
     updateCart(res);
   }
 }
-
-function showCheckout(items) {
+function showCheckout() {
   const checkOut = document.getElementById("check-out");
 
   return (checkOut.innerHTML = `
@@ -187,13 +181,12 @@ function showCheckout(items) {
     <span>Subtotal</span>
     <span id="total-sub-price">0</span>
   </div>
-   <a class="checkout" href="./review-order.html">
+   <a class="checkout" href="./review-order.php">
     <button class="btn-style-1">
       Checkout Now
     </button>
   </a>`);
 }
-
 function showCartIsEmpty() {
   return `
     <div class="empty-cart">
@@ -201,7 +194,6 @@ function showCartIsEmpty() {
       <p>The cart is empty.</p>
     </div>`;
 }
-
 function showTotalQuantity(totalQuantity, quantity) {
   if (totalCartItem.classList.contains("hidden")) {
     totalCartItem.classList.remove("hidden");
@@ -210,14 +202,12 @@ function showTotalQuantity(totalQuantity, quantity) {
   totalCartItem.innerText = totalQuantity;
   return totalQuantity;
 }
-
 function calculateTotalSubPrice(totalSub, quantity, price) {
   const totalSubPrice = document.getElementById("total-sub-price");
   totalSub += parseInt(quantity) * price;
   totalSubPrice.innerText = `£${totalSub.toFixed(2)}`;
   return totalSub;
 }
-
 window.addEventListener("resize", checkMediaQuery);
 openCartBtn.addEventListener("click", () => {
   console.log("hello");
