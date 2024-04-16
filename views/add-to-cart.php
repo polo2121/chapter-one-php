@@ -1,5 +1,5 @@
 <!-- shopping cart section -->
-<div class="cart" id="open-cart-btn" id="cart-trigger-btn">
+<div class="cart open-cart-btn">
     <button>
         <img src="../assets/images/book_cart.svg" alt="cart svg">
     </button>
@@ -25,5 +25,7 @@
         </div>
     </div>
 </div>
+
+<div id="item-info"></div>
 
 <script src="../assets/js/add-to-cart.js?<?php echo $time ?>"></script>

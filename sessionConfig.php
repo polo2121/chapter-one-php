@@ -41,7 +41,7 @@ function generateUniqueId()
 
 function checkSessionLifetime($name)
 {
-    if (time() - $_SESSION[$name]['created_time'] > 100) {
+    if (time() - $_SESSION[$name]['created_time'] > 1800) {
         return true;
         echo "Session is destoryed";
     }

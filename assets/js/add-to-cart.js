@@ -1,9 +1,11 @@
-const openCartBtn = document.getElementById("open-cart-btn");
+const openCartBtns = document.querySelectorAll(".open-cart-btn");
 const cart = document.getElementById("the-cart");
 const cartItemContainer = document.getElementById("cart-books-container");
 const closeBtn = document.getElementById("close-cart-btn");
 const addItemBtns = document.querySelectorAll(".add-item");
+const addItemBtns2 = document.querySelectorAll(".add-item-2");
 const totalCartItem = document.getElementById("total-cart-item");
+const itemInfo = document.getElementById("item-info");
 
 const desktopWidth = window.matchMedia("(min-width: 1200px)");
 const laptopWidth = window.matchMedia("(min-width: 1024px)");
@@ -58,7 +60,6 @@ async function createCart() {
   updateCart(data);
 }
 function updateCart({ cart }) {
-  console.log(cart);
   storeOnLocalStorage(cart);
   const cartItems = getFromLocalStorage("cart");
   renderCartItems(cartItems);
@@ -69,15 +70,16 @@ function storeOnLocalStorage(data) {
 function getFromLocalStorage(name) {
   return JSON.parse(localStorage.getItem(name));
 }
-function renderCartItems(items) {
-  let totalQuantity = 0,
-    totalSubPrice = 0;
-  showCheckout();
+function renderCartItems(cart) {
+  console.log(cart);
   // if there is item in the cart, remove the empty illustration and shows checkout button
   cartItemContainer.innerHTML = "";
 
-  if (items !== 0) {
-    let itemKey = Object.keys(items);
+  if (cart.total_items !== 0) {
+    let totalQuantity = 0,
+      totalSubPrice = 0;
+    showCheckout();
+    let itemKey = Object.keys(cart.items);
     itemKey.forEach((key) => {
       let {
         book_cover: bookCover,
@@ -85,7 +87,7 @@ function renderCartItems(items) {
         book_price: bookPrice,
         book_id: bookId,
         quantity,
-      } = items[key];
+      } = cart.items[key];
 
       console.log(totalQuantity);
 
@@ -129,7 +131,6 @@ function renderCartItems(items) {
       </div>`;
     });
   } else {
-    console.log("cart 0");
     cartItemContainer.innerHTML = showCartIsEmpty();
   }
 }
@@ -138,10 +139,15 @@ async function addItem(e) {
   const addBtn = e.currentTarget;
   const addedSuccessText = e.currentTarget.nextElementSibling;
 
+  let isItemInCart = checkItemIsInCart(bookId);
+  if (isItemInCart) {
+    return (itemInfo.innerHTML = getItemInfoHTML(
+      "The item is already in the cart."
+    ));
+  }
+
   let response = await sendRequest("add", bookId, 1);
-
   let isReuqestHasError = response.error;
-
   // if the item is added to the cart successfully...
   if (!isReuqestHasError) {
     updateCart(response);
@@ -149,17 +155,45 @@ async function addItem(e) {
     addedSuccessText.innerHTML = `<p class="added-state">Added</p>`;
   } else {
     console.log(response.message);
-    addBtn.disabled = true;
+    return (itemInfo.innerHTML = getItemInfoHTML(
+      "The item is already in the cart."
+    ));
   }
 }
-async function increaseQuantity(id) {
-  const items = getFromLocalStorage("cart");
 
-  if (items.hasOwnProperty(id)) {
-    console.log("shi");
+// this function for add-to-cart buttons in the landing page
+function checkItemIsInCart(bookId) {
+  let isItemInCart = false;
+  const cart = getFromLocalStorage("cart");
+
+  // check the cart is stored on the localStorage
+  if (!cart) {
+    return location.reload();
+  }
+  // null or undefined means the book id is no in the cart.
+  if (cart.items === undefined || cart.items === null) {
+    return (isItemInCart = false);
+  }
+  let itemKey = Object.keys(cart.items);
+  itemKey.forEach((key) => {
+    if (key === bookId) {
+      isItemInCart = true;
+    }
+  });
+  return isItemInCart;
+}
+async function increaseQuantity(id) {
+  const cart = getFromLocalStorage("cart");
+  console.log("increase");
+  if (cart.items.hasOwnProperty(id)) {
     const res = await sendRequest("increase", id);
-    if (res.error)
-      return console.log("Cannot increase the amount. Please try again.");
+    if (res.error) {
+      console.log("Cannot increase the amount. Please try again.");
+      itemInfo.innerHTML = getItemInfoHTML(
+        "Cannot add the item to the cart. Please try again."
+      );
+      return;
+    }
     updateCart(res);
   }
 }
@@ -208,15 +242,34 @@ function calculateTotalSubPrice(totalSub, quantity, price) {
   totalSubPrice.innerText = `£${totalSub.toFixed(2)}`;
   return totalSub;
 }
+
+//  Purpose - to provide html code with dynamic message about when users' action is not successful/incorrect.
+function getItemInfoHTML(message) {
+  return `
+  <p class="alert-box fade-away">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#7f3939" fill="none">
+      <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    ${message}
+  </p>`;
+}
 window.addEventListener("resize", checkMediaQuery);
-openCartBtn.addEventListener("click", () => {
-  console.log("hello");
-  cart.classList.add("sw-scale");
+openCartBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    console.log("hello");
+    cart.classList.add("sw-scale");
+  });
 });
+
 closeBtn.addEventListener("click", () => {
   cart.classList.remove("sw-scale");
 });
 addItemBtns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    addItem(e);
+  });
+});
+addItemBtns2.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     addItem(e);
   });

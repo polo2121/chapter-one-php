@@ -1,8 +1,8 @@
 <?php
 $time = time();
 session_start();
-$_SESSION['current_path'] = 'home';
 require_once('../sessionConfig.php');
+$_SESSION['current_path'] = 'home';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -36,7 +36,8 @@ $bookDetails = getBooksList();
 <body>
 
     <!-- Header -->
-    <?php require_once('./header.php'); ?>
+    <?php require_once('./header.php');
+    var_dump($_SESSION) ?>
 
     <!-- Main -->
     <main>
@@ -126,6 +127,7 @@ $bookDetails = getBooksList();
                             powerful and practical advice on how to form good
                             habits and break bad ones. In the book, Clear outlines....
                         </div>
+
                         <!-- Book Brief Description List  -->
                         <?php
                         if (count($bookDetails) > 0) {
@@ -175,10 +177,16 @@ $bookDetails = getBooksList();
                                 $bookId = decryptId($row['book_id']);
                                 $className = (int)$bookId === 1 ? 'slide-up' : 'slide-down';
                                 echo '<div class="cta-btns ' . $className . '" id="tb-cta-btn-' . $bookId . '" style="--slideYValue: 60px">';
-                                echo '<a href="./product-details.php/id=' . $bookId . '" id="trending-add-btn-' . $bookId . '">';
-                                echo '<button class="btn-style-1">Add To Cart</button>';
+                                echo '<a id="trending-add-btn-' . $bookId . '">';
+                                if (isset($_SESSION['cart']['items'][$row['book_id']])) {
+                                    echo '<span><p class="added-state">Added</p></span>';
+                                } else {
+                                    echo '<input type="hidden" value="' . $row['book_id'] . '" >';
+                                    echo '<button class="btn-style-1 add-item-2">Add To Cart</button>';
+                                    echo '<span></span>';
+                                }
                                 echo '</a>';
-                                echo '<a href="./product-details.php/id=' . $bookId . '" id="trending-view-detail-' . $row['book_id'] . '">';
+                                echo '<a href="./product-details.php/id=' . $bookId . '" id="trending-view-detail-' . $bookId . '">';
                                 echo '<button class="btn-style-2">';
                                 echo 'View Detail';
                                 echo '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -221,7 +229,6 @@ $bookDetails = getBooksList();
                     if (count($bookDetails) > 0) {
                         foreach ($bookDetails as $row) {
                             $bookId = decryptId($row['book_id']);
-
                     ?>
                             <!-- Trending Books Slides -->
                             <div class="trending-books-slide" id="trending-book-<?php echo $bookId ?>">
@@ -697,6 +704,7 @@ $bookDetails = getBooksList();
 
         </section>
 
+        <?php require_once('../views/add-to-cart.php'); ?>
 
         <?php if (isset($_SESSION['login_success'])) { ?>
             <p class="alert-box success fade-away">
@@ -716,7 +724,6 @@ $bookDetails = getBooksList();
     </footer>
 
     <script src="../assets/js/slide.js?<?php echo $time ?>"></script>
-    <script src="../assets/js/add-to-cart.js"></script>
     <script src="../assets/js/nav-toggle.js"></script>
 
 </body>

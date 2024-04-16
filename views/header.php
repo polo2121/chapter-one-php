@@ -7,16 +7,16 @@
         </a>
         <ul>
             <li>
-                <a href="./home.php">Home</a>
+                <a href="./home.php" <?php if ($_SESSION['current_path'] === "home") echo "class='active-link'" ?>>Home</a>
             </li>
             <li>
-                <a href="./products.php">Books</a>
+                <a href="./products.php" <?php if ($_SESSION['current_path'] === "books") echo "class='active-link'" ?>>Books</a>
             </li>
             <li>
-                <a href="./about.php">About</a>
+                <a href="./about.php" <?php if ($_SESSION['current_path'] === "about") echo "class='active-link'" ?>>About</a>
             </li>
             <li>
-                <a href="./contact.php">Contact</a>
+                <a href="./contact.php" <?php if ($_SESSION['current_path'] === "contact") echo "class='active-link'" ?>>Contact</a>
             </li>
         </ul>
     </div>
@@ -25,14 +25,14 @@
         <a href="./login.php" class="signup-btn">
             <button>Sign Up Now</button>
             <div class="circle">
-                <img src="../assets/images/outlined arrow.svg" alt="outlined arrow icon">
+                <img src="../assets/images/outlined arrow.svg" alt="outlined-arrow-icon">
             </div>
         </a>
     <?php } else { ?>
         <a href="./profile.php" class="signup-btn">
             <button>My Profile</button>
             <div class="circle">
-                <img src="../assets/images/outlined arrow.svg" alt="outlined arrow icon">
+                <img src="../assets/images/outlined arrow.svg" alt="outlined-arrow-icon">
             </div>
         </a>
     <?php } ?>

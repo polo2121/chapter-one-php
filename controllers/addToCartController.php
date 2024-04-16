@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } catch (\Throwable $th) {
         $errorData = array(
             'error' => true,
-            'message' => 'An error occurred. Please try again later.' . $th->getMessage(),
+            'message' => 'An error occurred. Please try again later.' . $th,
         );
         echo json_encode($errorData);
     }
@@ -45,10 +45,10 @@ function getCartItems()
     try {
         // check if there is cart in session 
         if (!isset($_SESSION['cart'])) {
-            $response['cart']  = 0;
-        } else {
-            $response['cart']  = $_SESSION['cart'];
+            $_SESSION['cart']['total_items']  = 0;
         }
+        $response['cart']  = $_SESSION['cart'];
+
         $response['error'] = false;
         echo json_encode($response);
     } catch (\Throwable $th) {
@@ -68,28 +68,28 @@ function addItemToCart($data)
     $decryptedId = decryptId($validatedId);
 
     // check if there is cart in session and book id from the request
-    if (!isset($_SESSION['cart'][$validatedId])) {
+    if (!isset($_SESSION['cart']['items'][$validatedId])) {
+
         // use decrypted Id to restore real Book Id back so that book details can be retrieved.
         $result = getBookById($decryptedId);
-
         $response = [];
         if ($result->num_rows > 0) {
             foreach ($result as $row) {
-                $_SESSION['cart'][$validatedId] = $row;
-                $_SESSION['cart'][$validatedId]['book_id'] = $validatedId;
-                $_SESSION['cart'][$validatedId]['book_title'] = ucwords($row['book_title']);
-
-                $_SESSION['cart'][$validatedId]['quantity'] = $quantity;
+                $_SESSION['cart']['items'][$validatedId] = $row;
+                $_SESSION['cart']['items'][$validatedId]['book_id'] = $validatedId;
+                $_SESSION['cart']['items'][$validatedId]['book_title'] = ucwords($row['book_title']);
+                $_SESSION['cart']['items'][$validatedId]['quantity'] = $quantity;
+                $_SESSION['cart']['total_items'] += $quantity;
             }
             $response['cart'] = $_SESSION['cart'];
             $response['error'] = false;
         } else {
             $response['error'] = true;
-            $response['message'] = 'The item have already added in the cart.';
+            $response['message'] = 'Cannot find the book in the database.';
         }
     } else {
-        $response['error'] = false;
-        $response['message'] = 'Something went wrong.';
+        $response['error'] = true;
+        $response['message'] = 'The item is already in the cart.';
     }
     echo json_encode($response);
 }
