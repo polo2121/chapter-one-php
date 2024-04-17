@@ -8,7 +8,7 @@ require_once('../sessionConfig.php');
 require_once('../controllers/cipherController.php');
 
 $_SESSION['current_path'] = 'books';
-unset($_SESSION['cart']);
+// unset($_SESSION['cart']);
 $token = bin2hex(random_bytes(35));
 $_SESSION['csrf_token'] = $token;
 

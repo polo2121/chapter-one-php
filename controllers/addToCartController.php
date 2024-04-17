@@ -23,6 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($data['type'] === "add") {
             addItemToCart($data);
         }
+        if ($data['type'] === "remove") {
+            removeItem($data);
+        }
         if ($data['type'] === "get") {
             getCartItems();
         }
@@ -90,6 +93,27 @@ function addItemToCart($data)
     } else {
         $response['error'] = true;
         $response['message'] = 'The item is already in the cart.';
+    }
+    echo json_encode($response);
+}
+
+function removeItem($data)
+{
+    // prevent inserting malicious code
+    $validatedId = htmlspecialchars($data['bookId']);
+
+    // $quantity = htmlspecialchars($data['quantity']);
+    if (isset($_SESSION['cart']['items'][$validatedId])) {
+        unset($_SESSION['cart']['items'][$validatedId]);
+        $_SESSION['cart']['total_items'] = 0;
+        foreach ($_SESSION['cart']['items'] as $item) {
+            $_SESSION['cart']['total_items'] += $item['quantity'];
+        }
+        $response['error'] = false;
+        $response['cart'] = $_SESSION['cart'];
+    } else {
+        $response['error'] = true;
+        $response['message'] = 'Item not found in the cart.';
     }
     echo json_encode($response);
 }

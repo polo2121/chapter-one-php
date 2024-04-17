@@ -178,13 +178,11 @@ $bookDetails = getBooksList();
                                 $className = (int)$bookId === 1 ? 'slide-up' : 'slide-down';
                                 echo '<div class="cta-btns ' . $className . '" id="tb-cta-btn-' . $bookId . '" style="--slideYValue: 60px">';
                                 echo '<a id="trending-add-btn-' . $bookId . '">';
-                                if (isset($_SESSION['cart']['items'][$row['book_id']])) {
-                                    echo '<span><p class="added-state">Added</p></span>';
-                                } else {
-                                    echo '<input type="hidden" value="' . $row['book_id'] . '" >';
-                                    echo '<button class="btn-style-1 add-item-2">Add To Cart</button>';
-                                    echo '<span></span>';
-                                }
+
+                                echo '<input type="hidden" value="' . $row['book_id'] . '" >';
+                                echo '<button class="btn-style-1 add-item-2">Add To Cart</button>';
+                                echo '<span></span>';
+
                                 echo '</a>';
                                 echo '<a href="./product-details.php/id=' . $bookId . '" id="trending-view-detail-' . $bookId . '">';
                                 echo '<button class="btn-style-2">';

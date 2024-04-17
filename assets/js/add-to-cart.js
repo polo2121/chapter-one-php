@@ -3,7 +3,6 @@ const cart = document.getElementById("the-cart");
 const cartItemContainer = document.getElementById("cart-books-container");
 const closeBtn = document.getElementById("close-cart-btn");
 const addItemBtns = document.querySelectorAll(".add-item");
-const addItemBtns2 = document.querySelectorAll(".add-item-2");
 const totalCartItem = document.getElementById("total-cart-item");
 const itemInfo = document.getElementById("item-info");
 
@@ -74,31 +73,25 @@ function renderCartItems(cart) {
   console.log(cart);
   // if there is item in the cart, remove the empty illustration and shows checkout button
   cartItemContainer.innerHTML = "";
+  checkItemQuantityIsZero();
+  showTotalSubPrice();
+  showTotalQuantity();
+  if (cart.total_items > 0) createCartItem();
+  else cartItemContainer.innerHTML = showCartIsEmpty();
+}
+function createCartItem() {
+  const cart = getFromLocalStorage("cart");
+  let itemKey = Object.keys(cart.items);
+  itemKey.forEach((key) => {
+    let {
+      book_cover: bookCover,
+      book_title: bookTitle,
+      book_price: bookPrice,
+      book_id: bookId,
+      quantity,
+    } = cart.items[key];
 
-  if (cart.total_items !== 0) {
-    let totalQuantity = 0,
-      totalSubPrice = 0;
-    showCheckout();
-    let itemKey = Object.keys(cart.items);
-    itemKey.forEach((key) => {
-      let {
-        book_cover: bookCover,
-        book_title: bookTitle,
-        book_price: bookPrice,
-        book_id: bookId,
-        quantity,
-      } = cart.items[key];
-
-      console.log(totalQuantity);
-
-      totalQuantity = showTotalQuantity(totalQuantity, quantity);
-      totalSubPrice = calculateTotalSubPrice(
-        totalSubPrice,
-        quantity,
-        bookPrice
-      );
-
-      cartItemContainer.innerHTML += `
+    cartItemContainer.innerHTML += `
       <div class="cart-book">
         <div class="image">
           <img width="80px" src="../assets/images/${bookCover}" alt="book-cover-image">
@@ -106,7 +99,7 @@ function renderCartItems(cart) {
         <div class="info">
           <div class="rating">
               <img src="../assets/images/4-review.svg" alt="4-review image">
-              <a class="remove">Remove</a>
+              <a class="remove" onclick="removeItem('${bookId}')">Remove</a>
           </div>
           <span class="title">
              ${bookTitle}
@@ -129,11 +122,115 @@ function renderCartItems(cart) {
           </div>
         </div>
       </div>`;
+  });
+}
+function showCartIsEmpty() {
+  return `
+    <div class="empty-cart">
+      <img src="../assets/images/empty_cart_icon.svg" alt="empty-cart-icon">
+      <p>The cart is empty.</p>
+    </div>`;
+}
+function showTotalQuantity() {
+  const cart = getFromLocalStorage("cart");
+  console.log(cart.total_items);
+  if (cart.total_items > 0) {
+    if (totalCartItem.classList.contains("hidden")) {
+      totalCartItem.classList.remove("hidden");
+    }
+  }
+  if (cart.total_items === 0) {
+    totalCartItem.classList.add("hidden");
+  }
+  totalCartItem.innerText = cart.total_items;
+}
+function showTotalSubPrice() {
+  let totalSub = 0;
+  const cart = getFromLocalStorage("cart");
+  const totalSubPrice = document.getElementById("total-sub-price");
+  console.log(cart.total_items);
+  if (cart.total_items > 0) {
+    let itemKey = Object.keys(cart.items);
+    itemKey.map((key) => {
+      totalSub +=
+        parseInt(cart.items[key]["quantity"]) * cart.items[key]["book_price"];
     });
-  } else {
-    cartItemContainer.innerHTML = showCartIsEmpty();
+    return (totalSubPrice.innerText = `£${totalSub.toFixed(2)}`);
+  }
+
+  if (cart.total_items === 0) {
+    return (totalSubPrice.innerText = `£${totalSub}`);
   }
 }
+function checkItemQuantityIsZero() {
+  const cart = getFromLocalStorage("cart");
+  const allAddInputs = document.querySelectorAll(`input[name="book"]`);
+
+  if (cart.total_items === 0) {
+    return allAddInputs.forEach((btn) => {
+      const addBtn = btn.nextElementSibling;
+      const addedText = btn.nextElementSibling.nextElementSibling;
+      addBtn.classList.remove("hidden");
+      addedText.innerHTML = ``;
+    });
+  }
+  if (cart.total_items > 0) {
+    return allAddInputs.forEach((input) => {
+      const addBtn = input.nextElementSibling;
+      const addedText = input.nextElementSibling.nextElementSibling;
+
+      if (!cart.items.hasOwnProperty(input.value)) {
+        addBtn.classList.remove("hidden");
+        addedText.innerHTML = ``;
+      } else {
+        addBtn.classList.add("hidden");
+        addedText.innerHTML = `<p class="added-state">Added</p>`;
+      }
+    });
+  }
+
+  // let itemKey = Object.keys(cart.items);
+  // itemKey.forEach((key) => {
+  //   console.log(key);
+  //   const addItemBtns = document.querySelector(
+  //     `input[name="book"][value="${key}"]`
+  //   );
+  //   const addBtn = addItemBtns.nextElementSibling;
+  //   const addedText = addItemBtns.nextElementSibling.nextElementSibling;
+
+  //   if (!cart.items.hasOwnProperty(key)) {
+  //     console.log("not in cart");
+  //     addBtn.classList.remove("hidden");
+  //     addedText.innerHTML = ``;
+  //   } else {
+  //     console.log("in cart");
+  //     addBtn.classList.add("hidden");
+  //     addedText.innerHTML = `<p class="added-state">Added</p>`;
+  //   }
+  // });
+}
+// this function for add-to-cart buttons in the landing page
+function checkItemIsInCart(bookId) {
+  let isItemInCart = false;
+  const cart = getFromLocalStorage("cart");
+
+  // check the cart is stored on the localStorage
+  if (!cart) {
+    return location.reload();
+  }
+  // null or undefined means the book id is no in the cart.
+  if (cart.items === undefined || cart.items === null) {
+    return (isItemInCart = false);
+  }
+  let itemKey = Object.keys(cart.items);
+  itemKey.forEach((key) => {
+    if (key === bookId) {
+      isItemInCart = true;
+    }
+  });
+  return isItemInCart;
+}
+// Action Functions
 async function addItem(e) {
   const bookId = e.currentTarget.previousElementSibling.value;
   const addBtn = e.currentTarget;
@@ -160,27 +257,17 @@ async function addItem(e) {
     ));
   }
 }
-
-// this function for add-to-cart buttons in the landing page
-function checkItemIsInCart(bookId) {
-  let isItemInCart = false;
-  const cart = getFromLocalStorage("cart");
-
-  // check the cart is stored on the localStorage
-  if (!cart) {
-    return location.reload();
+async function removeItem(bookId) {
+  let response = await sendRequest("remove", bookId);
+  let isReuqestHasError = response.error;
+  if (!isReuqestHasError) {
+    updateCart(response);
+  } else {
+    console.log(response.message);
+    return (itemInfo.innerHTML = getItemInfoHTML(
+      "The item is not found in the cart."
+    ));
   }
-  // null or undefined means the book id is no in the cart.
-  if (cart.items === undefined || cart.items === null) {
-    return (isItemInCart = false);
-  }
-  let itemKey = Object.keys(cart.items);
-  itemKey.forEach((key) => {
-    if (key === bookId) {
-      isItemInCart = true;
-    }
-  });
-  return isItemInCart;
 }
 async function increaseQuantity(id) {
   const cart = getFromLocalStorage("cart");
@@ -220,42 +307,6 @@ async function decreaseQuantity(id) {
     }
   }
 }
-function showCheckout() {
-  const checkOut = document.getElementById("check-out");
-
-  return (checkOut.innerHTML = `
-  <div class="subtotal">
-    <span>Subtotal</span>
-    <span id="total-sub-price">0</span>
-  </div>
-   <a class="checkout" href="./review-order.php">
-    <button class="btn-style-1">
-      Checkout Now
-    </button>
-  </a>`);
-}
-function showCartIsEmpty() {
-  return `
-    <div class="empty-cart">
-      <img src="../assets/images/empty_cart_icon.svg" alt="empty-cart-icon">
-      <p>The cart is empty.</p>
-    </div>`;
-}
-function showTotalQuantity(totalQuantity, quantity) {
-  if (totalCartItem.classList.contains("hidden")) {
-    totalCartItem.classList.remove("hidden");
-  }
-  totalQuantity += parseInt(quantity);
-  totalCartItem.innerText = totalQuantity;
-  return totalQuantity;
-}
-function calculateTotalSubPrice(totalSub, quantity, price) {
-  const totalSubPrice = document.getElementById("total-sub-price");
-  totalSub += parseInt(quantity) * price;
-  totalSubPrice.innerText = `£${totalSub.toFixed(2)}`;
-  return totalSub;
-}
-
 //  Purpose - to provide html code with dynamic message about when users' action is not successful/incorrect.
 function getItemInfoHTML(message) {
   return `
@@ -282,10 +333,6 @@ addItemBtns.forEach((btn) => {
     addItem(e);
   });
 });
-addItemBtns2.forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    addItem(e);
-  });
-});
+
 checkMediaQuery();
 createCart();

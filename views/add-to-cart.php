@@ -4,7 +4,6 @@
         <img src="../assets/images/book_cart.svg" alt="cart svg">
     </button>
     <span class="hidden" id="total-cart-item">
-
     </span>
 </div>
 
@@ -22,6 +21,15 @@
         <div class="cart-books-wrapper" id="cart-books-container">
         </div>
         <div id="check-out">
+            <div class="subtotal">
+                <span>Subtotal</span>
+                <span id="total-sub-price">0</span>
+            </div>
+            <a class="checkout" href="./review-order.php">
+                <button class="btn-style-1">
+                    Checkout Now
+                </button>
+            </a>
         </div>
     </div>
 </div>
