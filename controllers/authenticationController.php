@@ -1,7 +1,10 @@
 <?php
 
-require_once('../models/loginModel.php');
 require_once('../models/dbConnection.php');
+require_once('../models/loginModel.php');
+require_once('../models/registerModel.php');
+
+
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -56,20 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 empty($errors['email_error']) &&
                 empty($errors['pwd_error'])
             ) {
-
-
-                echo $pwd;
                 // hash the password so that nobody can't know the real one
                 $pwd = password_hash($pwd, PASSWORD_DEFAULT);
-                echo $pwd;
-
-
-                $conn = openConnection();
-                $stmt = $conn->prepare('INSERT INTO users VALUES (?,?,?,?,?)');
-                $stmt->bind_param('issss', $id, $firstname, $lastname, $pwd, $email);
-                $stmt->execute();
-                $stmt->close();
-                closeConnection($conn);
+                registerUser($firstname, $lastname, $email, $pwd, $confirm);
 
                 unset($_SESSION['general']);
                 createNewSession('user');
@@ -94,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $pwd = htmlspecialchars($_POST['pwd']);
 
             $userInfo = getUserByEmail($email);
+
             if ($userInfo->num_rows > 0) {
                 foreach ($userInfo as $row) {
                     if ($email !== $row['email'] || !password_verify($pwd, $row['password'])) {
@@ -101,9 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         return loginHasError($errors);
                         exit;
                     }
+                    $_SESSION['user']['id']  = $row['user_id'];
                 }
             }
-
             unset($_SESSION['general']);
             createNewSession('user');
 

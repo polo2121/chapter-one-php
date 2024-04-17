@@ -1,3 +1,18 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+$time = time();
+session_start();
+require_once('../sessionConfig.php');
+require_once('../controllers/addressController.php');
+$_SESSION['path'] = 'add-delivery-form';
+$token = bin2hex(random_bytes(35));
+$_SESSION['csrf_token'] = $token;
+if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
+    header('Location: ./login.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,8 +37,17 @@
     <main>
         <!-- review order section -->
         <section class="review-order">
-
-            <form class="login-form add-deli-form">
+            <?php var_dump($_SESSION); ?>
+            <form class="login-form add-deli-form" action="../controllers/addressController.php" method="post">
+                <input name="token" type="hidden" value="<?php echo $_SESSION['csrf_token'] ?>">
+                <?php if (isset($_SESSION['address_error'])) { ?>
+                    <p class="login-error">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#7f3939" fill="none">
+                            <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <?php echo $_SESSION['address_error'] ?>
+                    </p>
+                <?php } ?>
                 <h2>Add Delivery Instructions</h2>
 
                 <div class="input-wrapper">
@@ -32,7 +56,7 @@
                         <div>
                             <label for="address">Address</label>
                         </div>
-                        <input name="address" id="address" type="text" required>
+                        <input name="address" id="address" type="text">
                     </div>
 
                     <!-- Post Code -->
@@ -69,7 +93,7 @@
                         <input name="ph-num" id="ph-num" type="number" required>
                     </div>
 
-                    <button type="submit">
+                    <button type="submit" name="delivery">
                         Add Now
                     </button>
                     <a class="link" href="./review-order.php">
@@ -85,6 +109,9 @@
 
 
     </main>
+    <?php
+    unset($_SESSION['address_error']);
+    ?>
 
 </body>
 

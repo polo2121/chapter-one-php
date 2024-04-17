@@ -1,12 +1,12 @@
 <?php
 require_once('../models/dbConnection.php');
 
-function getUserInfo()
+function registerUser($firstname, $lastname, $email, $pwd, $confirm)
 {
     $conn = openConnection();
-    // $sql_sel = "select * from books";
-    // $result_sel = $conn->query($sql_sel);
+    $stmt = $conn->prepare('INSERT INTO users VALUES (?,?,?,?,?)');
+    $stmt->bind_param('issss', $id, $firstname, $lastname, $pwd, $email);
+    $stmt->execute();
+    $stmt->close();
     closeConnection($conn);
-
-    // return $result_sel;
 }

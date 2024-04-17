@@ -7,16 +7,16 @@
         </a>
         <ul>
             <li>
-                <a href="./home.php" <?php if ($_SESSION['current_path'] === "home") echo "class='active-link'" ?>>Home</a>
+                <a href="./home.php" <?php if ($_SESSION['path'] === "home") echo "class='active-link'" ?>>Home</a>
             </li>
             <li>
-                <a href="./products.php" <?php if ($_SESSION['current_path'] === "books") echo "class='active-link'" ?>>Books</a>
+                <a href="./products.php" <?php if ($_SESSION['path'] === "products") echo "class='active-link'" ?>>Books</a>
             </li>
             <li>
-                <a href="./about.php" <?php if ($_SESSION['current_path'] === "about") echo "class='active-link'" ?>>About</a>
+                <a href="./about.php" <?php if ($_SESSION['path'] === "about") echo "class='active-link'" ?>>About</a>
             </li>
             <li>
-                <a href="./contact.php" <?php if ($_SESSION['current_path'] === "contact") echo "class='active-link'" ?>>Contact</a>
+                <a href="./contact.php" <?php if ($_SESSION['path'] === "contact") echo "class='active-link'" ?>>Contact</a>
             </li>
         </ul>
     </div>

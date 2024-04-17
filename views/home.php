@@ -1,17 +1,17 @@
 <?php
-$time = time();
-session_start();
-require_once('../sessionConfig.php');
-$_SESSION['current_path'] = 'home';
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+$time = time();
+session_start();
+require_once('../sessionConfig.php');
 require_once('../controllers/homeController.php');
+$_SESSION['path'] = 'home';
 
 // retrieve book's name and price from controller
 $bookDetails = getBooksList();
+
 ?>
 
 <!DOCTYPE html>
@@ -179,8 +179,8 @@ $bookDetails = getBooksList();
                                 echo '<div class="cta-btns ' . $className . '" id="tb-cta-btn-' . $bookId . '" style="--slideYValue: 60px">';
                                 echo '<a id="trending-add-btn-' . $bookId . '">';
 
-                                echo '<input type="hidden" value="' . $row['book_id'] . '" >';
-                                echo '<button class="btn-style-1 add-item-2">Add To Cart</button>';
+                                echo '<input type="hidden" name="book" value="' . $row['book_id'] . '" >';
+                                echo '<button class="btn-style-1 add-item">Add To Cart</button>';
                                 echo '<span></span>';
 
                                 echo '</a>';
@@ -715,7 +715,6 @@ $bookDetails = getBooksList();
     <!-- Footer -->
     <footer>
         <?php
-        unset($_SESSION['registration_success']);
         unset($_SESSION['login_success']);
         ?>
 

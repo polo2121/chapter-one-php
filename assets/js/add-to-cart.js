@@ -188,26 +188,6 @@ function checkItemQuantityIsZero() {
       }
     });
   }
-
-  // let itemKey = Object.keys(cart.items);
-  // itemKey.forEach((key) => {
-  //   console.log(key);
-  //   const addItemBtns = document.querySelector(
-  //     `input[name="book"][value="${key}"]`
-  //   );
-  //   const addBtn = addItemBtns.nextElementSibling;
-  //   const addedText = addItemBtns.nextElementSibling.nextElementSibling;
-
-  //   if (!cart.items.hasOwnProperty(key)) {
-  //     console.log("not in cart");
-  //     addBtn.classList.remove("hidden");
-  //     addedText.innerHTML = ``;
-  //   } else {
-  //     console.log("in cart");
-  //     addBtn.classList.add("hidden");
-  //     addedText.innerHTML = `<p class="added-state">Added</p>`;
-  //   }
-  // });
 }
 // this function for add-to-cart buttons in the landing page
 function checkItemIsInCart(bookId) {

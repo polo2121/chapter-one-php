@@ -1,6 +1,13 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
+require_once('../sessionConfig.php');
 require_once('../controllers/checkoutController.php');
+// require_once('../controllers/reviewOrderController.php');
+
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +24,8 @@ require_once('../controllers/checkoutController.php');
 
     <link rel="stylesheet" href="../assets/css/global.css">
     <link rel="stylesheet" href="../assets/css/review-order.css">
+    <link rel="stylesheet" href="../assets/css/animation.css">
+
 
 </head>
 
@@ -31,7 +40,7 @@ require_once('../controllers/checkoutController.php');
     <main>
         <!-- review order section -->
         <section class="review-order">
-
+            <?php var_dump($_SESSION) ?>
             <!-- heading -->
             <div class="heading">
                 <h3>Review Order</h3>
@@ -41,9 +50,12 @@ require_once('../controllers/checkoutController.php');
             <!-- delivery address -->
             <div class="manage deli-address">
                 <span>Delivery Address</span>
-                <?php if (isset($_SESSION['address'])) { ?>
-                    <span id="deliver-address">Flat 4</span>
-                <?php } ?>
+                <?php if ($deliveryAddress->num_rows > 0) {
+                    foreach ($deliveryAddress as $row) {  ?>
+                        <span id="deliver-address"><?php echo $row['address'] ?></span>
+                <?php }
+                }
+                ?>
                 <a href="./add-delivery-form.php">
                     <button class="link">
                         Add Delivery Instructions
@@ -78,8 +90,8 @@ require_once('../controllers/checkoutController.php');
             <div class="manage books-in-cart">
                 <span>Books in Cart</span>
 
-                <?php if (count($_SESSION['cart']) > 0 && isset($_SESSION['cart'])) {
-                    foreach ($_SESSION['cart'] as $row) {  ?>
+                <?php if (count($_SESSION['cart']['items']) > 0 && isset($_SESSION['cart'])) {
+                    foreach ($_SESSION['cart']['items'] as $row) {  ?>
                         <!-- book -->
                         <div class="book">
                             <div class="cover">
@@ -145,9 +157,28 @@ require_once('../controllers/checkoutController.php');
             </div>
 
         </section>
+        </button>
+        <?php if (isset($_SESSION['address_error'])) { ?>
+            <p class="login-error">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#7f3939" fill="none">
+                    <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <?php echo $_SESSION['login_error'] ?>
+            </p>
+        <?php } ?>
+
+        <?php if (isset($_SESSION['address_success'])) { ?>
+            <p class="alert-box success fade-away">
+                <?php echo $_SESSION['address_success'] ?>
+            </p>
+        <?php } ?>
 
 
     </main>
+    <?php
+    unset($_SESSION['address_success']);
+    unset($_SESSION['address_error']);
+    ?>
 
     <!-- Footer -->
 

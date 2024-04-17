@@ -1,8 +1,12 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 $time = time();
 session_start();
-$_SESSION['current_path'] = 'login';
 require_once('../sessionConfig.php');
+$_SESSION['path'] = 'login';
 $token = bin2hex(random_bytes(35));
 $_SESSION['csrf_token'] = $token;
 ?>
@@ -35,6 +39,7 @@ $_SESSION['csrf_token'] = $token;
 
     <!-- Main -->
     <main>
+        <?php var_dump($_SESSION) ?>
         <section class="login">
             <!-- Illustration -->
             <div class="illustration">
@@ -42,7 +47,6 @@ $_SESSION['csrf_token'] = $token;
             </div>
             <form class="login-form" action="../controllers/authenticationController.php" method="post">
                 <input name="token" type="hidden" value="<?php echo $_SESSION['csrf_token'] ?>">
-
                 <h2>Welcome Back</h2>
                 <!-- Show message telling user to login before go to checkout -->
                 <?php if (isset($_SESSION['login'])) { ?>
