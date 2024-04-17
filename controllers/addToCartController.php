@@ -100,11 +100,17 @@ function increaseQuantity($data)
     $validatedId = htmlspecialchars($data['bookId']);
 
     // $quantity = htmlspecialchars($data['quantity']);
-    if (isset($_SESSION['cart'][$validatedId])) {
+    if (isset($_SESSION['cart']['items'][$validatedId])) {
 
-        $quantity = $_SESSION['cart'][$validatedId]['quantity'] + 1;
+        $quantity = $_SESSION['cart']['items'][$validatedId]['quantity'] + 1;
+
+
         if ($quantity < 11) {
-            $_SESSION['cart'][$validatedId]['quantity'] = $quantity;
+            $_SESSION['cart']['items'][$validatedId]['quantity'] = $quantity;
+            $_SESSION['cart']['total_items'] = 0;
+            foreach ($_SESSION['cart']['items'] as $item) {
+                $_SESSION['cart']['total_items'] += $item['quantity'];
+            }
         }
         $response['error'] = false;
         $response['cart'] = $_SESSION['cart'];
@@ -121,17 +127,26 @@ function decreaseQuantity($data)
     $validatedId = htmlspecialchars($data['bookId']);
 
     // $quantity = htmlspecialchars($data['quantity']);
-    if (isset($_SESSION['cart'][$validatedId])) {
+    if (isset($_SESSION['cart']['items'][$validatedId])) {
 
-        $quantity = $_SESSION['cart'][$validatedId]['quantity'] - 1;
+        $quantity = $_SESSION['cart']['items'][$validatedId]['quantity'] - 1;
+
+        // when quantity hit 0....
         if ($quantity === 0) {
-            unset($_SESSION['cart'][$validatedId]);
-            if (empty($_SESSION['cart'])) {
-                $_SESSION['cart'] = 0;
-            }
-        } else {
-            $_SESSION['cart'][$validatedId]['quantity'] = $quantity;
+            unset($_SESSION['cart']['items'][$validatedId]);
+        }
+        if ($quantity !== 0) {
+            $_SESSION['cart']['items'][$validatedId]['quantity'] = $quantity;
             $response['error'] = false;
+        }
+
+        $_SESSION['cart']['total_items'] = 0;
+        foreach ($_SESSION['cart']['items'] as $item) {
+            $_SESSION['cart']['total_items'] += $item['quantity'];
+        }
+        // when there is no data left in the cart...
+        if (empty($_SESSION['cart']['items'])) {
+            $_SESSION['cart']['total_items'] = 0;
         }
         $response['cart'] = $_SESSION['cart'];
     } else {

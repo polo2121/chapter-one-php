@@ -151,7 +151,7 @@ async function addItem(e) {
   // if the item is added to the cart successfully...
   if (!isReuqestHasError) {
     updateCart(response);
-    addBtn.remove();
+    addBtn.classList.add("hidden");
     addedSuccessText.innerHTML = `<p class="added-state">Added</p>`;
   } else {
     console.log(response.message);
@@ -198,13 +198,26 @@ async function increaseQuantity(id) {
   }
 }
 async function decreaseQuantity(id) {
-  const items = getFromLocalStorage("cart");
-  if (items.hasOwnProperty(id)) {
-    console.log(--items[id].quantity);
+  const cart = getFromLocalStorage("cart");
+  if (cart.items.hasOwnProperty(id)) {
     const res = await sendRequest("decrease", id);
-    if (res.error)
-      return console.log("Cannot decrease the amount. Please try again.");
+    if (res.error) {
+      console.log("Cannot decrease the amount. Please try again.");
+      return (itemInfo.innerHTML = getItemInfoHTML(
+        "Cannot reduce the item's amount in the cart. Please try again."
+      ));
+    }
     updateCart(res);
+    if (!res.cart.items.hasOwnProperty(id)) {
+      const addItemBtns = document.querySelector(
+        `input[name="book"][value="${id}"]`
+      );
+      const addBtn = addItemBtns.nextElementSibling;
+      const addedText = addItemBtns.nextElementSibling.nextElementSibling;
+
+      addBtn.classList.remove("hidden");
+      addedText.innerHTML = ``;
+    }
   }
 }
 function showCheckout() {

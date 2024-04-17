@@ -8,7 +8,7 @@ require_once('../sessionConfig.php');
 require_once('../controllers/cipherController.php');
 
 $_SESSION['current_path'] = 'books';
-// unset($_SESSION['cart']);
+unset($_SESSION['cart']);
 $token = bin2hex(random_bytes(35));
 $_SESSION['csrf_token'] = $token;
 
@@ -104,14 +104,17 @@ $_SESSION['csrf_token'] = $token;
                                     </span>
                                 </a>
                                 <div class="action">
-                                    <input type="hidden" value=<?php echo $row['book_id'] ?>>
+                                    <input type="hidden" name="book" value=<?php echo $row['book_id'] ?>>
+                                    <button class="add-item" type="submit">Add</button>
+                                    <span></span>
+
                                     <?php if (isset($_SESSION['cart']['items'][$row['book_id']])) { ?>
-                                        <span>
+                                        <!-- <span>
                                             <p class="added-state">Added</p>
-                                        </span>
+                                        </span> -->
                                     <?php } else { ?>
-                                        <button class="add-item" type="submit">Add</button>
-                                        <span></span>
+                                        <!-- <button class="add-item" type="submit">Add</button>
+                                        <span></span> -->
                                     <?php } ?>
                                 </div>
                             </div>

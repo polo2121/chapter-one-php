@@ -8,7 +8,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-if (!isset(($_SESSION['cart'])) || $_SESSION['cart'] === 0) {
+if (!isset(($_SESSION['cart'])) || $_SESSION['cart']['total_items'] === 0 || count($_SESSION['cart']['items'])) {
     echo "SESSION is not here. <br>";
     $_SESSION['checkout_error'] = "There is no item the in the cart.";
     header('Location: ../views/products.php');
