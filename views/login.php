@@ -109,6 +109,7 @@ $_SESSION['csrf_token'] = $token;
     <?php
     unset($_SESSION['login']);
     unset($_SESSION['login_error']);
+    unset($_SESSION['checkout_error']);
     ?>
 
     <script src="./assets/js/nav-toggle.js"></script>

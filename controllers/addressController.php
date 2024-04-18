@@ -3,13 +3,14 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once('../sessionConfig.php');
+
 require_once('../models/dbConnection.php');
 require_once('../models/addreesModel.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+    session_start();
     if (!isset($_SESSION['csrf_token']) || !isset($_POST['token'])) {
+        var_dump(($_SESSION['csrf_token']));
         echo "<h1>Something went wrong. CSRF Toke Not Found.</h1>";
         exit;
     }

@@ -34,7 +34,16 @@ h2 {
     right: -4rem;
     width: 120px;
  }
-
+.security input{
+    width: 10%;
+    padding: 1rem;
+    border-radius: 10px;
+    border: none;
+    border: 1px solid #0F2F60;
+}
+.security span{
+    font-size: 1rem;
+}
  /* small screens like laptop */
 @media screen and (max-width: 1024px) {
     .contact-form {

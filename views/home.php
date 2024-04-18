@@ -11,12 +11,10 @@ $_SESSION['path'] = 'home';
 
 // retrieve book's name and price from controller
 $bookDetails = getBooksList();
-
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 
 <head>
     <meta charset="UTF-8">
