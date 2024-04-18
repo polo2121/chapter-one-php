@@ -107,15 +107,6 @@ $_SESSION['csrf_token'] = $token;
                                     <input type="hidden" name="book" value=<?php echo $row['book_id'] ?>>
                                     <button class="add-item" type="submit">Add</button>
                                     <span></span>
-
-                                    <?php if (isset($_SESSION['cart']['items'][$row['book_id']])) { ?>
-                                        <!-- <span>
-                                            <p class="added-state">Added</p>
-                                        </span> -->
-                                    <?php } else { ?>
-                                        <!-- <button class="add-item" type="submit">Add</button>
-                                        <span></span> -->
-                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
@@ -141,6 +132,12 @@ $_SESSION['csrf_token'] = $token;
                 <?php echo $_SESSION['registration_success'] ?>
             </p>
         <?php } ?>
+
+        <?php if (isset($_SESSION['product_detail_error'])) { ?>
+            <p class="alert-box success fade-away">
+                <?php echo $_SESSION['product_detail_error'] ?>
+            </p>
+        <?php } ?>
     </main>
 
     <!-- Footer -->
@@ -148,7 +145,7 @@ $_SESSION['csrf_token'] = $token;
     <?php
     unset($_SESSION['registration_success']);
     unset($_SESSION['login_success']);
-
+    unset($_SESSION['product_detail_error']);
     ?>
     <script src="./js/nav-toggle.js"></script>
 

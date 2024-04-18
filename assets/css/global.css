@@ -896,6 +896,10 @@ form .input-group>input {
     font-family: 'Erode', serif;
     font-weight: 600;
 }
+.added-style-2 {
+    padding-top: 1rem 0rem;
+    padding-inline: 0rem 4rem;
+}
 /* Responsive Css */
 
 /* large screens like desktop */

@@ -51,7 +51,6 @@ function getCartItems()
             $_SESSION['cart']['total_items']  = 0;
         }
         $response['cart']  = $_SESSION['cart'];
-
         $response['error'] = false;
         echo json_encode($response);
     } catch (\Throwable $th) {
@@ -125,9 +124,7 @@ function increaseQuantity($data)
 
     // $quantity = htmlspecialchars($data['quantity']);
     if (isset($_SESSION['cart']['items'][$validatedId])) {
-
         $quantity = $_SESSION['cart']['items'][$validatedId]['quantity'] + 1;
-
 
         if ($quantity < 11) {
             $_SESSION['cart']['items'][$validatedId]['quantity'] = $quantity;

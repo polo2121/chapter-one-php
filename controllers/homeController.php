@@ -21,5 +21,11 @@ function getBookNameAndPrice()
 {
     return bookNameAndPrice();
 }
+function bookDetailsById($id)
+{
+
+    $bookDetails = getBookById(decryptId($id));
+    return $bookDetails;
+}
 
 getBooksList();

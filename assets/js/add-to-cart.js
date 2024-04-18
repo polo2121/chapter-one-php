@@ -262,7 +262,19 @@ async function increaseQuantity(id) {
       return;
     }
     updateCart(res);
+    updateAmount(id);
   }
+}
+function updateAmount() {
+  const cart = getFromLocalStorage("cart");
+  $quantity = document.getElementById("quantity");
+  if (!$quantity) {
+    console.log(
+      "The id quantity is not found in this page. Go to detail page."
+    );
+    return;
+  }
+  $quantity.innerText = cart.items["aT5OIM2bMBtwXAO7TkxsHA=="].quantity;
 }
 async function decreaseQuantity(id) {
   const cart = getFromLocalStorage("cart");
@@ -275,6 +287,7 @@ async function decreaseQuantity(id) {
       ));
     }
     updateCart(res);
+    updateAmount(id);
     if (!res.cart.items.hasOwnProperty(id)) {
       const addItemBtns = document.querySelector(
         `input[name="book"][value="${id}"]`

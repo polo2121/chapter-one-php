@@ -10,21 +10,17 @@ function booksList()
     closeConnection($conn);
 
     return $result_sel;
-
-    // if ($result_sel->num_rows > 0) {
-    //     while ($row = $result_sel->fetch_assoc()) {
-    //         echo "Id" . $row['book_id'] . "<br>";
-    //         echo "Title " . $row['book_title'] . "<br>";
-    //         echo "Description " . $row['book_description'] . "<br>";
-    //         echo "Cover " . $row['book_cover'] . "<br>";
-    //     }
-    // }
-
-
-    //results
-    // if($result_sel->num_rows > 0){
-    //     while($row = $result)
-    // }
+}
+function getBookById($id)
+{
+    $conn = openConnection();
+    $stmt = $conn->prepare('SELECT * FROM books WHERE book_id = ?');
+    $stmt->bind_param('s', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    closeConnection($conn);
+    return $result;
 }
 function bookNameAndPrice()
 {

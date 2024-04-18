@@ -190,6 +190,14 @@ section {
     font-size: 1.4rem;
     font-weight: 700;
 }
+form {
+    width: 0% !important;
+    padding: 0 !important;
+}
+form button {
+    
+
+}
 /* Responsive Css */
 
 /* large screens like desktop */

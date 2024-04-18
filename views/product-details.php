@@ -1,3 +1,22 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+$time = time();
+session_start();
+require_once('../sessionConfig.php');
+require_once('../controllers/homeController.php');
+
+if (!isset($_GET['id'])) {
+    $_SESSION['product_detail_error'] = "The book is not found.";
+    header('Location: ../views/products.php');
+}
+$_SESSION['path'] = 'product-details';
+$bookId = htmlspecialchars($_GET['id']);
+// retrieve book's name and price from controller
+$bookDetails = bookDetailsById($bookId);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,172 +29,168 @@
     <link href="https://api.fontshare.com/v2/css?f[]=erode@700,300,500,600,400&f[]=recia@700,500,600,400&display=swap" rel="stylesheet">
 
 
-    <link rel="stylesheet" href="./css/global.css">
-    <link rel="stylesheet" href="./css/product-details.css">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/product-details.css?<?php echo $time; ?>">
+    <link rel="stylesheet" href="../assets/css/animation.css">
+
 
 </head>
 
 <body>
-
-    <?php
-    $bookId = $_GET['id'];
-    ?>
-
     <!-- Header -->
-    <header class="header-section">
-        <input type="hidden" value="Product Details" id="current-page">
-    </header>
+    <?php
+    require_once('./header.php');
+    ?>
 
     <!-- Main -->
     <main>
-        <!-- Product Details Section -->
-        <section class="product-details">
+        <?php if ($bookDetails->num_rows > 0) {
+            foreach ($bookDetails as $row) {
+        ?>
+                <!-- Product Details Section -->
+                <section class="product-details">
+                    <div class="image">
+                        <img class="main-image" width="100%" height="100%" src="../assets/images/<?php echo $row['book_cover'] ?>" alt="book-cover-image">
+                        <div class="mobile-image">
+                            <!-- 3d Book -->
+                            <div class="book-style-2 book">
+                                <div class="book-cover">
+                                    <img width="100%" height="100%" src="../assets/images/<?php echo $row['book_cover'] ?>" alt="book-cover-image">
+                                </div>
 
-            <div class="image">
-                <img class="main-image" width="100%" height="100%" src="./images/atomic_habits.jpeg" alt="">
-                <div class="mobile-image">
-                    <!-- 3d Book -->
-                    <div class="book-style-2 book">
-                        <div class="book-cover">
-                            <img width="100%" height="100%" src="./images/atomic_habits.jpeg" alt="">
+                                <div class="book-middle">
+                                    <div class="white-pages"></div>
+                                </div>
+                                <img class="shadow" src="../assets/images/book shadow.svg" alt="book-shadow-image">
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="book-middle">
-                            <div class="white-pages"></div>
+                    <div class="info">
+                        <div class="price_rating">
+                            <span class="price">£<?php echo $row['book_price']; ?></span>
+                            <img class="rating" src="../assets/images/4-review.svg" alt="rating-svg">
                         </div>
-                        <img class="shadow" src="./images/book shadow.svg" alt="book shadow">
-                    </div>
-                </div>
-            </div>
+                        <h4 class="name"><?php echo ucfirst($row['book_title']); ?></h4>
 
-            <div class="info">
-                <div class="price_rating">
-                    <span class="price">£10.59</span>
-                    <img class="rating" src="./images/4-review.svg" alt="rating svg">
-                </div>
-                <h4 class="name">Ikigai: The Japanese Secret to a Long and Happy Life</h4>
-                <div class="action">
-                    <button class="add">Add To Cart</button>
-                    <div class="amount">
-                        <button class="minus">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20 12H4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                        <p>1</p>
-                        <button class="plus">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 4V20M20 12H4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <a class="back-btn" href="./products.html">
-                    <button class="btn-style-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16 12H8M16 12C16 11.2998 14.0057 9.99153 13.5 9.5M16 12C16 12.7002 14.0057 14.0085 13.5 14.5" stroke="#0F2F60" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M21.5 12C21.5 7.52166 21.5 5.28249 20.1088 3.89124C18.7175 2.5 16.4783 2.5 12 2.5C7.5217 2.5 5.2825 2.5 3.8912 3.89124C2.5 5.28249 2.5 7.52166 2.5 12C2.5 16.4783 2.5 18.7175 3.8912 20.1088C5.2825 21.5 7.5217 21.5 12 21.5C16.4783 21.5 18.7175 21.5 20.1088 20.1088C21.5 18.7175 21.5 16.4783 21.5 12Z" stroke="#0F2F60" stroke-width="1.5" />
-                        </svg>
 
-                        Back To Browsing
-                    </button>
-                </a>
-            </div>
-        </section>
+                        <div class="action">
+                            <input type="hidden" name="book" value=<?php echo $bookId ?>>
+                            <button class="add add-item">Add To Cart</button>
+                            <span></span>
 
-        <!-- Product Description Section -->
-        <section class="description">
-            <h4>Descriptions</h4>
-            <div>
-                <p>
-                    A revolutionary system to get 1 per cent better every day. People think when you want to change your
-                    life, you need to think big. But world-renowned habits expert James Clear has discovered another
-                    way. He knows that real change comes from the compound effect of hundreds of small decisions - doing
-                    two push-ups a day, waking up five minutes early, or holding a single short phone call. He calls
-                    them atomic habits. In this ground-breaking book, Clears reveals exactly how these minuscule changes
-                    can grow into such
-                    life-altering outcomes. He uncovers a handful of simple life hacks (the forgotten art of Habit
-                    Stacking,the unexpected power of the Two Minute Rule, or the trick to entering the Goldilocks Zone),
-                    and delves
-                    into cutting-edge psychology and neuroscience to explain why they matter. Along the way, he tells
-                    inspiring stories of Olympic gold medalists, leading CEOs, and distinguished scientists who have
-                    used the science of tiny habits to stay productive, motivated, and happy. These small changes will
-                    have a revolutionary effect on your career, your relationships, and your life.
-                </p>
-            </div>
+                            <!-- <div class="amount">
+                                <button type="submit" class="minus" name="increase-on-detail" onclick="decreaseQuantity('<?php echo $bookId ?>')">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 12H4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                                <span id="quantity">1</span>
+                                <button class="plus" onclick="increaseQuantity('<?php echo $bookId ?>')">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 4V20M20 12H4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </button>
+                            </div> -->
+                        </div>
+                        <a class="back-btn" href="./products.php">
+                            <button class="btn-style-2">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16 12H8M16 12C16 11.2998 14.0057 9.99153 13.5 9.5M16 12C16 12.7002 14.0057 14.0085 13.5 14.5" stroke="#0F2F60" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M21.5 12C21.5 7.52166 21.5 5.28249 20.1088 3.89124C18.7175 2.5 16.4783 2.5 12 2.5C7.5217 2.5 5.2825 2.5 3.8912 3.89124C2.5 5.28249 2.5 7.52166 2.5 12C2.5 16.4783 2.5 18.7175 3.8912 20.1088C5.2825 21.5 7.5217 21.5 12 21.5C16.4783 21.5 18.7175 21.5 20.1088 20.1088C21.5 18.7175 21.5 16.4783 21.5 12Z" stroke="#0F2F60" stroke-width="1.5" />
+                                </svg>
 
-        </section>
+                                Back To Browsing
+                            </button>
+                        </a>
+                    </div>
+                </section>
 
-        <!-- book details -->
-        <section class="book-details">
-            <h4>Book Details</h4>
+                <!-- Product Description Section -->
+                <section class="description">
+                    <h4>Descriptions</h4>
+                    <div>
+                        <p>
+                            <?php echo $row['book_description']; ?>
+                        </p>
+                    </div>
 
-            <!-- Detail group  -->
-            <div class="detail">
-                <div class="info">
-                    <div class="icon">
-                        <img width="100%" src="./images/author.svg" alt="author icon">
-                    </div>
-                    <span>
-                        <label>Author</label>
-                        <p>James Clear</p>
-                    </span>
-                </div>
-                <div class="info">
-                    <div class="icon">
-                        <img width="80%" src="./images/isbn.svg" alt="author icon">
-                    </div>
-                    <span>
-                        <label>ISBN</label>
-                        <p>9781847941831</p>
-                    </span>
-                </div>
-            </div>
+                </section>
 
-            <!-- Detail group  -->
-            <div class="detail">
-                <div class="info">
-                    <div class="icon">
-                        <img width="80%" src="./images/publication date.svg" alt="author icon">
-                    </div>
-                    <span>
-                        <label>Publication Date</label>
-                        <p>18 Oct 2018</p>
-                    </span>
-                </div>
-                <div class="info">
-                    <div class="icon">
-                        <img width="100%" src="./images/dimension.svg" alt="author icon">
-                    </div>
-                    <span>
-                        <label>Dimensions</label>
-                        <p>234 x 153 x 23 mm</p>
-                    </span>
-                </div>
-            </div>
+                <!-- book details -->
+                <section class="book-details">
+                    <h4>Book Details</h4>
 
-            <!-- Detail group  -->
-            <div class="detail">
-                <div class="info">
-                    <div class="icon">
-                        <img width="100%" src="./images/publisher.svg" alt="author icon">
+                    <!-- Detail group  -->
+                    <div class="detail">
+                        <div class="info">
+                            <div class="icon">
+                                <img width="100%" src="../assets/images/author.svg" alt="author-icon">
+                            </div>
+                            <span>
+                                <label>Author</label>
+                                <p><?php echo ucwords($row['book_author']); ?></p>
+                            </span>
+                        </div>
+                        <div class="info">
+                            <div class="icon">
+                                <img width="80%" src="../assets/images/isbn.svg" alt="isbn-icon">
+                            </div>
+                            <span>
+                                <label>ISBN</label>
+                                <p><?php echo $row['book_isbn']; ?></p>
+                            </span>
+                        </div>
                     </div>
-                    <span>
-                        <label>Publisher</label>
-                        <p>Cornerstone</p>
-                    </span>
-                </div>
-                <div class="info">
-                    <div class="icon">
-                        <img width="90%" src="./images/kg.svg" alt="author icon">
+
+                    <!-- Detail group  -->
+                    <div class="detail">
+                        <div class="info">
+                            <div class="icon">
+                                <img width="80%" src="../assets/images/publication date.svg" alt="publication-icon">
+                            </div>
+                            <span>
+                                <label>Publication Date</label>
+                                <p><?php echo $row['book_publication']; ?></p>
+                            </span>
+                        </div>
+                        <div class="info">
+                            <div class="icon">
+                                <img width="100%" src="../assets/images/dimension.svg" alt="dimensions-icon">
+                            </div>
+                            <span>
+                                <label>Dimensions</label>
+                                <p><?php echo $row['book_dimensions']; ?></p>
+                            </span>
+                        </div>
                     </div>
-                    <span>
-                        <label>Weight</label>
-                        <p>390g</p>
-                    </span>
-                </div>
-            </div>
-        </section>
+
+                    <!-- Detail group  -->
+                    <div class="detail">
+                        <div class="info">
+                            <div class="icon">
+                                <img width="100%" src="../assets/images/publisher.svg" alt="publisher-icon">
+                            </div>
+                            <span>
+                                <label>Publisher</label>
+                                <p><?php echo ucwords($row['book_publisher']) ?></p>
+                            </span>
+                        </div>
+                        <div class="info">
+                            <div class="icon">
+                                <img width="90%" src="../assets/images/kg.svg" alt="info-icon">
+                            </div>
+                            <span>
+                                <label>Weight</label>
+                                <p><?php echo $row['book_weight']; ?></p>
+                            </span>
+                        </div>
+                    </div>
+                </section>
+
+        <?php }
+        }
+        ?>
 
         <!-- Reviews -->
         <section class="reviews">
@@ -183,14 +198,14 @@
             <div class="card-wrapper">
                 <div class="card">
                     <div class="review-book">
-                        <img width="120px" src="./images/review book.svg" alt="review book">
+                        <img width="120px" src="../assets/images/review book.svg" alt="review-book-image">
                         <p>
                             <label>Review by John</label>
                             <span>04/02/2023</span>
                         </p>
                     </div>
                     <div class="customer-review">
-                        <img width="90px" src="./images/4-review.svg" alt="4-stars-review svg">
+                        <img width="90px" src="../assets/images/4-review.svg" alt="4-stars-review-svg">
                         <p>Great Book</p>
                         <p>Interesting way to live with habits. 100% recommend to anyone who want to
                             improve quality of life.</p>
@@ -200,14 +215,13 @@
 
         </section>
     </main>
+    <?php require_once('../views/add-to-cart.php'); ?>
+
 
     <!-- Footer -->
     <footer>
     </footer>
-
-    <script src="./js/header.js"></script>
-    <script src="./js/footer.js"></script>
-    <script src="./js/nav-toggle.js"></script>
+    <script src="../assets/js/nav-toggle.js"></script>
 
 </body>
 
