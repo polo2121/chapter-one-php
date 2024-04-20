@@ -7,8 +7,17 @@ $time = time();
 session_start();
 require_once('../sessionConfig.php');
 require_once('../controllers/cipherController.php');
+require_once('../controllers/profileController.php');
+require_once('../controllers/cipherController.php');
 
+if (!isset($_SESSION['user'])) {
+    $_SESSION['login_error'] = "Please login first.";
+    header('Location: ./login.php');
+    exit;
+}
 $_SESSION['path'] = 'profile';
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,86 +45,103 @@ $_SESSION['path'] = 'profile';
     <main>
         <?php var_dump($_SESSION); ?>
         <section>
-            <div class="welcome-back">
-                <h3>Welcome Back, <?php echo "POLO" ?></h3>
-            </div>
-            <div class="profile">
-                <fieldset class="my-profile">
-                    <legend>My Profile</legend>
-                    <ul class="names">
-                        <li>
-                            <label>Firstname</label>
-                            <span>Jinny</span>
-                        </li>
-                        <li>
-                            <label>Lastname</label>
-                            <span>Tonny</span>
-                        </li>
-                    </ul>
-
-                    <ul class="other-details">
-                        <li>
-                            <label>Email</label>
-                            <span>Jinny@gmail.com</span>
-                        </li>
-                        <li>
-                            <label>Delivery Address</label>
-                            <span>Tonny</span>
-                        </li>
-                        <li>
-                            <label>Phoen Number</label>
-                            <span>+44 0739833003y</span>
-                        </li>
-                    </ul>
-
-                </fieldset>
-                <fieldset class="order-lists">
-                    <legend>Order Lists</legend>
-                    <div class="other-details">
-                        <ul>
-                            <li>
-                                <label>Reference Code</label>
-                                <span>#3993930090393</span>
-                            </li>
-                        </ul>
-                        <ul>
-                            <li>
-                                <label>Issued State</label>
-                                <span>29-10-2022</span>
-                            </li>
-                            <li>
-                                <label>Order Status</label>
-                                <span class="complete">Completed</span>
-                            </li>
-                        </ul>
+            <?php
+            if ($user->num_rows > 0) {
+                foreach ($user as $row) {
+            ?>
+                    <div class="welcome-back">
+                        <h3>Welcome Back, <?php echo ucfirst($row['firstname']) . ' ' . ucfirst($row['lastname']) ?></h3>
+                        <form action="../controllers/profileController.php" method="post">
+                            <button type="submit" name="logout">Sign Out</button>
+                        </form>
                     </div>
+                    <div class="profile">
+                        <fieldset class="my-profile">
+                            <legend>My Profile</legend>
+                            <ul class="names">
+                                <li>
+                                    <label>Firstname</label>
+                                    <span><?php echo ucfirst($row['firstname']) ?></span>
+                                </li>
+                                <li>
+                                    <label>Lastname</label>
+                                    <span><?php echo ucfirst($row['lastname']) ?></span>
+                                </li>
+                            </ul>
+                            <ul class="other-details">
+                                <li>
+                                    <label>Email</label>
+                                    <span><?php echo ucfirst($row['email']) ?></span>
+                                </li>
+                        <?php  }
+                } ?>
+                        <?php
+                        if ($deliverAddress->num_rows > 0) {
+                            foreach ($deliverAddress as $row) {
+                        ?>
+                                <li>
+                                    <label>Delivery Address</label>
+                                    <span><?php echo ucfirst($row['address']) ?></span>
+                                </li>
+                                <li>
+                                    <label>Phoen Number</label>
+                                    <span>+44 0739833003</span>
+                                </li>
+                            </ul>
+                    <?php }
+                        } ?>
+                        </fieldset>
 
-                    <div class="other-details">
-                        <ul>
-                            <li>
-                                <label>Reference Code</label>
-                                <span>#3993930090393</span>
-                            </li>
-                        </ul>
-                        <ul>
-                            <li>
-                                <label>Issued State</label>
-                                <span>29-10-2022</span>
-                            </li>
-                            <li>
-                                <label>Order Status</label>
-                                <span class="processing">Proccessing</span>
-                            </li>
-                        </ul>
-                    </div>
 
-                    <!-- <h5>No Order Yet.</h5>
+
+
+                        <fieldset class="order-lists">
+                            <legend>Order Lists</legend>
+                            <div class="other-details">
+                                <ul>
+                                    <li>
+                                        <label>Reference Code</label>
+                                        <span>#3993930090393</span>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <label>Issued State</label>
+                                        <span>29-10-2022</span>
+                                    </li>
+                                    <li>
+                                        <label>Order Status</label>
+                                        <span class="complete">Completed</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="other-details">
+                                <ul>
+                                    <li>
+                                        <label>Reference Code</label>
+                                        <span>#3993930090393</span>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <label>Issued State</label>
+                                        <span>29-10-2022</span>
+                                    </li>
+                                    <li>
+                                        <label>Order Status</label>
+                                        <span class="processing">Proccessing</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- <h5>No Order Yet.</h5>
                     <a href="">
                         <button>Start My First Order Now</button>
                     </a> -->
-                </fieldset>
+                        </fieldset>
 
-            </div>
+                    </div>
         </section>
     </main>
 

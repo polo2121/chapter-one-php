@@ -7,10 +7,11 @@ $time = time();
 session_start();
 require_once('../sessionConfig.php');
 require_once('../controllers/homeController.php');
-$_SESSION['path'] = 'home';
+require_once('../controllers/cipherController.php');
 
+$_SESSION['path'] = 'home';
 // retrieve book's name and price from controller
-$bookDetails = getBooksList();
+$bookDetails = getBooksListByGenres('self-motivation');
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +27,7 @@ $bookDetails = getBooksList();
 
 
     <link rel="stylesheet" href="../assets/css/global.css?<?php echo $time ?>">
-    <link rel="stylesheet" href="../assets/css/animation.css">
+    <link rel="stylesheet" href="../assets/css/animation.css?<?php echo $time ?>">
     <link rel="stylesheet" href="../assets/css/index.css?<?php echo $time ?>">
 
 </head>
@@ -101,11 +102,11 @@ $bookDetails = getBooksList();
 
                             <!-- Title and Price List -->
                             <?php
-                            if (count($bookDetails) > 0) {
+                            if ($bookDetails->num_rows > 0) {
                                 foreach ($bookDetails as $row) {
-                                    $bookId = decryptId($row['book_id']);
+                                    $bookId = $row['book_id'];
                                     $className = (int)$bookId === 1 ? 'slide-up' : 'slide-down';
-                                    echo  '<a class="' . $className . '" href="./product-details.php?id=' . $row['book_id'] . '" id="tb-title-' . $bookId . '" style="--slideYValue: 60px">';
+                                    echo  '<a class="' . $className . '" href="./product-details.php?id=' . encryptId($row['book_id']) . '" id="tb-title-' . $bookId . '" style="--slideYValue: 60px">';
                                     echo '<h4>' . ucwords($row['book_title']) . '</h4>';
                                     echo '<span>£' . $row['book_price'] . '</span>';
                                     echo '</a>';
@@ -126,12 +127,12 @@ $bookDetails = getBooksList();
 
                         <!-- Book Brief Description List  -->
                         <?php
-                        if (count($bookDetails) > 0) {
+                        if ($bookDetails->num_rows > 0) {
                             foreach ($bookDetails as $row) {
-                                $bookId = decryptId($row['book_id']);
+                                $bookId = $row['book_id'];
                                 $className = (int)$bookId === 1 ? 'slide-up' : 'slide-down';
                                 echo '<p class="three-line-truncate ' . $className . '" id="tb-body-' . $bookId . '" style="--slideYValue: 100px">';
-                                echo '<a href="./product-details.php?id=' . $bookId . '" id="trending-view-detail-' . $bookId . '">';
+                                echo '<a href="./product-details.php?id=' . encryptId($bookId) . '" id="trending-view-detail-' . $bookId . '">';
                                 echo '<button class="btn-style-2">';
                                 echo 'View Detail';
                                 echo '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -168,19 +169,19 @@ $bookDetails = getBooksList();
 
                         <!-- CTA Buttons -->
                         <?php
-                        if (count($bookDetails) > 0) {
+                        if ($bookDetails->num_rows > 0) {
                             foreach ($bookDetails as $row) {
-                                $bookId = decryptId($row['book_id']);
+                                $bookId = $row['book_id'];
                                 $className = (int)$bookId === 1 ? 'slide-up' : 'slide-down';
                                 echo '<div class="cta-btns ' . $className . '" id="tb-cta-btn-' . $bookId . '" style="--slideYValue: 60px">';
                                 echo '<a id="trending-add-btn-' . $bookId . '">';
 
-                                echo '<input type="hidden" name="book" value="' . $row['book_id'] . '" >';
+                                echo '<input type="hidden" name="book" value="' . encryptId($row['book_id']) . '" >';
                                 echo '<button class="btn-style-1 add-item">Add To Cart</button>';
                                 echo '<span></span>';
 
                                 echo '</a>';
-                                echo '<a href="./product-details.php?id=' . $row['book_id'] . '" id="trending-view-detail-' . $bookId . '">';
+                                echo '<a href="./product-details.php?id=' . encryptId($row['book_id']) . '" id="trending-view-detail-' . $bookId . '">';
                                 echo '<button class="btn-style-2">';
                                 echo 'View Detail';
                                 echo '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -220,14 +221,14 @@ $bookDetails = getBooksList();
                 <div class="trending-books-slider" id="trending-books-slider">
 
                     <?php
-                    if (count($bookDetails) > 0) {
+                    if ($bookDetails->num_rows > 0) {
                         foreach ($bookDetails as $row) {
-                            $bookId = decryptId($row['book_id']);
+                            $bookId = $row['book_id'];
                     ?>
                             <!-- Trending Books Slides -->
                             <div class="trending-books-slide" id="trending-book-<?php echo $bookId ?>">
                                 <!-- Book -->
-                                <div class="book-style-1 book-rotate">
+                                <div class="book-style-1 <?php echo (int)$bookId === 1 ? 'book-rotate' : '' ?>">
                                     <div class="bg-circle"></div>
 
                                     <div class="book-cover">

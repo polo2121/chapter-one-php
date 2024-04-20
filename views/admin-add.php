@@ -16,7 +16,7 @@ require_once('../controllers/cipherController.php');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books Page</title>
+    <title>Admin Page</title>
 
     <!-- Link for two fonts used in the website -->
     <link href="https://api.fontshare.com/v2/css?f[]=erode@700,300,500,600,400&f[]=recia@700,500,600,400&display=swap" rel="stylesheet">

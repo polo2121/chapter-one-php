@@ -17,6 +17,12 @@ function getBooksList()
     return $data;
 }
 
+function getBooksListByGenres($genres)
+{
+    $result = booksListWithGenres($genres);
+    return $result;
+}
+
 function getBookNameAndPrice()
 {
     return bookNameAndPrice();

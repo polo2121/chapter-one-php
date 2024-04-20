@@ -1,5 +1,4 @@
-.slide-up {
-    animation: fade-up 0.6s ease-in forwards; 
+.slide-up {    animation: fade-up 0.6s ease-in forwards; 
     
 }
 
@@ -25,7 +24,7 @@
     }
 }
 .book-rotate{
-    animation: book-rotate 0.6s ease-in forwards;
+    animation: book-rotate 1s ease-in forwards;
 }
 @keyframes book-rotate {
     0%{

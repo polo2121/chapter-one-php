@@ -5,17 +5,13 @@ let currentSlideOffsetWidth = 0;
 /*
     Remove animations, used to display in active state, applied on a book's title,body, buttons
 */
-function removeEffectsOnPrev(value) {
+function removeEffects() {
   let prevBookId;
 
-  if (value === "previous") {
-    prevBookId = currentBookId + 1;
-  } else {
-    prevBookId = currentBookId - 1;
-  }
+  console.log(`Remove effect - current book id ${currentBookId}`);
+  prevBookId = currentBookId;
 
   //get previous book id inlcuding title,body,Call To Action (CTA) buttons
-  console.log(prevBookId);
 
   let prevTitle = document.getElementById(`tb-title-${prevBookId}`);
   let prevBody = document.getElementById(`tb-body-${prevBookId}`);
@@ -32,7 +28,21 @@ function removeEffectsOnPrev(value) {
 /*
     Add animations for active state to titles, body, and buttons
 */
-function addEffectonCurrent() {
+function addEffects(value) {
+  console.log(
+    `Add effect before current book id ${currentBookId} is plus/minus`
+  );
+  if (value === "next") {
+    currentBookId += 1;
+    console.log(`Next clicked - plus`);
+    console.log(`current book id  is ${currentBookId}`);
+  } else {
+    currentBookId -= 1;
+    console.log(`Prev clicked - minus`);
+    console.log(`current book id  is ${currentBookId}`);
+  }
+  console.log(`-------------------------------`);
+
   //add slide-up effect on title,body, (CTA) buttons
   let currentTitle = document.getElementById(`tb-title-${currentBookId}`);
   let currentBody = document.getElementById(`tb-body-${currentBookId}`);
@@ -46,11 +56,12 @@ function addEffectonCurrent() {
     currentBook.classList.remove("slide-down");
     currentBook.classList.add("slide-up");
   });
+  console.log("sat lote");
 }
 
 /* Check the current book has reached the last index */
 function checkCurrentSlideIndex() {
-  if (currentBookId > 3 || currentBookId === 0) {
+  if (currentBookId === 6 || currentBookId === 0) {
     return true;
   }
   return false;
@@ -63,8 +74,6 @@ function moveToNextSlide() {
 
   trendingBookSlider.scrollLeft =
     trendingBookSlider.scrollLeft + prevBook.offsetWidth;
-
-  console.log(trendingBookSlider.scrollLeft);
 
   prevBook.firstElementChild.classList.remove("book-rotate");
   prevBook.firstElementChild.classList.add("book-origin");
@@ -82,8 +91,6 @@ function moveToPreviousSlide() {
   trendingBookSlider.scrollLeft =
     trendingBookSlider.scrollLeft - prevBook.offsetWidth;
 
-  console.log(trendingBookSlider.scrollLeft);
-
   prevBook.firstElementChild.classList.add("book-rotate");
   prevBook.firstElementChild.classList.remove("book-origin");
 
@@ -92,62 +99,59 @@ function moveToPreviousSlide() {
 }
 
 function nextTrendingSlide() {
-  currentBookId += 1;
-
-  isAtLastSlide = checkCurrentSlideIndex();
-  if (!isAtLastSlide) {
-    removeEffectsOnPrev("next");
-    addEffectonCurrent();
+  if (currentBookId !== 1) {
+    removeEffects();
+    addEffects("next");
     moveToNextSlide();
-  }
-  if (isAtLastSlide) {
-    trendingNext.style.display = "none";
+    isAtLastSlide = checkCurrentSlideIndex();
+    if (isAtLastSlide) {
+      trendingNext.style.display = "none";
+      trendingPrevious.style.display = "flex";
+      return;
+    }
   } else {
-    trendingNext.style.display = "flex";
+    removeEffects();
+    addEffects("next");
+    moveToNextSlide();
   }
 }
 
 function previousTrendingSlide() {
   if (currentBookId > 1) {
-    currentBookId -= 1;
+    removeEffects();
+    addEffects("previous");
+    moveToPreviousSlide();
     isAtLastSlide = checkCurrentSlideIndex();
-    console.log(isAtLastSlide);
     if (!isAtLastSlide) {
-      removeEffectsOnPrev("previous");
-      addEffectonCurrent();
-      moveToPreviousSlide();
-    }
-    if (isAtLastSlide) {
-      trendingPrevious.style.display = "none";
-    } else {
+      trendingNext.style.display = "flex";
       trendingPrevious.style.display = "flex";
+    } else {
+      trendingPrevious.style.display = "none";
     }
   }
 }
 
-function nextSlide(slider, limit, btn) {
+function nextSlide(slider) {
   let sliderScrollLeft = slider.scrollLeft;
   let sliderVisibleWidth = slider.offsetWidth;
 
   slider.scrollLeft = sliderScrollLeft + sliderVisibleWidth;
-  if (
-    Math.floor(slider.scrollLeft) ===
-    Math.floor(slider.getBoundingClientRect().width * limit)
-  ) {
-    btn.style.display = "none";
-    console.log("equal");
-  } else {
-    btn.style.display = "flex";
-  }
-  console.log(slider.scrollLeft);
+  // if (
+  //   Math.floor(slider.scrollLeft) ===
+  //   Math.floor(slider.getBoundingClientRect().width * limit)
+  // ) {
+  //   btn.style.display = "none";
+  //   console.log("equal");
+  // } else {
+  //   btn.style.display = "flex";
+  // }
+  // console.log(slider.scrollLeft);
 }
 
-function prevSlide(slider, limit, btn) {
+function prevSlide(slider) {
   let sliderScrollLeft = slider.scrollLeft;
   let sliderVisibleWidth = slider.offsetWidth;
   slider.scrollLeft = sliderScrollLeft - sliderVisibleWidth;
-  console.log(slider.scrollLeft);
-  
 }
 
 // Two arrow buttons in Trending Section
@@ -169,7 +173,7 @@ prevBtn.addEventListener("click", () => prevSlide(bestSelectionSlider));
 const reviewSlider = document.getElementById("review-slider");
 const reviewNext = document.getElementById("review-next");
 const reviewPrev = document.getElementById("review-prev");
-console.log(reviewNext);
+
 // Add Click event to arrow buttons
 reviewNext.addEventListener("click", () =>
   nextSlide(reviewSlider, 4, reviewNext)

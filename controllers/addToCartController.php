@@ -93,7 +93,7 @@ function addItemToCart($data)
         }
     } else {
         $response['error'] = true;
-        $response['message'] = 'The item is already in the cart.';
+        $response['message'] = 'Cannot find the book.';
     }
     echo json_encode($response);
 }

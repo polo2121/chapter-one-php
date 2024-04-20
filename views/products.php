@@ -83,7 +83,7 @@ $_SESSION['csrf_token'] = $token;
                                 <!-- 3d Book -->
                                 <div class="book-style-2 book">
                                     <div class="book-cover">
-                                        <img width="100%" height="100%" src="../assets/images/<?php echo $row['book_cover'] ?>" alt="book image">
+                                        <img width=" 100%" height="100%" src="../assets/images/<?php echo $row['book_cover'] ?>" alt="book image">
                                     </div>
 
                                     <div class="book-middle">

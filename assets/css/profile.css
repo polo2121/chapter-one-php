@@ -3,8 +3,29 @@ section {
     display: flex;
 }
 section > .welcome-back {
-    width: 30%;
+    width: 28%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 1rem;
 }
+section > .welcome-back > button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: #FFFFFF;
+    align-content: center;
+    padding: 0.6rem 2rem;
+    gap: 1rem;
+    background-color: #1976D2;
+    border-radius: 100px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    transition: transform 0.3s ease-in;
+}
+section > .welcome-back > button:hover {
+    transform: scale(.8);
+}
+
 section > .welcome-back > h1 {
     background-color: red;
 }
@@ -106,4 +127,8 @@ section > .profile > .order-lists > .other-details > ul:not(:nth-child(1)) > li{
     border-radius: 100px;
     text-align: center;
     font-size: 1rem;
+}
+form {
+    width: 40%;
+    padding: 0;
 }

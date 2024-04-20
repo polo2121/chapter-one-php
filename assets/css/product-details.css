@@ -8,12 +8,14 @@ section {
     margin: auto;
     display: flex;
     gap: 2rem;
-    padding-top: 4rem;
+    /* padding-top: 4rem; */
+    padding-inline: 2rem;
+    border-radius: 14px;
 }
 .product-details .image {
-    width: 200px;
-    height: 300px;
-    border-radius: 26px;
+    width: 140px;
+    height: 220px;
+    border-radius: 10px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     overflow: hidden;
     
@@ -202,9 +204,6 @@ form button {
 
 /* large screens like desktop */
 @media screen and (max-width: 1200px)  {
-    .product-details {
-        width: 90%;
-    }
     .product-details .info .add {
         padding: 0.8rem 4rem;
     }
@@ -226,12 +225,9 @@ form button {
 
 /*  ipad, tablets */
 @media screen and (max-width: 768px)  {
-    .product-details{
-        width: 100%;
-    }
     .product-details .image {
-        width: 180px;
-        height: 260px;
+        width: 100px;
+        height: 160px;
     }
     .product-details .info .action {
         gap: 0.8rem;
@@ -262,10 +258,6 @@ form button {
 }
 /*  medium size ipad, tablets */
 @media screen and (max-width: 591px) {
-    .product-details .image{
-        width: 140px;
-        height: 210px;
-    }
     .product-details .info {
         gap: 1.2rem;
 
@@ -303,7 +295,8 @@ form button {
         display: flex;
         justify-content: center;
         width: 100%;
-        background-color: #E3F2FD;
+        height: 100%;
+        box-shadow:none;
         padding: 1rem 0rem;
     }
     .product-details > .image > img{

@@ -59,7 +59,7 @@ $bookDetails = bookDetailsById($bookId);
             foreach ($bookDetails as $row) {
         ?>
                 <!-- Product Details Section -->
-                <section class="product-details">
+                <section class="product-details" style="background-color: <?php echo $row['background_color'] ?>;">
                     <div class="image">
                         <img class="main-image" width="100%" height="100%" src="../assets/images/<?php echo $row['book_cover'] ?>" alt="book-cover-image">
                         <div class="mobile-image">

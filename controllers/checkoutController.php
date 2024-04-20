@@ -11,6 +11,7 @@ if (!isset(($_SESSION['cart'])) || $_SESSION['cart']['total_items'] === 0 || cou
 } else
 
 if (!isset($_SESSION['user'])) {
+    $_SESSION['login_error'] = "Please login first.";
     header('Location: ./login.php');
     exit;
 }

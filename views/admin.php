@@ -17,7 +17,7 @@ require_once('../controllers/adminController.php');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books Page</title>
+    <title>Admin Page</title>
 
     <!-- Link for two fonts used in the website -->
     <link href="https://api.fontshare.com/v2/css?f[]=erode@700,300,500,600,400&f[]=recia@700,500,600,400&display=swap" rel="stylesheet">
@@ -76,7 +76,7 @@ require_once('../controllers/adminController.php');
                                 <td><?php echo $row['book_weight'] ?></td>
                                 <td><?php echo $row['background_color'] ?></td>
                                 <td class="update-delete">
-                                    <a class="update">Update</a>
+                                    <a href="./admin-update.php?id=<?php echo encryptId($row['book_id']) ?>" class="update">Update</a>
                                     <a class="delete">Delete</a>
                                 </td>
                             </tr>
@@ -116,26 +116,6 @@ require_once('../controllers/adminController.php');
 
 
     </main>
-    <?php if (isset($_SESSION['insert_success'])) { ?>
-        <p class="alert-box success fade-away">
-            <?php echo $_SESSION['insert_success'] ?>
-        </p>
-
-    <?php }
-    unset($_SESSION['insert_success']);
-    ?>
-
-    <?php if (isset($_SESSION['insert_error'])) { ?>
-        <p class="alert-box fade-away">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#7f3939" fill="none">
-                <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            <?php echo $_SESSION['product_detail_error'] ?>
-        </p>
-    <?php }
-    unset($_SESSION['insert_error']);
-    ?>
-
     <dialog>
         <button autofocus class="close">Close</button>
         <h5>Confirmation</h5>
@@ -147,6 +127,48 @@ require_once('../controllers/adminController.php');
             <button class="close">No</button>
         </footer>
     </dialog>
+
+    <?php if (isset($_SESSION['insert_success'])) { ?>
+        <p class="alert-box success fade-away">
+            <?php echo $_SESSION['insert_success'] ?>
+        </p>
+
+    <?php }
+    unset($_SESSION['insert_success']);
+    ?>
+
+    <?php if (isset($_SESSION['update_success'])) { ?>
+        <p class="alert-box success fade-away">
+            <?php echo $_SESSION['update_success'] ?>
+        </p>
+
+    <?php }
+    unset($_SESSION['update_success']);
+    ?>
+
+    <?php if (isset($_SESSION['insert_error'])) { ?>
+        <p class="alert-box fade-away">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#7f3939" fill="none">
+                <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <?php echo $_SESSION['insert_error'] ?>
+        </p>
+    <?php }
+    unset($_SESSION['insert_error']);
+    ?>
+
+    <?php if (isset($_SESSION['update_error'])) { ?>
+        <p class="alert-box fade-away">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#7f3939" fill="none">
+                <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <?php echo $_SESSION['update_error'] ?>
+        </p>
+    <?php }
+    unset($_SESSION['update_error']);
+    ?>
+
+
 
     <script>
         const dialog = document.querySelector("dialog");
