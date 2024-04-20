@@ -30,7 +30,7 @@ if ($bookDetails->num_rows <= 0) {
     <link href="https://api.fontshare.com/v2/css?f[]=erode@700,300,500,600,400&f[]=recia@700,500,600,400&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../assets/css/global.css?<?php echo $time ?>">
-    <link rel="stylesheet" href="../assets/css/admin.css?<?php echo $time ?>">
+    <link rel="stylesheet" href="../assets/css/admin-add.css?<?php echo $time ?>">
 </head>
 
 <body>

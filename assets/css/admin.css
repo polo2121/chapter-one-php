@@ -18,7 +18,7 @@ section {
     font-size: 1rem;
 }
 .tables > table > thead > tr > th,.tables > table > tbody > tr > td {
-    padding: 0.4rem;
+    /* padding: 0rem 4px; */
 }
 tbody > tr:nth-of-type(even) {
   background-color: rgb(237 238 242);
@@ -50,59 +50,6 @@ tbody > tr:nth-of-type(even) {
     border: 2px solid #19D258;
     color: #19D258;
 }
-.input-wrapper {
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.input-wrapper .column{
-    /* background-color: red; */
-    width: 50%;
-    display: flex;
-    gap: 1rem;
-}
-
-.input-group label {
-    font-family: 'Erode', serif;
-    font-size: 1.4rem;
-}
-.input-group input {
-    padding: 1rem;
-    border:none;
-    font-family: 'Recia', serif;
-    border: 1.5px solid #0F2F60;
-    border-radius: 14px;
-    font-size: 1.125rem;
-}
-.description {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    font-size: 1.4rem;
-}
-.description > textarea {
-    border: 1.5px solid #0F2F60;
-    border-radius: 14px;
-    padding: 1rem;
-    font-family: 'Recia', serif;
-    color: #0F2F60;
-    font-size: 1.2rem;
-
-}
-form {
-    width: 100% !important;
-    padding: 1rem;
-}
-.form-action {
-    width: 50%;
-    display: flex;
-}
-.form-action > a {
-    width: 40%;
-}
 .update-delete {
     font-size: .8rem;
     display: flex;
@@ -132,6 +79,18 @@ form {
 .update-delete > a:hover {
     transform: scale(0.9);
 }
+form {
+    width: fit-content !important;
+}
+form button {
+    width: 0%;
+    padding: 0rem;
+    color: #FFFFFF;
+    background: transparent;
+    border-radius: 100px;
+    transition: transform 0.2s ease-in;
+}
+
 dialog {
     margin: auto;
     padding: 1rem;
@@ -146,32 +105,34 @@ dialog > * {
     color: #0F2F60;
 
 }
-dialog > footer {
+dialog  div {
     display: flex !important;
     flex-direction: row;
     gap: 1rem;
     background-color: transparent;
 }
-dialog > footer > button {
+dialog  div  button,dialog  div  span{
     width: 100%;
-    padding: 0.4rem 2rem;
+    padding: 0.4rem 2rem !important;
     color: #FFFFFF;
     border-radius: 100px;
+    transition: transform 0.2s ease-in;
+    text-align: center;
+    cursor: pointer;
 }
-dialog > footer > button > a{
+dialog  div  button > a{
   color: #E53935;
 }
 
-dialog > footer > button:first-child {
+dialog  div  button:first-child {
     background-color: #FFFFFF;
     border: 2px solid #E53935;
     color: #E53935;
 }
-dialog > footer > button:last-child {
+dialog  div  span {
     background-color: #FFFFFF;
     border: 2px solid #1976D2;
     color: #1976D2;
 }
-
 
 

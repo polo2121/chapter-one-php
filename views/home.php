@@ -51,7 +51,7 @@ $bookDetails = getBooksListByGenres('self-motivation');
                     <img id="pen" src="../assets/images/pen.svg" alt="pen image">
 
                 </h1>
-                <a href="./products.html">
+                <a href="./products.php">
                     <button class="btn-style-3">
                         Explore Now
                         <img src="../assets/images/outlined arrow white.svg" alt="svg">
@@ -329,7 +329,7 @@ $bookDetails = getBooksListByGenres('self-motivation');
                         attract you.
                     </span>
                 </p>
-                <a href="./products.html">
+                <a href="./products.php">
                     <button class="btn-style-3">
                         Explore Now
                         <img src="../assets/images/outlined arrow white.svg" alt="">
@@ -498,7 +498,7 @@ $bookDetails = getBooksListByGenres('self-motivation');
                     <p> With our vast collection of millions of books, delve into a world of
                         imagination and find your next captivating read!
                     </p>
-                    <a href="./products.html">
+                    <a href="./products.php">
                         <button class="btn-style-3">
                             Explore Now
                             <img src="../assets/images/outlined arrow white.svg" alt="">

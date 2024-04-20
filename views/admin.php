@@ -61,28 +61,32 @@ require_once('../controllers/adminController.php');
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($bookDetails->num_rows > 0) {
-                        foreach ($bookDetails as $row) {
-                    ?>
-                            <tr>
-                                <td><?php echo $row['book_title'] ?></td>
-                                <td><?php echo $row['book_cover'] ?></td>
-                                <td><?php echo $row['book_price'] ?></td>
-                                <td><?php echo $row['book_author'] ?></td>
-                                <td><?php echo $row['book_isbn'] ?></td>
-                                <td><?php echo $row['book_publication'] ?></td>
-                                <td><?php echo $row['book_publisher'] ?></td>
-                                <td><?php echo $row['book_dimensions'] ?></td>
-                                <td><?php echo $row['book_weight'] ?></td>
-                                <td><?php echo $row['background_color'] ?></td>
-                                <td class="update-delete">
-                                    <a href="./admin-update.php?id=<?php echo encryptId($row['book_id']) ?>" class="update">Update</a>
-                                    <a class="delete">Delete</a>
-                                </td>
-                            </tr>
+                    <form action="../controllers/adminController.php" method="post">
+                        <?php if ($bookDetails->num_rows > 0) {
+                            foreach ($bookDetails as $row) {
+                        ?>
+                                <tr>
+                                    <td><?php echo $row['book_title'] ?></td>
+                                    <td><?php echo $row['book_cover'] ?></td>
+                                    <td><?php echo $row['book_price'] ?></td>
+                                    <td><?php echo $row['book_author'] ?></td>
+                                    <td><?php echo $row['book_isbn'] ?></td>
+                                    <td><?php echo $row['book_publication'] ?></td>
+                                    <td><?php echo $row['book_publisher'] ?></td>
+                                    <td><?php echo $row['book_dimensions'] ?></td>
+                                    <td><?php echo $row['book_weight'] ?></td>
+                                    <td><?php echo $row['background_color'] ?></td>
+                                    <td class="update-delete">
+                                        <a href="./admin-update.php?id=<?php echo encryptId($row['book_id']) ?>" class="update">Update</a>
+                                        <a class="delete" onclick="confirm('<?php echo encryptId($row['book_id']) ?>');">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
 
-                    <?php }
-                    } ?>
+                        <?php }
+                        } ?>
+                    </form>
                 </tbody>
             </table>
 
@@ -103,29 +107,36 @@ require_once('../controllers/adminController.php');
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>fd</td>
-                        <td>22</td>
-                        <td>22</td>
-                        <td>22</td>
-                    </tr>
+                    <?php if ($orderList->num_rows > 0) {
+                        foreach ($orderList as $row) {
+                    ?>
+                            <tr>
+                                <td><?php echo $row['order_code']; ?></td>
+                                <td><?php echo $row['user_id']; ?></td>
+                                <td><?php echo $row['order_issued_date']; ?></td>
+                                <td><?php echo $row['order_status']; ?></td>
+                            </tr>
+                    <?php }
+                    } ?>
                 </tbody>
             </table>
 
         </section>
-
-
     </main>
     <dialog>
         <button autofocus class="close">Close</button>
-        <h5>Confirmation</h5>
-        <p>Are you sure you want to delete this book?</p>
-        <footer>
-            <button>
-                <a href="#">Yes</a>
-            </button>
-            <button class="close">No</button>
-        </footer>
+        <form action="../controllers/adminController.php" method="post">
+            <input type="hidden" name="book-id">
+            <h5>Confirmation</h5>
+            <p>Are you sure you want to delete this book?</p>
+            <div>
+                <button type="submit" name="delete">
+                    <a>Yes</a>
+                </button>
+                <span class="close">No</span>
+            </div>
+        </form>
+
     </dialog>
 
     <?php if (isset($_SESSION['insert_success'])) { ?>
@@ -144,6 +155,15 @@ require_once('../controllers/adminController.php');
 
     <?php }
     unset($_SESSION['update_success']);
+    ?>
+
+    <?php if (isset($_SESSION['delete_success'])) { ?>
+        <p class="alert-box success fade-away">
+            <?php echo $_SESSION['delete_success'] ?>
+        </p>
+
+    <?php }
+    unset($_SESSION['delete_success']);
     ?>
 
     <?php if (isset($_SESSION['insert_error'])) { ?>
@@ -168,29 +188,17 @@ require_once('../controllers/adminController.php');
     unset($_SESSION['update_error']);
     ?>
 
-
-
-    <script>
-        const dialog = document.querySelector("dialog");
-        const showBtns = document.querySelectorAll(".delete");
-        const closeBtns = document.querySelectorAll(".close");
-
-        showBtns.forEach(btn => {
-            // "Show the dialog" button opens the dialog modally
-            btn.addEventListener("click", () => {
-                dialog.showModal();
-            });
-        })
-
-        closeBtns.forEach(btn => {
-            // "Show the dialog" button opens the dialog modally
-            btn.addEventListener("click", () => {
-                dialog.close();
-            });
-        })
-    </script>
-
+    <?php if (isset($_SESSION['delete_error'])) { ?>
+        <p class="alert-box fade-away">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#7f3939" fill="none">
+                <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <?php echo $_SESSION['delete_error'] ?>
+        </p>
+    <?php }
+    unset($_SESSION['delete_error']);
+    ?>
+    <script src="../assets/js/admin.js"></script>
 </body>
-
 
 </html>
