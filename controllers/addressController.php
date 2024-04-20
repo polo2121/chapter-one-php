@@ -7,16 +7,23 @@ error_reporting(E_ALL);
 require_once('../models/dbConnection.php');
 require_once('../models/addreesModel.php');
 
+// check user is login, if not redirect to login page
+if (!isset($_SESSION['user'])) {
+    $_SESSION['login'] = "Please login before to go further.";
+    header('Location: ./login.php');
+    exit;
+}
+// check there is items in the cart, if there is no item show error message.
+if (!isset(($_SESSION['cart'])) || $_SESSION['cart']['total_items'] === 0 || count($_SESSION['cart']['items']) === 0) {
+    echo "SESSION is not here. <br>";
+    $_SESSION['checkout_error'] = "There is no item the in the cart.";
+    header('Location: ../views/' . $_SESSION['path'] . '.php');
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    session_start();
     if (!isset($_SESSION['csrf_token']) || !isset($_POST['token'])) {
         var_dump(($_SESSION['csrf_token']));
         echo "<h1>Something went wrong. CSRF Toke Not Found.</h1>";
-        exit;
-    }
-
-    if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
-        header('Location: ./login.php');
         exit;
     }
 

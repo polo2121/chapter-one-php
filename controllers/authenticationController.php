@@ -65,6 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 unset($_SESSION['general']);
                 createNewSession('user');
+
+                $userInfo = getUserByEmail($email);
+                if ($userInfo->num_rows > 0) {
+                    foreach ($userInfo as $row) {
+                        $_SESSION['user']['id']  = $row['user_id'];
+                    }
+                }
                 $_SESSION['registration_success'] = "Registration is successfully completed.";
                 header('Location: ../views/products.php');
             } else {
@@ -74,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
         if ($isCsrfTokenValid && isset($_POST['login'])) {
-            echo "login win nay ti";
             $inputs = array('email', 'pwd');
             $isPassed = validateInput($inputs);
             if (!$isPassed) {
@@ -85,6 +91,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = htmlspecialchars($_POST['email']);
             $pwd = htmlspecialchars($_POST['pwd']);
 
+            unset($_SESSION['general']);
+            createNewSession('user');
             $userInfo = getUserByEmail($email);
 
             if ($userInfo->num_rows > 0) {
@@ -97,9 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $_SESSION['user']['id']  = $row['user_id'];
                 }
             }
-            unset($_SESSION['general']);
-            createNewSession('user');
-
             $_SESSION['login_success'] = "You have successfully login.";
             return header('Location: ../views/home.php');
         }

@@ -8,10 +8,7 @@ require_once('../sessionConfig.php');
 require_once('../controllers/addressController.php');
 $_SESSION['path'] = 'add-delivery-form';
 $token = bin2hex(random_bytes(35));
-$_SESSION['csrf_token'] = $token;
-if (!isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) {
-    header('Location: ./login.php');
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

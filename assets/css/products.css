@@ -42,7 +42,7 @@ form {
 
 .intro-text>span {
     font-weight: 600;
-    font-family: 'Erode', serif;
+    font-family: 'Erode', serif; 
     font-size: clamp(32px, 4.2vw - 1rem, 48px);
 
 }

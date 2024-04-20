@@ -37,12 +37,6 @@
         </a>
     <?php } ?>
 
-
-
-
-
-
-
     <div class="mobile-header">
         <a href="/index.php">
             <img width="46px" src="../assets/images/Logo.svg" alt="logo image">

@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once('../models/dbConnection.php');
 
@@ -30,4 +33,13 @@ function bookNameAndPrice()
     closeConnection($conn);
 
     return $result_sel;
+}
+function insertBook($title, $cover, $price, $author, $ibsn, $publication, $dimensions, $publisher, $weight, $color, $description, $genres)
+{
+    $conn = openConnection();
+    $stmt = $conn->prepare('INSERT INTO books VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $stmt->bind_param('issssssssssss', $id, $title, $cover, $price, $author, $ibsn, $publication, $dimensions, $publisher, $weight, $color, $description, $genres);
+    $stmt->execute();
+    $stmt->close();
+    closeConnection($conn);
 }

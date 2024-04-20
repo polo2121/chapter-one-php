@@ -291,13 +291,13 @@ header ul {
           font-size: 1.2rem;
           font-weight: 400;
         }
-        .best-selection .slide .book-info > button{
+        .best-selection .slide .book-info .add-to-cart {
             border-radius: 100px;
             padding: 0.4rem 1.4rem;
             border: 2px solid #1976D2;
             color: #1976D2;
         }
-        .best-selection .slide .book-info > button:hover {
+        .best-selection .slide .book-info .add-to-cart:hover {
           background-color: #1976D2;
           color: #FFFFFF;
         }

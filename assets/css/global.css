@@ -880,6 +880,7 @@ form .input-group>input {
     right: 0;
     left: 0;
     margin: auto;
+    z-index: 99;
 }
 .alert-box.success {
     background-color: #d4edda;

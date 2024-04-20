@@ -134,7 +134,10 @@ $_SESSION['csrf_token'] = $token;
         <?php } ?>
 
         <?php if (isset($_SESSION['product_detail_error'])) { ?>
-            <p class="alert-box success fade-away">
+            <p class="alert-box fade-away">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#7f3939" fill="none">
+                    <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
                 <?php echo $_SESSION['product_detail_error'] ?>
             </p>
         <?php } ?>

@@ -6,6 +6,16 @@ $time = time();
 session_start();
 require_once('../sessionConfig.php');
 
+if (!isset($_SESSION['user'])) {
+    $_SESSION['login'] = "Please login before proceed to go further.";
+    header('Location: ../views/login.php');
+}
+// check there is items in the cart, if there is no item show error message.
+if (!isset(($_SESSION['cart'])) || $_SESSION['cart']['total_items'] === 0 || count($_SESSION['cart']['items']) === 0) {
+    echo "SESSION is not here. <br>";
+    $_SESSION['checkout_error'] = "There is no item the in the cart.";
+    header('Location: ../views/' . $_SESSION['path'] . '.php');
+}
 ?>
 
 <!DOCTYPE html>

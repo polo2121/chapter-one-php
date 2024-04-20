@@ -8,14 +8,25 @@ session_start();
 require_once('../sessionConfig.php');
 require_once('../controllers/homeController.php');
 
+// check id was sent through URL...
 if (!isset($_GET['id'])) {
     $_SESSION['product_detail_error'] = "The book is not found.";
-    header('Location: ../views/products.php');
+    header('Location: ../views/' . $_SESSION['path'] . '.php');
 }
-$_SESSION['path'] = 'product-details';
 $bookId = htmlspecialchars($_GET['id']);
+
+// check the given id is valid and existed in the database or not....
+$isBookExisted = validateBookId($bookId);
+if (!$isBookExisted) {
+    $_SESSION['product_detail_error'] = "The book is not found.";
+    header('Location: ../views/' . $_SESSION['path'] . '.php');
+}
+
+$_SESSION['path'] = 'product-details';
+
 // retrieve book's name and price from controller
 $bookDetails = bookDetailsById($bookId);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

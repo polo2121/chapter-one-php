@@ -25,7 +25,7 @@ $bookDetails = getBooksList();
     <link href="https://api.fontshare.com/v2/css?f[]=erode@700,300,500,600,400&f[]=recia@700,500,600,400&display=swap" rel="stylesheet">
 
 
-    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/global.css?<?php echo $time ?>">
     <link rel="stylesheet" href="../assets/css/animation.css">
     <link rel="stylesheet" href="../assets/css/index.css?<?php echo $time ?>">
 
@@ -105,14 +105,12 @@ $bookDetails = getBooksList();
                                 foreach ($bookDetails as $row) {
                                     $bookId = decryptId($row['book_id']);
                                     $className = (int)$bookId === 1 ? 'slide-up' : 'slide-down';
-                                    echo  '<a class="' . $className . '" href="#" id="tb-title-' . $bookId . '" style="--slideYValue: 60px">';
+                                    echo  '<a class="' . $className . '" href="./product-details.php?id=' . $row['book_id'] . '" id="tb-title-' . $bookId . '" style="--slideYValue: 60px">';
                                     echo '<h4>' . ucwords($row['book_title']) . '</h4>';
                                     echo '<span>£' . $row['book_price'] . '</span>';
                                     echo '</a>';
                                 }
                             }
-
-
                             ?>
                         </div>
                     </div>
@@ -133,7 +131,7 @@ $bookDetails = getBooksList();
                                 $bookId = decryptId($row['book_id']);
                                 $className = (int)$bookId === 1 ? 'slide-up' : 'slide-down';
                                 echo '<p class="three-line-truncate ' . $className . '" id="tb-body-' . $bookId . '" style="--slideYValue: 100px">';
-                                echo '<a href="./product-details.php/id=' . $bookId . '" id="trending-view-detail-' . $bookId . '">';
+                                echo '<a href="./product-details.php?id=' . $bookId . '" id="trending-view-detail-' . $bookId . '">';
                                 echo '<button class="btn-style-2">';
                                 echo 'View Detail';
                                 echo '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -182,7 +180,7 @@ $bookDetails = getBooksList();
                                 echo '<span></span>';
 
                                 echo '</a>';
-                                echo '<a href="./product-details.php/id=' . $bookId . '" id="trending-view-detail-' . $bookId . '">';
+                                echo '<a href="./product-details.php?id=' . $row['book_id'] . '" id="trending-view-detail-' . $bookId . '">';
                                 echo '<button class="btn-style-2">';
                                 echo 'View Detail';
                                 echo '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -286,11 +284,9 @@ $bookDetails = getBooksList();
                     <!-- Book -->
                     <div class="book-style-2">
                         <div class="bg-circle"></div>
-
                         <div class="book-cover">
                             <img width="100%" height="100%" src="./images/atomic_habits.jpeg" alt="">
                         </div>
-
                         <div class="book-middle">
                             <div class="white-pages"></div>
                         </div>
@@ -298,211 +294,22 @@ $bookDetails = getBooksList();
                     <div class="book-info">
                         <p>Atomic Habits</p>
                         <span>£17.99</span>
-                        <button>Add To Cart</button>
+                        <a>
+                            <input type="hidden" name="book" value="aT5OIM2bMBtwXAO7TkxsHA==">
+                            <button class="add-item add-to-cart">Add To Cart</button>
+                            <span></span>
+                        </a>
                         <a href="">
                             <button class="btn-style-2">
                                 View Detail
-                                <img src="../assets/images/link-out.svg" alt="link-out svg">
+                                <img src="../assets/images/link-out.svg" alt="link-out-svg">
                             </button>
                         </a>
                     </div>
 
 
                 </div>
-
-                <div class="slide">
-                    <!-- Book -->
-                    <div class="book-style-2">
-                        <div class="bg-circle"></div>
-
-                        <div class="book-cover">
-                            <img width="100%" height="100%" src="./images/psychology.jpg" alt="">
-                        </div>
-
-                        <div class="book-middle">
-                            <div class="white-pages"></div>
-                        </div>
-                    </div>
-                    <div class="book-info">
-                        <p>Psychology of Money</p>
-                        <span>£14.99</span>
-                        <button>Add To Cart</button>
-                        <a href="">
-                            <button class="btn-style-2">
-                                View Detail
-                                <img src="../assets/images/link-out.svg" alt="link-out svg">
-                            </button>
-                        </a>
-                    </div>
-
-
-                </div>
-
-                <div class="slide">
-                    <!-- Book -->
-                    <div class="book-style-2">
-                        <div class="bg-circle"></div>
-
-                        <div class="book-cover">
-                            <img width="100%" height="100%" src="./images/ikigai.jpeg" alt="book-cover image">
-                        </div>
-
-                        <div class="book-middle">
-                            <div class="white-pages"></div>
-                        </div>
-                    </div>
-                    <div class="book-info">
-                        <p>Ikigai: The Japanese secret to a long and happy life</p>
-                        <span>£14.99</span>
-                        <button>Add To Cart</button>
-                        <a href="">
-                            <button class="btn-style-2">
-                                View Detail
-                                <img src="./images/link-out.svg" alt="">
-                            </button>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="slide">
-                    <!-- Book -->
-                    <div class="book-style-2">
-                        <div class="bg-circle"></div>
-
-                        <div class="book-cover">
-                            <img width="100%" height="100%" src="../assets/images/atomic_habits.jpeg" alt="">
-                        </div>
-
-                        <div class="book-middle">
-                            <div class="white-pages"></div>
-                        </div>
-                    </div>
-                    <div class="book-info">
-                        <p>Atomic Habits</p>
-                        <span>£18.99</span>
-                        <button>Add To Cart</button>
-                        <a href="">
-                            <button class="btn-style-2">
-                                View Detail
-                                <img src="./images/link-out.svg" alt="">
-                            </button>
-                        </a>
-                    </div>
-
-
-                </div>
-
-                <div class="slide">
-                    <!-- Book -->
-                    <div class="book-style-2">
-                        <div class="bg-circle"></div>
-
-                        <div class="book-cover">
-                            <img width="100%" height="100%" src="./images/psychology.jpg" alt="">
-                        </div>
-
-                        <div class="book-middle">
-                            <div class="white-pages"></div>
-                        </div>
-                    </div>
-                    <div class="book-info">
-                        <p>Atomic Habits</p>
-                        <span>£18.99</span>
-                        <button>Add To Cart</button>
-                        <a href="">
-                            <button class="btn-style-2">
-                                View Detail
-                                <img src="./images/link-out.svg" alt="">
-                            </button>
-                        </a>
-                    </div>
-
-
-                </div>
-                <div class="slide">
-                    <!-- Book -->
-                    <div class="book-style-2">
-                        <div class="bg-circle"></div>
-
-                        <div class="book-cover">
-                            <img width="100%" height="100%" src="./images/psychology.jpg" alt="">
-                        </div>
-
-                        <div class="book-middle">
-                            <div class="white-pages"></div>
-                        </div>
-                    </div>
-                    <div class="book-info">
-                        <p>Atomic Habits</p>
-                        <span>£18.99</span>
-                        <button>Add To Cart</button>
-                        <a href="">
-                            <button class="btn-style-2">
-                                View Detail
-                                <img src="./images/link-out.svg" alt="">
-                            </button>
-                        </a>
-                    </div>
-
-
-                </div>
-                <div class="slide">
-                    <!-- Book -->
-                    <div class="book-style-2">
-                        <div class="bg-circle"></div>
-
-                        <div class="book-cover">
-                            <img width="100%" height="100%" src="./images/psychology.jpg" alt="">
-                        </div>
-
-                        <div class="book-middle">
-                            <div class="white-pages"></div>
-                        </div>
-                    </div>
-                    <div class="book-info">
-                        <p>Atomic Habits</p>
-                        <span>£18.99</span>
-                        <button>Add To Cart</button>
-                        <a href="">
-                            <button class="btn-style-2">
-                                View Detail
-                                <img src="./images/link-out.svg" alt="">
-                            </button>
-                        </a>
-                    </div>
-
-
-                </div>
-                <div class="slide">
-                    <!-- Book -->
-                    <div class="book-style-2">
-                        <div class="bg-circle"></div>
-
-                        <div class="book-cover">
-                            <img width="100%" height="100%" src="./images/psychology.jpg" alt="">
-                        </div>
-
-                        <div class="book-middle">
-                            <div class="white-pages"></div>
-                        </div>
-                    </div>
-                    <div class="book-info">
-                        <p>Atomic Habits</p>
-                        <span>£18.99</span>
-                        <button>Add To Cart</button>
-                        <a href="">
-                            <button class="btn-style-2">
-                                View Detail
-                                <img src="./images/link-out.svg" alt="">
-                            </button>
-                        </a>
-                    </div>
-
-
-                </div>
-
             </div>
-
         </section>
 
         <!-- Favorite Genre -->
@@ -708,12 +515,22 @@ $bookDetails = getBooksList();
             </p>
         <?php } ?>
 
+        <?php if (isset($_SESSION['product_detail_error'])) { ?>
+            <p class="alert-box fade-away">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#7f3939" fill="none">
+                    <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <?php echo $_SESSION['product_detail_error'] ?>
+            </p>
+        <?php } ?>
+
     </main>
 
     <!-- Footer -->
     <footer>
         <?php
         unset($_SESSION['login_success']);
+        unset($_SESSION['product_detail_error']);
         ?>
 
     </footer>

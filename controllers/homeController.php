@@ -28,4 +28,11 @@ function bookDetailsById($id)
     return $bookDetails;
 }
 
-getBooksList();
+function validateBookId($id)
+{
+    $results = getBookById(decryptId($id));
+    if ($results->num_rows > 0) {
+        return true;
+    }
+    return false;
+}
