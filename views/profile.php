@@ -8,7 +8,6 @@ session_start();
 require_once('../sessionConfig.php');
 require_once('../controllers/cipherController.php');
 require_once('../controllers/profileController.php');
-require_once('../controllers/cipherController.php');
 
 if (!isset($_SESSION['user'])) {
     $_SESSION['login_error'] = "Please login first.";

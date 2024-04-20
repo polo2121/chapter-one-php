@@ -111,6 +111,9 @@
 .paynow > button > a{
     color: #1976D2;
 }
+.paynow > button > a.pay-now{
+    color: #FFFFFF;
+}
 .paynow > button:hover {
     transform: scale(0.8);
 }
@@ -118,6 +121,10 @@
     background-color: transparent;
     color: #1976D2;
     border: 2px solid #1976D2;
+}
+form {
+    width: 100%;
+    padding: 0rem;
 }
 
 /* small screens like laptop */

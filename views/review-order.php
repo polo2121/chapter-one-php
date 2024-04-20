@@ -3,6 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+
+$time = time();
 session_start();
 require_once('../sessionConfig.php');
 require_once('../controllers/checkoutController.php');
@@ -23,7 +25,7 @@ require_once('../controllers/reviewOrderController.php');
 
 
     <link rel="stylesheet" href="../assets/css/global.css">
-    <link rel="stylesheet" href="../assets/css/review-order.css">
+    <link rel="stylesheet" href="../assets/css/review-order.css?<?php echo $time; ?>">
     <link rel="stylesheet" href="../assets/css/animation.css">
 
 
@@ -150,17 +152,19 @@ require_once('../controllers/reviewOrderController.php');
                 </div>
             </div>
 
-            <div class="manage paynow">
-                <button class="">
-                    Pay Now
-                </button>
-                <button>
-                    <a href="./products.php">
-                        Continue Shopping
-                    </a>
+            <form action="../controllers/reviewOrderController.php" method="post">
+                <div class="manage paynow">
+                    <button type="submit" name="pay">
+                        Pay Now
+                    </button>
+                    <button>
+                        <a href="./products.php">
+                            Continue Shopping
+                        </a>
+                    </button>
+                </div>
+            </form>
 
-                </button>
-            </div>
 
         </section>
         </button>

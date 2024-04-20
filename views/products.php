@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 
 $time = time();
 session_start();
+
 require_once('../sessionConfig.php');
 require_once('../controllers/cipherController.php');
 
@@ -79,7 +80,7 @@ $_SESSION['csrf_token'] = $token;
                                     </svg>
                                 </button>
                             </a>
-                            <div class="background">
+                            <div class="background" style="background-color: <?php echo $row['background_color'] ?>;">
                                 <!-- 3d Book -->
                                 <div class="book-style-2 book">
                                     <div class="book-cover">

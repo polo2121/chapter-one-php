@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 
 require_once('../models/dbConnection.php');
-require_once('../models/addreesModel.php');
+require_once('../models/addressModel.php');
 
 // check user is login, if not redirect to login page
 if (!isset($_SESSION['user'])) {

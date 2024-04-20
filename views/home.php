@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 
 $time = time();
 session_start();
+
 require_once('../sessionConfig.php');
 require_once('../controllers/homeController.php');
 require_once('../controllers/cipherController.php');
@@ -229,7 +230,7 @@ $bookDetails = getBooksListByGenres('self-motivation');
                             <div class="trending-books-slide" id="trending-book-<?php echo $bookId ?>">
                                 <!-- Book -->
                                 <div class="book-style-1 <?php echo (int)$bookId === 1 ? 'book-rotate' : '' ?>">
-                                    <div class="bg-circle"></div>
+                                    <div class="bg-circle" style="background-color: <?php echo $row['background_color'] ?>;"></div>
 
                                     <div class="book-cover">
                                         <img width="100%" height="100%" src="../assets/images/<?php echo $row['book_cover'] ?>" alt="book-cover-image">
