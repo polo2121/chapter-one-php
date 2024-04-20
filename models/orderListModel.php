@@ -15,12 +15,24 @@ function getOrderList()
     return $result_sel;
 }
 
+function getOrderListById($userId)
+{
+    $conn = openConnection();
+    $stmt = $conn->prepare('SELECT * FROM orders WHERE user_id = ?');
+    $stmt->bind_param('s', $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    closeConnection($conn);
+    return $result;
+}
+
 function createOrder($userId)
 {
 
     $issuedDate = date(DATE_RFC2822);
     $issuedDate = date('d M Y', strtotime($issuedDate));
-    
+
     $ordeCode = uniqid();
     $status = "processing";
 

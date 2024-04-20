@@ -96,48 +96,35 @@ $_SESSION['path'] = 'profile';
 
                         <fieldset class="order-lists">
                             <legend>Order Lists</legend>
-                            <div class="other-details">
-                                <ul>
-                                    <li>
-                                        <label>Reference Code</label>
-                                        <span>#3993930090393</span>
-                                    </li>
-                                </ul>
-                                <ul>
-                                    <li>
-                                        <label>Issued State</label>
-                                        <span>29-10-2022</span>
-                                    </li>
-                                    <li>
-                                        <label>Order Status</label>
-                                        <span class="complete">Completed</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="other-details">
-                                <ul>
-                                    <li>
-                                        <label>Reference Code</label>
-                                        <span>#3993930090393</span>
-                                    </li>
-                                </ul>
-                                <ul>
-                                    <li>
-                                        <label>Issued State</label>
-                                        <span>29-10-2022</span>
-                                    </li>
-                                    <li>
-                                        <label>Order Status</label>
-                                        <span class="processing">Proccessing</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <!-- <h5>No Order Yet.</h5>
-                    <a href="">
-                        <button>Start My First Order Now</button>
-                    </a> -->
+                            <?php
+                            if ($orderList->num_rows > 0) {
+                                foreach ($orderList as $row) {
+                            ?>
+                                    <div class="other-details">
+                                        <ul>
+                                            <li>
+                                                <label>Reference Code</label>
+                                                <span>#<?php echo $row['order_code'] ?></span>
+                                            </li>
+                                        </ul>
+                                        <ul>
+                                            <li>
+                                                <label>Issued State</label>
+                                                <span>#<?php echo $row['order_issued_date'] ?></span>
+                                            </li>
+                                            <li>
+                                                <label>Order Status</label>
+                                                <span class="<?php echo $row['order_status'] ?>"><?php echo $row['order_status'] ?></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                <?php }
+                            } else { ?>
+                                <h5>No Order Yet.</h5>
+                                <a href="./products.php">
+                                    <button>Start My First Order Now</button>
+                                </a>
+                            <?php } ?>
                         </fieldset>
 
                     </div>

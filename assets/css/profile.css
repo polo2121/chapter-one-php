@@ -39,6 +39,9 @@ section > .profile > fieldset {
     display: flex;
     border: 1px solid;
 }
+section > .profile > fieldset:first-child{
+    height: fit-content;
+}
 section > .profile > fieldset > legend{
     font-size: 1.4rem;
     font-weight: 600;
