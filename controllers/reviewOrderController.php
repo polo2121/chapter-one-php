@@ -21,5 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Hello";
         createOrder($_SESSION['user']['id']);
         header('Location: ../views/order-success.php');
+        exit;
     }
 }

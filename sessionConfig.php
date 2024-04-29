@@ -10,6 +10,7 @@
 // Create a function that check session lifetime.
 // Create a function that generate unique Id for sessions.
 // session_set_cookie_params(['lifetime' => 1800, 'domain' => "localhost", 'path' => '/', 'secure' => true, 'httponlyy' => true]);
+
 if (!isset($_SESSION['user'])) {
     $sessionName = 'general';
     if (!isset($_SESSION['general'])) {

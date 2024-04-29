@@ -28,7 +28,7 @@ function getBookById($id)
 function booksListWithGenres($genres)
 {
     $conn = openConnection();
-    $stmt = $conn->prepare('SELECT * FROM books WHERE genres = ?');
+    $stmt = $conn->prepare('SELECT * FROM books WHERE genres = ? LIMIT 7');
     $stmt->bind_param('s', $genres);
     $stmt->execute();
     $result = $stmt->get_result();

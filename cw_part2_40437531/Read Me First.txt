@@ -1,0 +1,4 @@
+To work the website, please add the site into the folder where XAMPP folder existed.
+The website will only if it put in the right place.
+
+Location: XAMPP > htdocs > site

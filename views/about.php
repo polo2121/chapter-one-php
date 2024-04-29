@@ -1,3 +1,10 @@
+<?php
+
+session_start();
+require_once('../sessionConfig.php');
+$_SESSION['path'] = 'about';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,14 +68,9 @@
     </main>
 
     <!-- Footer -->
-    <footer>
-    </footer>
+    <?php require_once('./footer.php'); ?>
 
-
-    <script src="../assets/js/add-to-cart.js"></script>
     <script src="../assets/js/nav-toggle.js"></script>
-
-
 </body>
 
 

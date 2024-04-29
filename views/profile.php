@@ -1,8 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 $time = time();
 session_start();
 require_once('../sessionConfig.php');
@@ -15,7 +11,6 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 $_SESSION['path'] = 'profile';
-
 
 ?>
 <!DOCTYPE html>
@@ -34,15 +29,12 @@ $_SESSION['path'] = 'profile';
 </head>
 
 <body>
-
     <!-- Header -->
     <?php
     require_once('./header.php');
     ?>
-
     <!-- Main -->
     <main>
-        <?php var_dump($_SESSION); ?>
         <section>
             <?php
             if ($user->num_rows > 0) {
@@ -91,9 +83,6 @@ $_SESSION['path'] = 'profile';
                         } ?>
                         </fieldset>
 
-
-
-
                         <fieldset class="order-lists">
                             <legend>Order Lists</legend>
                             <?php
@@ -132,12 +121,8 @@ $_SESSION['path'] = 'profile';
     </main>
 
     <!-- Footer -->
-
-    <?php
-
-    ?>
+    <?php require_once('./footer.php'); ?>
     <script src="./js/nav-toggle.js"></script>
-
 </body>
 
 

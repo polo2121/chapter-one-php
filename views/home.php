@@ -13,6 +13,8 @@ require_once('../controllers/cipherController.php');
 $_SESSION['path'] = 'home';
 // retrieve book's name and price from controller
 $bookDetails = getBooksListByGenres('self-motivation');
+$bestFictionBooks = getBooksListByGenres('best-fiction');
+
 ?>
 
 <!DOCTYPE html>
@@ -36,13 +38,13 @@ $bookDetails = getBooksListByGenres('self-motivation');
 <body>
 
     <!-- Header -->
-    <?php require_once('./header.php');
-    var_dump($_SESSION) ?>
+    <?php require_once('./header.php'); ?>
 
     <!-- Main -->
     <main>
         <!-- Hero Section -->
         <section class="hero-section">
+
             <div>
                 <h1>
                     Start Your Reading </br>
@@ -104,10 +106,13 @@ $bookDetails = getBooksListByGenres('self-motivation');
                             <!-- Title and Price List -->
                             <?php
                             if ($bookDetails->num_rows > 0) {
+                                $count = 0;
                                 foreach ($bookDetails as $row) {
+                                    $count += 1;
+                                    echo $count;
                                     $bookId = $row['book_id'];
                                     $className = (int)$bookId === 1 ? 'slide-up' : 'slide-down';
-                                    echo  '<a class="' . $className . '" href="./product-details.php?id=' . encryptId($row['book_id']) . '" id="tb-title-' . $bookId . '" style="--slideYValue: 60px">';
+                                    echo  '<a class="' . $className . '" href="./product-details.php?id=' . encryptId($row['book_id']) . '" id="tb-title-' . ($count) . '" style="--slideYValue: 60px">';
                                     echo '<h4>' . ucwords($row['book_title']) . '</h4>';
                                     echo '<span>£' . $row['book_price'] . '</span>';
                                     echo '</a>';
@@ -220,7 +225,6 @@ $bookDetails = getBooksListByGenres('self-motivation');
 
                 <!-- Trending Books Slider -->
                 <div class="trending-books-slider" id="trending-books-slider">
-
                     <?php
                     if ($bookDetails->num_rows > 0) {
                         foreach ($bookDetails as $row) {
@@ -281,36 +285,42 @@ $bookDetails = getBooksListByGenres('self-motivation');
             </div>
             <!-- Slider Wrapper -->
             <div class="bf-slider" id="bestfiction-slider">
-                <!-- Best Fiction Slide -->
-                <div class="slide">
-                    <!-- Book -->
-                    <div class="book-style-2">
-                        <div class="bg-circle"></div>
-                        <div class="book-cover">
-                            <img width="100%" height="100%" src="./images/atomic_habits.jpeg" alt="">
-                        </div>
-                        <div class="book-middle">
-                            <div class="white-pages"></div>
-                        </div>
-                    </div>
-                    <div class="book-info">
-                        <p>Atomic Habits</p>
-                        <span>£17.99</span>
-                        <a>
-                            <input type="hidden" name="book" value="aT5OIM2bMBtwXAO7TkxsHA==">
-                            <button class="add-item add-to-cart">Add To Cart</button>
-                            <span></span>
-                        </a>
-                        <a href="">
-                            <button class="btn-style-2">
-                                View Detail
-                                <img src="../assets/images/link-out.svg" alt="link-out-svg">
-                            </button>
-                        </a>
-                    </div>
 
-
-                </div>
+                <?php
+                if ($bestFictionBooks->num_rows > 0) {
+                    foreach ($bestFictionBooks as $row) {
+                        $bookId = $row['book_id'];
+                ?>
+                        <!-- Best Fiction Slide -->
+                        <div class="slide">
+                            <!-- Book -->
+                            <div class="book-style-2">
+                                <div class="bg-circle" style="background-color: <?php echo $row['background_color'] ?>;"></div>
+                                <div class="book-cover">
+                                    <img width="100%" height="100%" src="../assets/images/<?php echo $row['book_cover'] ?>" alt="book-cover-image">
+                                </div>
+                                <div class="book-middle">
+                                    <div class="white-pages"></div>
+                                </div>
+                            </div>
+                            <div class="book-info">
+                                <p><?php echo ucwords($row['book_title'])  ?></p>
+                                <span>£<?php echo $row['book_price'] ?></span>
+                                <a>
+                                    <input type="hidden" name="book" value="<?php echo encryptId($row['book_id']) ?>">
+                                    <button class="add-item add-to-cart">Add To Cart</button>
+                                    <span></span>
+                                </a>
+                                <a href="./product-details.php?id=<?php echo encryptId($row['book_id']) ?>">
+                                    <button class="btn-style-2">
+                                        View Detail
+                                        <img src="../assets/images/link-out.svg" alt="link-out-svg">
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                <?php  }
+                } ?>
             </div>
         </section>
 
@@ -509,6 +519,7 @@ $bookDetails = getBooksListByGenres('self-motivation');
 
         </section>
 
+        <!-- Add-To-Cart Section -->
         <?php require_once('../views/add-to-cart.php'); ?>
 
         <?php if (isset($_SESSION['login_success'])) { ?>
@@ -529,13 +540,12 @@ $bookDetails = getBooksListByGenres('self-motivation');
     </main>
 
     <!-- Footer -->
-    <footer>
-        <?php
-        unset($_SESSION['login_success']);
-        unset($_SESSION['product_detail_error']);
-        ?>
+    <?php require_once('./footer.php'); ?>
 
-    </footer>
+    <?php
+    unset($_SESSION['login_success']);
+    unset($_SESSION['product_detail_error']);
+    ?>
 
     <script src="../assets/js/slide.js?<?php echo $time ?>"></script>
     <script src="../assets/js/nav-toggle.js"></script>

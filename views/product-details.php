@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 $time = time();
 session_start();
@@ -13,17 +10,20 @@ if (!isset($_GET['id'])) {
     $_SESSION['product_detail_error'] = "The book is not found.";
     header('Location: ../views/' . $_SESSION['path'] . '.php');
 }
-$bookId = htmlspecialchars($_GET['id']);
+$query = parse_url($_SERVER['REQUEST_URI'])['query'];
+$id = substr($query, 3);
+
+$bookId = htmlspecialchars($id);
 
 // check the given id is valid and existed in the database or not....
 $isBookExisted = validateBookId($bookId);
 if (!$isBookExisted) {
     $_SESSION['product_detail_error'] = "The book is not found.";
     header('Location: ../views/' . $_SESSION['path'] . '.php');
+    exit;
 }
 
 $_SESSION['path'] = 'product-details';
-
 // retrieve book's name and price from controller
 $bookDetails = bookDetailsById($bookId);
 
@@ -228,10 +228,9 @@ $bookDetails = bookDetailsById($bookId);
     </main>
     <?php require_once('../views/add-to-cart.php'); ?>
 
-
     <!-- Footer -->
-    <footer>
-    </footer>
+    <?php require_once('./footer.php'); ?>
+
     <script src="../assets/js/nav-toggle.js"></script>
 
 </body>

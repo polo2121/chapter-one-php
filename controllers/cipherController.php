@@ -2,6 +2,7 @@
 
 function encryptId($id)
 {
+
     $cipher = getCipherConfig();
     $cipheredId = openssl_encrypt($id, $cipher['method'], $cipher['key'], $cipher['options'], $cipher['iv'], $tag);
     return $cipheredId;
@@ -21,3 +22,6 @@ function getCipherConfig()
     $cipher['options'] = 0;
     return $cipher;
 }
+
+// $id = encryptId(13);
+// decryptId($id);

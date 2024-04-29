@@ -49,26 +49,26 @@
         <div class="navi-panel hidden" id="mobile-nav">
             <ul>
                 <li>
-                    <a href="./index.php">
-                        Home
-                    </a>
+                    <a href="./home.php" <?php if ($_SESSION['path'] === "home") echo "class='active-link'" ?>>Home</a>
                 </li>
                 <li>
-                    <a href="./products.php">
-                        Books
-                    </a>
+                    <a href="./products.php" <?php if ($_SESSION['path'] === "products") echo "class='active-link'" ?>>Books</a>
                 </li>
                 <li>
-                    <a href="./about.php">
-                        About
-                    </a>
+                    <a href="./about.php" <?php if ($_SESSION['path'] === "about") echo "class='active-link'" ?>>About</a>
                 </li>
                 <li>
-                    <a href="./contact.php">Contact</a>
+                    <a href="./contact.php" <?php if ($_SESSION['path'] === "contact") echo "class='active-link'" ?>>Contact</a>
                 </li>
-                <li>
-                    <a href="./login.php">Sign In</a>
-                </li>
+                <?php if (!isset($_SESSION['user'])) { ?>
+                    <li>
+                        <a href="./login.php">Sign In</a>
+                    </li>
+                <?php } else { ?>
+                    <li>
+                        <a href="./profile.php">My Profile</a>
+                    </li>
+                <?php } ?>
             </ul>
         </div>
     </div>

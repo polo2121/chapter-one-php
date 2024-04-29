@@ -40,7 +40,7 @@ $_SESSION['csrf_token'] = $token;
 
     <!-- Main -->
     <main>
-        <?php var_dump($_SESSION); ?>
+
         <!-- Introduction Section -->
         <section class="intro-card">
             <img class="plant" src="../assets/images/plants.svg" alt="plant svg">
@@ -90,7 +90,7 @@ $_SESSION['csrf_token'] = $token;
                                     <div class="book-middle">
                                         <div class="white-pages"></div>
                                     </div>
-                                    <img class="shadow" src="../assets/images/book shadow.svg" alt="book shadow">
+                                    <img class="shadow" src="../assets/images/book shadow.svg?<?php echo $time ?>" alt="book shadow">
                                 </div>
                             </div>
                             <div class="details dpr">
@@ -151,7 +151,7 @@ $_SESSION['csrf_token'] = $token;
     unset($_SESSION['login_success']);
     unset($_SESSION['product_detail_error']);
     ?>
-    <script src="./js/nav-toggle.js"></script>
+    <script src="../assets/js/nav-toggle.js"></script>
 
 </body>
 

@@ -123,6 +123,7 @@ header ul {
     align-items: center;
     gap: 2rem;
     padding-inline-start: 0px;
+    padding: 1.2rem;
 }
 
 header ul li {
@@ -636,6 +637,7 @@ form .input-group>input {
 }
 
 .cart {
+    z-index: 13;
     position: fixed;
     right: 40px;
     bottom: 20px;
