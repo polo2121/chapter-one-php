@@ -9,12 +9,15 @@ require_once('../sessionConfig.php');
 require_once('../controllers/cipherController.php');
 require_once('../models/bookModel.php');
 
-$bookId = htmlspecialchars($_GET['id']);
-$bookId = decryptId($bookId);
-$bookDetails = getBookById($bookId);
+$query = parse_url($_SERVER['REQUEST_URI'])['query'];
+$id = substr($query, 3);
+$bookId = htmlspecialchars($id);
+$bookDetails = getBookById(decryptId($bookId));
+
 if ($bookDetails->num_rows <= 0) {
+    exit;
     $_SESSION['update_error'] = "Cannot update the book to the database.";
-    header('Location: ../views/admin.php');
+    // header('Location: ../views/admin.php');
 }
 ?>
 

@@ -28,7 +28,7 @@ function calculateTotalSubPrice()
     $totalSub = 0;
     if (count($_SESSION['cart']['items']) > 0) {
         foreach ($_SESSION['cart']['items'] as $item) {
-            $totalSub = number_format($totalSub + intval($item['book_price']), 2);
+            $totalSub = number_format($totalSub + ($item['book_price'] * $item['quantity']), 2);
         }
     }
     return $totalSub;

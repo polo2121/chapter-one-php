@@ -17,6 +17,7 @@ $bookId = htmlspecialchars($id);
 
 // check the given id is valid and existed in the database or not....
 $isBookExisted = validateBookId($bookId);
+
 if (!$isBookExisted) {
     $_SESSION['product_detail_error'] = "The book is not found.";
     header('Location: ../views/' . $_SESSION['path'] . '.php');

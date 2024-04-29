@@ -47,7 +47,6 @@ unset($_SESSION['total_price']);
 
     <!-- Main -->
     <main>
-        <?php var_dump($_SESSION); ?>
         <section>
             <h2>Thank your<br>for your order.</h2>
             <p>We will deliver the order to you as soon as possible.</p>
@@ -59,6 +58,7 @@ unset($_SESSION['total_price']);
     </main>
 
     <!-- Footer -->
+    <?php require_once('./footer.php'); ?>
 
     <?php
 

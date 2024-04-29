@@ -1,7 +1,5 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
 
 $time = time();
 session_start();
@@ -37,16 +35,10 @@ $_SESSION['path'] = 'login';
 
 
     <!-- Header -->
-    <?php
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-    require_once('./header.php');
-    ?>
+    <?php require_once('./header.php'); ?>
 
     <!-- Main -->
     <main>
-        <?php var_dump($_SESSION) ?>
         <section class="login">
             <!-- Illustration -->
             <div class="illustration">
@@ -120,6 +112,10 @@ $_SESSION['path'] = 'login';
             </form>
         </section>
     </main>
+
+    <!-- Footer -->
+    <?php require_once('./footer.php'); ?>
+
     <?php
     unset($_SESSION['login']);
     unset($_SESSION['login_error']);
